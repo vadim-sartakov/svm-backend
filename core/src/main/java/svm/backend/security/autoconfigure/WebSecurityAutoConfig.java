@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import svm.backend.security.JWTCsrfTokenRepository;
 import svm.backend.security.Pbkdf2PasswordEncoder;
 import svm.backend.security.JWTAuthenticationFilter;
 import svm.backend.security.TokenAuthenticationService;
@@ -22,11 +24,15 @@ import svm.backend.security.TokenAuthenticationService;
  */
 @Configuration
 @Order(99)
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class WebSecurityAutoConfig extends WebSecurityConfigurerAdapter {
+//@EnableWebSecurity
+//@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+public class WebSecurityAutoConfig/* extends WebSecurityConfigurerAdapter*/ {
 
-    private final CustomAccessDeniedHandler accessDeniedHandler = new CustomAccessDeniedHandler();
+    /*private final CustomAccessDeniedHandler accessDeniedHandler;
+    
+    public WebSecurityAutoConfig() {
+        accessDeniedHandler = new CustomAccessDeniedHandler();
+    }
     
     @Bean
     public Pbkdf2PasswordEncoder encoder() {
@@ -48,16 +54,22 @@ public class WebSecurityAutoConfig extends WebSecurityConfigurerAdapter {
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
     }
+    
+    @Bean
+    public CsrfTokenRepository csrfTokenRepository() {
+        return new JWTCsrfTokenRepository();
+    }
         
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         
-        // TODO: Learn more about csrf
-        //http.csrf().ignoringAntMatchers("/api/sign-in");
-        
         http
-                .cors().and()
-                .csrf().disable()
+                .cors()
+                .and()
+                    .csrf().disable()
+                    //.csrfTokenRepository(csrfTokenRepository())
+                    //.ignoringAntMatchers("/static**", "/api/sign-in")
+                //.and()
                 .authorizeRequests()
                     .antMatchers(HttpMethod.GET, "/api/sign-in", "/api/logout")
                         .authenticated()
@@ -73,6 +85,6 @@ public class WebSecurityAutoConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);  
 
-    }
+    }*/
      
 }
