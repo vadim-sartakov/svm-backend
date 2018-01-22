@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Basic repository. Methods with 'super' prefix invoke base repository methods.
@@ -16,6 +17,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @param <ID> 
  */
 @NoRepositoryBean
+@Transactional
 public interface GenericRepository<T, ID extends Serializable> extends PagingAndSortingRepository<T, ID>,
         QueryDslPredicateExecutor<T> {
     

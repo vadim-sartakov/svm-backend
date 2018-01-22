@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import svm.backend.security.JWTCsrfTokenRepository;
 
 @Configuration
 public class MvcAutoConfiguration extends WebMvcConfigurerAdapter {
@@ -12,7 +13,7 @@ public class MvcAutoConfiguration extends WebMvcConfigurerAdapter {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000")
                 .allowedHeaders("*")
-                .exposedHeaders("Location")
+                .exposedHeaders("Location", JWTCsrfTokenRepository.DEFAULT_CSRF_HEADER_NAME)
                 .allowedMethods("*");
     }
     
