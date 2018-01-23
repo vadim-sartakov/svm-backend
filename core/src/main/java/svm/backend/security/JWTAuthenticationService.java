@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,37 +26,55 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.web.util.WebUtils;
 
 /**
  *
  * @author Вадим
  */
-public class TokenAuthenticationService  {
+public class JWTAuthenticationService  {
         
-    private final Logger logger = LoggerFactory.getLogger(TokenAuthenticationService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JWTAuthenticationService.class);
         
     static final long EXPIRATIONTIME = 7200000; // 2 hours
-    static final String SECRET = "bnl+uNsX4rPjvMcoPktaTZJi";
-    static final String COOKIE_NAME = "token";
+    private static final String SECRET = "bnl+uNsX4rPjvMcoPktaTZJi";
+    public static final String COOKIE_NAME = "token";
 
+    private HttpServletRequest request;
+    private HttpServletResponse response;
+    private Map<String, Object> claimsMap;
+    
     public void addAuthentication(
-            HttpServletResponse res,
+            HttpServletRequest request,
+            HttpServletResponse response,
             String id,
             String role) {
             
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("sub", id);
-        claims.put("role", role);
-        claims.put("exp", new Date(System.currentTimeMillis() + EXPIRATIONTIME));
+        this.request = request;
+        this.response = response;
         
-        String JWT = generateToken(claims);        
-        Cookie cookie = new Cookie(COOKIE_NAME, JWT);
+        claimsMap = new HashMap<>();
+        claimsMap.put("sub", id);
+        claimsMap.put("role", role);
+        claimsMap.put("exp", new Date(System.currentTimeMillis() + EXPIRATIONTIME));
+        
+        String xsrfToken = UUID.randomUUID().toString();
+        claimsMap.put(JWTCsrfTokenRepository.DEFAULT_CSRF_COOKIE_NAME, xsrfToken);
+        
+        String JWT = generateToken(claimsMap);
+        addCookie(COOKIE_NAME, JWT, true, 7200);
+        addCookie(JWTCsrfTokenRepository.DEFAULT_CSRF_COOKIE_NAME, xsrfToken, false, 0);
+        
+    }
+    
+    private void addCookie(String name, String value, boolean httpOnly, int maxAge) {
+        Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
-        cookie.setMaxAge(7200);
-        //cookie.setSecure(true);
-        cookie.setHttpOnly(true);
-        res.addCookie(cookie);
-        
+        if (maxAge != 0)
+            cookie.setMaxAge(maxAge);
+        cookie.setSecure(request.isSecure());
+        cookie.setHttpOnly(httpOnly);
+        response.addCookie(cookie);
     }
 
     public String generateToken(Map<String, Object> claims) {
@@ -75,35 +94,11 @@ public class TokenAuthenticationService  {
     }
     
     public Authentication getAuthentication(HttpServletRequest request) {
-        
-        String token = null;
-        Cookie[] cookies = request.getCookies();
-        
-        if (cookies == null)
-            return null;
-        
-        for (Cookie cookie : cookies) {
-            
-            if (cookie.getName().equals(COOKIE_NAME)) {
-                token = cookie.getValue();
-            }
-                          
-        }
-        
-        if (token == null)
-            return null;
-          
-        Claims claims;
-        try {
-            claims = Jwts.parser()
-               .setSigningKey(SECRET)
-               .parseClaimsJws(token)
-               .getBody();
-        } catch (JwtException e) {
-            logger.debug(e.getMessage());
-            return null;
-        }
 
+        Claims claims = getTokenClaims(request);
+        if (claims == null)
+            return null;
+        
         String userName = claims.getSubject();
         String role = claims.get("role", String.class);
 
@@ -119,4 +114,26 @@ public class TokenAuthenticationService  {
 
     }
     
+    public static Claims getTokenClaims(HttpServletRequest request) {
+        
+        Cookie cookie = WebUtils.getCookie(request, COOKIE_NAME);
+        if (cookie == null)
+            return null;
+        
+        String token = cookie.getValue();
+                
+        Claims claims = null;
+        try {
+            claims = Jwts.parser()
+               .setSigningKey(SECRET)
+               .parseClaimsJws(token)
+               .getBody();
+        } catch (JwtException e) {
+            LOGGER.debug(e.getMessage());
+        }
+        
+        return claims;
+        
+    }
+        
 }

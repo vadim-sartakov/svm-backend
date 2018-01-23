@@ -1,7 +1,6 @@
 package svm.backend.security.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,11 +9,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import svm.backend.security.JWTAuthenticationFilter;
+import svm.backend.security.JWTCsrfTokenRepository;
 import svm.backend.security.Pbkdf2PasswordEncoder;
-import svm.backend.security.TokenAuthenticationService;
-import svm.backend.security.config.CustomAccessDeniedHandler;
+import svm.backend.security.JWTAuthenticationService;
 
 //@Configuration
 @EnableWebSecurity
@@ -29,8 +27,8 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
     }
     
     @Bean
-    public TokenAuthenticationService tokenAuthenticationService() {
-        return new TokenAuthenticationService();
+    public JWTAuthenticationService tokenAuthenticationService() {
+        return new JWTAuthenticationService();
     }
     
     @Bean
@@ -51,16 +49,18 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
                 .cors()
                 .and()
                     .csrf()
-                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                    //.csrfTokenRepository(csrfTokenRepository())
-                    //.ignoringAntMatchers("/static**", "/api/sign-in")
+                    .csrfTokenRepository(new JWTCsrfTokenRepository())
+                    .ignoringAntMatchers("/api/*", "/api/sign-up/**")
                 .and()
                 .authorizeRequests()
-                    .antMatchers(HttpMethod.GET, "/api/sign-in", "/api/logout")
+                    .antMatchers(HttpMethod.GET, "/api/sign-in")
                         .authenticated()
-                    .antMatchers("/**").permitAll()
+                    .antMatchers("/api/home/**")
+                        .authenticated()
                 .and()
-                    .logout().logoutUrl("/api/logout").deleteCookies("token").logoutSuccessUrl("/api/sign-in")
+                    .logout().logoutUrl("/api/logout").deleteCookies(JWTAuthenticationService.COOKIE_NAME,
+                            JWTCsrfTokenRepository.DEFAULT_CSRF_COOKIE_NAME
+                    ).logoutSuccessUrl("/api/sign-in")
                 .and()
                     .exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler)
