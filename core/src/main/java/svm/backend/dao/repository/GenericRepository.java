@@ -10,8 +10,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Basic repository. Methods with 'super' prefix invoke base repository methods.
- * It useful for keeping main methods available while overriding default repository methods.
+ * Basic repository, inherits essential repositories.
+ * Methods with prefix 'super' invoke methods of base class directly. It's useful
+ * to override behavior of basic methods (for example, for implementing data security with predicates)
+ * while keeping base methods still available. 
  * @author Sartakov
  * @param <T>
  * @param <ID> 
@@ -23,9 +25,12 @@ public interface GenericRepository<T, ID extends Serializable> extends PagingAnd
     
     // TODO: make filter prefixes here, like between, startsWith, etc
     
+    Page<T> superFindAll(Predicate predicate, Pageable pageable);
     T superFindOne(ID id);
     T superFindOne(Predicate predicate);
     T superSave(T entity);
-    Page<T> superFindAll(Predicate predicate, Pageable pageable);
+    void superDelete(ID id);
+    void superDelete(T entity);
+    void superDeleteAll();
     
 }

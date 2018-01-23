@@ -1,4 +1,4 @@
-package svm.backend.security.autoconfigure;
+package svm.backend.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

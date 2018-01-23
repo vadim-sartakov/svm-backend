@@ -14,25 +14,40 @@ public class GenericRepositoryImpl<T, ID extends Serializable> extends QueryDslJ
     public GenericRepositoryImpl(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager) {
         super(entityInformation, entityManager);
     }
-    
-    @Override
-    public T superFindOne(ID id) {
-        return super.findOne(id);
-    }
-    
-    @Override
-    public T superFindOne(Predicate predicate) {
-        return super.findOne(predicate);
-    }
-    
-    @Override
-    public T superSave(T entity) {
-        return super.save(entity);
-    }
-    
+
     @Override
     public Page<T> superFindAll(Predicate predicate, Pageable pageable) {
         return super.findAll(predicate, pageable);
     }
-    
+
+    @Override
+    public T superFindOne(ID id) {
+        return super.findOne(id);
+    }
+
+    @Override
+    public T superFindOne(Predicate predicate) {
+        return super.findOne(predicate);
+    }
+
+    @Override
+    public T superSave(T entity) {
+        return super.save(entity);
+    }
+
+    @Override
+    public void superDelete(ID id) {
+        super.delete(id);
+    }
+
+    @Override
+    public void superDelete(T entity) {
+        super.delete(entity);
+    }
+
+    @Override
+    public void superDeleteAll() {
+        super.deleteAll();
+    }
+        
 }

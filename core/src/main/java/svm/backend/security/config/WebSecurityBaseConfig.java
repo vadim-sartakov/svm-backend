@@ -1,8 +1,7 @@
-package svm.backend.security.autoconfigure;
+package svm.backend.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,21 +11,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import svm.backend.security.Pbkdf2PasswordEncoder;
 import svm.backend.security.JWTAuthenticationFilter;
+import svm.backend.security.Pbkdf2PasswordEncoder;
 import svm.backend.security.TokenAuthenticationService;
+import svm.backend.security.config.CustomAccessDeniedHandler;
 
-/**
- * This config has order 99 because WebSecurityConfigurerAdapter config
- * defined by client always would have order 100.
- * @author Вадим
- */
-@Configuration
-@Order(99)
+//@Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class WebSecurityAutoConfig extends WebSecurityConfigurerAdapter {
-
+public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter {
+    
     private final CustomAccessDeniedHandler accessDeniedHandler = new CustomAccessDeniedHandler();
         
     @Bean
@@ -77,5 +71,5 @@ public class WebSecurityAutoConfig extends WebSecurityConfigurerAdapter {
                     .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);  
 
     }
-     
+    
 }
