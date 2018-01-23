@@ -53,18 +53,16 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
                     .ignoringAntMatchers("/api/*", "/api/sign-up/**")
                 .and()
                 .authorizeRequests()
-                    .antMatchers(HttpMethod.GET, "/api/sign-in")
-                        .authenticated()
                     .antMatchers("/api/home/**")
                         .authenticated()
                 .and()
-                    .logout().logoutUrl("/api/logout").deleteCookies(JWTAuthenticationService.COOKIE_NAME,
+                    .logout().logoutUrl("/logout").deleteCookies(JWTAuthenticationService.COOKIE_NAME,
                             JWTCsrfTokenRepository.DEFAULT_CSRF_COOKIE_NAME
-                    ).logoutSuccessUrl("/api/sign-in")
+                    ).logoutSuccessUrl("/")
                 .and()
                     .exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler)
-                .authenticationEntryPoint(accessDeniedHandler)
+                    .accessDeniedHandler(accessDeniedHandler)
+                    .authenticationEntryPoint(accessDeniedHandler)
                 .and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
