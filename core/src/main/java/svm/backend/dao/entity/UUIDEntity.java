@@ -27,5 +27,20 @@ public abstract class UUIDEntity implements Serializable {
     @Column(length = 16)
     protected UUID id;
         
+    public static <T extends UUIDEntity> T newInstance(UUID id, Class<T> type) {
+        
+        T newInstance;
+        try {
+            newInstance = type.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+}
+
+        newInstance.setId(id);
+        
+        return newInstance;
+        
+    }
+    
 }
 

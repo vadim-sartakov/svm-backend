@@ -160,18 +160,16 @@
             <artifactId>querydsl-jpa</artifactId> 
         </dependency>
                 
+        <!-- Support for java 8 features (java.time) -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-java8</artifactId>
+        </dependency>
+                
     </dependencies>
     <build>      
         <plugins>
-            
-            <!--<plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <fork>true</fork>
-                </configuration>
-            </plugin>-->
-            
+                        
             <!-- Enabling compile warnings -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -184,13 +182,17 @@
                 </configuration>
             </plugin>
             
-            <!-- Liquibase configuration -->
+            <!-- Liquibase plugin configuration for liquibase:diff goal -->
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>3.5.3</version>
-                <configuration>                  
+                <configuration>
+                    
                     <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                    <outputChangeLogFile>target/liquibase-outputChangeLog.xml</outputChangeLogFile>
+                    <diffChangeLogFile>target/liquibase-diff-changeLog.xml</diffChangeLogFile>
+                    
                 </configuration>
                 
                 <dependencies>

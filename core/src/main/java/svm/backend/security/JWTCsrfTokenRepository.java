@@ -24,14 +24,15 @@ public class JWTCsrfTokenRepository implements CsrfTokenRepository {
     private final String parameterName = DEFAULT_CSRF_PARAMETER_NAME;
     private final String headerName = DEFAULT_CSRF_HEADER_NAME;
     private final String cookieName = DEFAULT_CSRF_COOKIE_NAME;
+    private final CsrfToken dummyToken = new DefaultCsrfToken(
+            headerName,
+            parameterName,
+            cookieName
+    );
     
     @Override
     public CsrfToken generateToken(HttpServletRequest request) {
-        return new DefaultCsrfToken(
-                headerName,
-                parameterName,
-                cookieName
-        );
+        return dummyToken;
     }
 
     @Override
