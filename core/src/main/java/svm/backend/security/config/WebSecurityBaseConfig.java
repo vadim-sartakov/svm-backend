@@ -9,10 +9,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import svm.backend.security.JWTAuthenticationFilter;
 import svm.backend.security.JWTCsrfTokenRepository;
 import svm.backend.security.Pbkdf2PasswordEncoder;
-import svm.backend.security.JWTAuthenticationService;
+import svm.backend.security.JWTService;
 
 //@Configuration
 @EnableWebSecurity
@@ -27,8 +28,8 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
     }
     
     @Bean
-    public JWTAuthenticationService tokenAuthenticationService() {
-        return new JWTAuthenticationService();
+    public JWTService tokenAuthenticationService() {
+        return new JWTService();
     }
     
     @Bean
@@ -41,6 +42,11 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
     }
+    
+    @Bean
+    public CsrfTokenRepository csrfTokenRepository() {
+        return new JWTCsrfTokenRepository();
+    }
             
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -49,14 +55,14 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
                 .cors()
                 .and()
                     .csrf()
-                    .csrfTokenRepository(new JWTCsrfTokenRepository())
+                    .csrfTokenRepository(csrfTokenRepository())
                     .ignoringAntMatchers("/api/{basePath:^(?!home).*$}/**")
                 .and()
                 .authorizeRequests()
                     .antMatchers("/api/home/**")
                         .authenticated()
                 .and()
-                    .logout().logoutUrl("/logout").deleteCookies(JWTAuthenticationService.COOKIE_NAME,
+                    .logout().logoutUrl("/logout").deleteCookies(JWTService.COOKIE_NAME,
                             JWTCsrfTokenRepository.DEFAULT_CSRF_COOKIE_NAME
                     ).logoutSuccessUrl("/")
                 .and()

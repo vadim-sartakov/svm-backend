@@ -1,16 +1,12 @@
 package svm.backend.security;
 
 import io.jsonwebtoken.Claims;
-import java.util.UUID;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.DefaultCsrfToken;
-import org.springframework.util.StringUtils;
-import org.springframework.web.util.WebUtils;
 
 /**
  * Token generated and saved by TokenAuthenticationService
@@ -30,6 +26,8 @@ public class JWTCsrfTokenRepository implements CsrfTokenRepository {
             cookieName
     );
     
+    @Autowired private JWTService jwtAuthenticationService;
+    
     @Override
     public CsrfToken generateToken(HttpServletRequest request) {
         return dummyToken;
@@ -41,7 +39,7 @@ public class JWTCsrfTokenRepository implements CsrfTokenRepository {
 
     @Override
     public CsrfToken loadToken(HttpServletRequest request) {
-        Claims claims = JWTAuthenticationService.getTokenClaims(request);
+        Claims claims = jwtAuthenticationService.getTokenClaims(request);
         if (claims == null)
             return null;
         return new DefaultCsrfToken(this.headerName, this.parameterName, claims.get(cookieName, String.class));

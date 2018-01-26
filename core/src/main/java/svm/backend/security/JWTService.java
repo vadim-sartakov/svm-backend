@@ -15,12 +15,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,51 +32,33 @@ import org.springframework.web.util.WebUtils;
  *
  * @author Вадим
  */
-public class JWTAuthenticationService  {
+public class JWTService  {
         
-    private static final Logger LOGGER = LoggerFactory.getLogger(JWTAuthenticationService.class);
-        
-    static final long EXPIRATIONTIME = 7200000; // 2 hours
-    private static final String SECRET = "bnl+uNsX4rPjvMcoPktaTZJi";
+    private static final Logger LOGGER = LoggerFactory.getLogger(JWTService.class);
     public static final String COOKIE_NAME = "token";
+    
+    @Value("${jwt.secret}")
+    private String secret;
+    
+    @Value("${jwt.expirationTime}")
+    private long expirationTime;
 
     private HttpServletRequest request;
     private HttpServletResponse response;
     private Map<String, Object> claimsMap;
-    
-    public void addAuthentication(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            String id,
-            String role) {
-            
-        this.request = request;
-        this.response = response;
         
-        claimsMap = new HashMap<>();
-        claimsMap.put("sub", id);
-        claimsMap.put("role", role);
-        claimsMap.put("exp", new Date(System.currentTimeMillis() + EXPIRATIONTIME));
+    public String generateToken(Authentication authentication, String csrfToken) {
         
-        String xsrfToken = UUID.randomUUID().toString();
-        claimsMap.put(JWTCsrfTokenRepository.DEFAULT_CSRF_COOKIE_NAME, xsrfToken);
+        Map<String, Object> claims = new HashMap<>();
+        claimsMap.put("sub", authentication.getPrincipal().toString());
+        claimsMap.put("roles", authentication.getAuthorities());
+        claimsMap.put("exp", new Date(System.currentTimeMillis() + expirationTime));
+        claimsMap.put(JWTCsrfTokenRepository.DEFAULT_CSRF_COOKIE_NAME, csrfToken);
         
-        String JWT = generateToken(claimsMap);
-        addCookie(COOKIE_NAME, JWT, true, 7200);
-        addCookie(JWTCsrfTokenRepository.DEFAULT_CSRF_COOKIE_NAME, xsrfToken, false, 0);
-        
+        return generateToken(claims);
+                
     }
     
-    private void addCookie(String name, String value, boolean httpOnly, int maxAge) {
-        Cookie cookie = new Cookie(name, value);
-        cookie.setPath("/");
-        if (maxAge != 0)
-            cookie.setMaxAge(maxAge);
-        cookie.setSecure(request.isSecure());
-        cookie.setHttpOnly(httpOnly);
-        response.addCookie(cookie);
-    }
-
     public String generateToken(Map<String, Object> claims) {
         
         JwtBuilder builder = Jwts.builder();
@@ -88,7 +70,7 @@ public class JWTAuthenticationService  {
         });
             
         return builder
-                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
                     
     }
@@ -114,7 +96,7 @@ public class JWTAuthenticationService  {
 
     }
     
-    public static Claims getTokenClaims(HttpServletRequest request) {
+    public Claims getTokenClaims(HttpServletRequest request) {
         
         Cookie cookie = WebUtils.getCookie(request, COOKIE_NAME);
         if (cookie == null)
@@ -125,7 +107,7 @@ public class JWTAuthenticationService  {
         Claims claims = null;
         try {
             claims = Jwts.parser()
-               .setSigningKey(SECRET)
+               .setSigningKey(secret)
                .parseClaimsJws(token)
                .getBody();
         } catch (JwtException e) {

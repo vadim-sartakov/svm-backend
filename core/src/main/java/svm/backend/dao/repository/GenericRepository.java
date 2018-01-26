@@ -4,7 +4,9 @@ import com.querydsl.core.types.Predicate;
 import java.io.Serializable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -18,14 +20,24 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @NoRepositoryBean
 @Transactional
-public interface PrivilegedRepository<T, ID extends Serializable> extends CrudRepository<T, ID> {
+public interface GenericRepository<T, ID extends Serializable> extends PagingAndSortingRepository<T, ID>,
+        QueryDslPredicateExecutor<T> {
     
     Page<T> superFindAll(Predicate predicate, Pageable pageable);
     T superFindOne(ID id);
-    T superFindOne(Predicate predicate);
     T superSave(T entity);
     void superDelete(ID id);
-    void superDelete(T entity);
-    void superDeleteAll();
+    
+    @Override
+    Page<T> findAll(Predicate predicate, Pageable pageable);
+    
+    @Override
+    T findOne(ID id);
+    
+    @Override
+    <S extends T> S save(S entity);
+    
+    @Override
+    void delete(ID id);
     
 }

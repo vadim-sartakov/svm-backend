@@ -8,10 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.QueryDslJpaRepository;
 
-public class PrivilegedRepositoryImpl<T, ID extends Serializable> extends QueryDslJpaRepository<T, ID>
-        implements PrivilegedRepository<T, ID> {
+public class GenericRepositoryImpl<T, ID extends Serializable> extends QueryDslJpaRepository<T, ID>
+        implements GenericRepository<T, ID> {
     
-    public PrivilegedRepositoryImpl(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager) {
+    public GenericRepositoryImpl(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager) {
         super(entityInformation, entityManager);
     }
 
@@ -26,11 +26,6 @@ public class PrivilegedRepositoryImpl<T, ID extends Serializable> extends QueryD
     }
 
     @Override
-    public T superFindOne(Predicate predicate) {
-        return super.findOne(predicate);
-    }
-
-    @Override
     public T superSave(T entity) {
         return super.save(entity);
     }
@@ -38,16 +33,6 @@ public class PrivilegedRepositoryImpl<T, ID extends Serializable> extends QueryD
     @Override
     public void superDelete(ID id) {
         super.delete(id);
-    }
-
-    @Override
-    public void superDelete(T entity) {
-        super.delete(entity);
-    }
-
-    @Override
-    public void superDeleteAll() {
-        super.deleteAll();
     }
     
 }
