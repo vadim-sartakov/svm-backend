@@ -10,8 +10,8 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
-import svm.backend.dao.repository.GenericRepositoryImpl;
-import svm.backend.dao.repository.GenericRepository;
+import svm.backend.dao.repository.PrivilegedRepository;
+import svm.backend.dao.repository.PrivilegedRepositoryImpl;
 
 /**
  * Provides ability to define custom base repository implementation.
@@ -40,14 +40,14 @@ public class RepositoryFactoryBean<T extends JpaRepository<S, ID>, S, ID extends
 
         @Override
         protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
-           return GenericRepository.class;
+           return PrivilegedRepository.class;
         }
 
         @SuppressWarnings("unchecked")
         @Override
         protected SimpleJpaRepository<T, ID> getTargetRepository(RepositoryInformation information, EntityManager entityManager) {
             JpaEntityInformation entityInformation = getEntityInformation(information.getDomainType());             
-            return new GenericRepositoryImpl<>(entityInformation, entityManager);            
+            return new PrivilegedRepositoryImpl<>(entityInformation, entityManager);            
         }
         
     }

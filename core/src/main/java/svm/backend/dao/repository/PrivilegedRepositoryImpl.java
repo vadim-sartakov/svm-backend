@@ -8,10 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.QueryDslJpaRepository;
 
-public class GenericRepositoryImpl<T, ID extends Serializable> extends QueryDslJpaRepository<T, ID>
-            implements GenericRepository<T, ID> {
+public class PrivilegedRepositoryImpl<T, ID extends Serializable> extends QueryDslJpaRepository<T, ID>
+        implements PrivilegedRepository<T, ID> {
     
-    public GenericRepositoryImpl(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager) {
+    public PrivilegedRepositoryImpl(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager) {
         super(entityInformation, entityManager);
     }
 
@@ -49,5 +49,5 @@ public class GenericRepositoryImpl<T, ID extends Serializable> extends QueryDslJ
     public void superDeleteAll() {
         super.deleteAll();
     }
-        
+    
 }

@@ -4,9 +4,7 @@ import com.querydsl.core.types.Predicate;
 import java.io.Serializable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -20,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @NoRepositoryBean
 @Transactional
-public interface GenericRepository<T, ID extends Serializable> extends PagingAndSortingRepository<T, ID>,
-        QueryDslPredicateExecutor<T> {
-    
-    // TODO: make filter prefixes here, like between, startsWith, etc
+public interface PrivilegedRepository<T, ID extends Serializable> extends CrudRepository<T, ID> {
     
     Page<T> superFindAll(Predicate predicate, Pageable pageable);
     T superFindOne(ID id);

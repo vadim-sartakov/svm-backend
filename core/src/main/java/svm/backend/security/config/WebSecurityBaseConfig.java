@@ -50,7 +50,7 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
                 .and()
                     .csrf()
                     .csrfTokenRepository(new JWTCsrfTokenRepository())
-                    .ignoringAntMatchers("/api/*", "/api/forgot/**", "/api/sign-up/**")
+                    .ignoringAntMatchers("/api/{basePath:^(?!home).*$}/**")
                 .and()
                 .authorizeRequests()
                     .antMatchers("/api/home/**")
