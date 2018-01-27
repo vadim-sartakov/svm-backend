@@ -74,35 +74,8 @@ public class JWTService  {
                 .compact();
                     
     }
-    
-    public Authentication getAuthentication(HttpServletRequest request) {
-
-        Claims claims = getTokenClaims(request);
-        if (claims == null)
-            return null;
         
-        String userName = claims.getSubject();
-        String role = claims.get("role", String.class);
-
-        if (userName == null)
-            return null;
-
-        List<GrantedAuthority> roles = new LinkedList<>();
-        roles.add(new SimpleGrantedAuthority("ROLE_" + role));
-        
-        // This has to be entity user
-        User authorizedUser = new User(userName, "", roles);
-        return new UsernamePasswordAuthenticationToken(authorizedUser , null, roles);
-
-    }
-    
-    public Claims getTokenClaims(HttpServletRequest request) {
-        
-        Cookie cookie = WebUtils.getCookie(request, COOKIE_NAME);
-        if (cookie == null)
-            return null;
-        
-        String token = cookie.getValue();
+    public Claims getTokenClaims(String token) {
                 
         Claims claims = null;
         try {
