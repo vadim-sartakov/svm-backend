@@ -1,16 +1,19 @@
 package svm.backend.security.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
+import svm.backend.security.CustomUserDetailsService;
 import svm.backend.security.JWTCsrfTokenRepository;
-import svm.backend.security.Pbkdf2PasswordEncoder;
 import svm.backend.security.JWTService;
 import svm.backend.security.filter.JWTAuthenticationFilter;
 import svm.backend.security.filter.JWTAuthorizationFilter;
@@ -21,10 +24,15 @@ import svm.backend.security.filter.JWTAuthorizationFilter;
 public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter {
     
     private final CustomAccessDeniedHandler accessDeniedHandler = new CustomAccessDeniedHandler();
-        
+            
     @Bean
-    public Pbkdf2PasswordEncoder encoder() {
-        return new Pbkdf2PasswordEncoder();
+    public PasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    
+    @Bean
+    public UserDetailsService customUserDetailsService() {
+        return new CustomUserDetailsService();
     }
     
     @Bean
@@ -84,6 +92,12 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
                     .addFilter(authenticationFilter())
                     .addFilter(authorizationFilter());  
 
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(customUserDetailsService())
+                .passwordEncoder(bCryptPasswordEncoder());
     }
     
 }

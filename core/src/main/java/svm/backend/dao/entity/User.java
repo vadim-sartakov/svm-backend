@@ -1,6 +1,8 @@
 package svm.backend.dao.entity;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +16,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import svm.backend.dao.entity.contact.Contact;
 import svm.backend.dao.entity.contact.Email;
 import svm.backend.dao.entity.contact.PhoneNumber;
@@ -31,18 +36,19 @@ import svm.backend.dao.entity.contact.PhoneNumber;
     @NamedAttributeNode("emails"),
     @NamedAttributeNode("phoneNumbers")
 })
-public class User extends UUIDEntity {
+public class User extends UUIDEntity implements UserDetails {
         
     @Column(nullable = false, unique = true)
-    private String name;
+    private String username;
     
     @Column(nullable = false)
     private ZonedDateTime creationDate = ZonedDateTime.now();
-    private ZonedDateTime bannedTill;
+    private ZonedDateTime expiresAt;
+    private ZonedDateTime blockedTill;
     
     @Column(nullable = false)
-    private Boolean banned = Boolean.TRUE;
-    
+    private Boolean disabled = false;
+        
     @OneToMany(mappedBy = "user", targetEntity = Contact.class, cascade = CascadeType.ALL)
     private List<Email> emails;
     
@@ -62,8 +68,37 @@ public class User extends UUIDEntity {
         return false;
     }
     
-    public void setName(String name) {
-        this.name = name.toLowerCase();
+    public void setUsername(String username) {
+        this.username = username.toLowerCase();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        roles.forEach(role ->
+                authorities.add(new SimpleGrantedAuthority(role.getRole()))
+        );
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return expiresAt != null && expiresAt.isBefore(ZonedDateTime.now());
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !disabled;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !disabled;
     }
             
 }
