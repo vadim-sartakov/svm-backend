@@ -34,25 +34,25 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                 
         Claims claims = getTokenClaims(request);
 
-        if (claims == null) {
-            chain.doFilter(request, response);
-            return;
+        if (claims != null) {
+           
+            String commaSeparetedRoles = claims.get("roles", String.class);
+        
+            List<GrantedAuthority> roles = new LinkedList<>();
+            for (String role : commaSeparetedRoles.split(","))
+                roles.add(new SimpleGrantedAuthority("ROLE_" + role));
+
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    // Put user here
+                    claims.getSubject(),
+                    null,
+                    roles
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            
         }
 
-        String commaSeparetedRoles = claims.get("roles", String.class);
-        
-        List<GrantedAuthority> roles = new LinkedList<>();
-        for (String role : commaSeparetedRoles.split(","))
-            roles.add(new SimpleGrantedAuthority("ROLE_" + role));
-        
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                // Put user here
-                claims.getSubject(),
-                null,
-                roles
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
     }
 

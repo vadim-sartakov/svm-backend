@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
+import javax.annotation.PostConstruct;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -21,10 +22,20 @@ import svm.backend.security.JWTCsrfTokenRepository;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         
+    private final AuthenticationManager authenticationManager;
+    
     @Autowired private JWTService jwtService;
-    @Autowired private AuthenticationManager authenticationManager;
     @Autowired private ObjectMapper objectMapper;
 
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+    
+    @PostConstruct
+    public void initialize() {
+        this.setAuthenticationManager(authenticationManager);
+    }
+    
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         
@@ -37,7 +48,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         
         return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        credentials.getLogin(),
+                        credentials.getUsername(),
                         credentials.getPassword(),
                         new ArrayList<>()
                 )
@@ -70,7 +81,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     
     @Data
     public static class Credentials {
-        private String login;
+        private String username;
         private String password;
     }
     

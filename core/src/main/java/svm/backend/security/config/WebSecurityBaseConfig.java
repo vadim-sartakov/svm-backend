@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
+import svm.backend.security.AuthenticationInfo;
 import svm.backend.security.CustomUserDetailsService;
 import svm.backend.security.JWTCsrfTokenRepository;
 import svm.backend.security.JWTService;
@@ -42,7 +43,11 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
     
     @Bean
     public JWTAuthenticationFilter authenticationFilter() {
-        return new JWTAuthenticationFilter();
+        try {
+            return new JWTAuthenticationFilter(authenticationManager());
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     
     @Bean
@@ -64,6 +69,11 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
     public CsrfTokenRepository csrfTokenRepository() {
         return new JWTCsrfTokenRepository();
     }
+    
+    @Bean
+    public AuthenticationInfo authenticationInfo() {
+        return new AuthenticationInfo();
+    }
             
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -73,7 +83,10 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
                 .and()
                     .csrf()
                     .csrfTokenRepository(csrfTokenRepository())
-                    .ignoringAntMatchers("/api/{basePath:^(?!home).*$}/**")
+                    .ignoringAntMatchers(
+                            "/*",
+                            "/{basePath:^(?!api).*$}/**",
+                            "/api/{basePath:^(?!home).*$}/**")
                 .and()
                 .authorizeRequests()
                     .antMatchers("/api/home/**")

@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,11 +12,9 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,20 +23,19 @@ import svm.backend.dao.entity.contact.Email;
 import svm.backend.dao.entity.contact.PhoneNumber;
 
 @Data
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 
 @Entity
 @Table(name = "USERS")
 //@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@NamedEntityGraph(name = "users.overview", attributeNodes = {
+@NamedEntityGraph(name = "user.overview", attributeNodes = {
     @NamedAttributeNode("roles"),
     @NamedAttributeNode("emails"),
     @NamedAttributeNode("phoneNumbers")
 })
 public class User extends UUIDEntity implements UserDetails {
         
+    @NotNull
     @Column(nullable = false, unique = true)
     private String username;
     
@@ -50,17 +48,20 @@ public class User extends UUIDEntity implements UserDetails {
     private Boolean disabled = false;
         
     @OneToMany(mappedBy = "user", targetEntity = Contact.class, cascade = CascadeType.ALL)
-    private List<Email> emails;
+    private Set<Email> emails;
     
     @OneToMany(mappedBy = "user", targetEntity = Contact.class, cascade = CascadeType.ALL)
-    private List<PhoneNumber> phoneNumbers;
+    private Set<PhoneNumber> phoneNumbers;
     
+    /*@ElementCollection
+    @CollectionTable(name="post_shared_with")*/
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserRole> roles;
+    private Set<UserRole> roles;
 
-    @Column(nullable = false, length = 50)
+    @NotNull
+    @Column(nullable = false, length = 150)
     private String password;
-    
+        
     public boolean isInRole(UserRole roleToFind) {
         for (UserRole currentRole : roles)
             if (currentRole.equals(roleToFind))
@@ -83,7 +84,7 @@ public class User extends UUIDEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return expiresAt != null && expiresAt.isBefore(ZonedDateTime.now());
+        return expiresAt == null || expiresAt.isBefore(ZonedDateTime.now());
     }
 
     @Override
@@ -93,7 +94,7 @@ public class User extends UUIDEntity implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
