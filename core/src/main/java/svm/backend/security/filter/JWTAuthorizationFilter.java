@@ -1,8 +1,6 @@
 package svm.backend.security.filter;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.util.WebUtils;
+import svm.backend.dao.entity.User;
 import svm.backend.security.JWTService;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
@@ -34,17 +33,22 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                 
         Claims claims = getTokenClaims(request);
 
-        if (claims != null) {
+        // If authentication is already set (by test environment), then skip authentication setting)
+        if (claims != null && SecurityContextHolder.getContext().getAuthentication() == null) {
            
             String commaSeparetedRoles = claims.get("roles", String.class);
-        
             List<GrantedAuthority> roles = new LinkedList<>();
-            for (String role : commaSeparetedRoles.split(","))
-                roles.add(new SimpleGrantedAuthority("ROLE_" + role));
+            
+            if (!commaSeparetedRoles.isEmpty())
+                for (String role : commaSeparetedRoles.split(","))                
+                    roles.add(new SimpleGrantedAuthority("ROLE_" + role));
 
+            User user = new User();
+            user.setUsername(claims.getSubject());
+            user.setAuthorities(roles);
+            
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    // Put user here
-                    claims.getSubject(),
+                    user,
                     null,
                     roles
             );

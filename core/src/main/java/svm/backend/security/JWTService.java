@@ -10,13 +10,16 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import svm.backend.dao.entity.User;
 
 /**
@@ -40,12 +43,29 @@ public class JWTService  {
         
         Map<String, Object> claimsMap = new HashMap<>();
         claimsMap.put("sub", user.getUsername());
-        claimsMap.put("roles", user.getAuthorities());
+        claimsMap.put("roles", getCommaSeparatedRoles(user.getAuthorities()));
         claimsMap.put("exp", new Date(System.currentTimeMillis() + expirationTime));
         claimsMap.put(JWTCsrfTokenRepository.DEFAULT_CSRF_COOKIE_NAME, csrfToken);
         
         return generateToken(claimsMap);
                 
+    }
+    
+    private String getCommaSeparatedRoles(Collection<? extends GrantedAuthority> authorities) {
+        
+        StringBuilder result = new StringBuilder();
+        
+        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
+        while(iterator.hasNext()) {
+            
+            result.append(iterator.next().getAuthority());
+            if (iterator.hasNext())
+                result.append(",");
+                
+        }
+
+        return result.toString();
+        
     }
     
     public String generateToken(Map<String, Object> claims) {

@@ -22,9 +22,8 @@ public class UserRole extends UUIDEntity {
     @ManyToOne(optional = false)
     private User user;
         
-    public static UserRole newInstance(User user, String role) {
+    public static UserRole of(String role) {
         UserRole userRole = new UserRole();
-        userRole.setUser(user);
         userRole.setRole(role);
         return userRole; 
     }

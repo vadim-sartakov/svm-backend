@@ -2,9 +2,9 @@ package svm.backend.dao.repository;
 
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import svm.backend.dao.entity.User;
+import svm.backend.dao.entity.UserRole;
 import svm.backend.security.AuthenticationInfo;
 
 public class UserRepositoryImpl {
@@ -14,7 +14,7 @@ public class UserRepositoryImpl {
     @Autowired private PasswordEncoder passwordEncoder;
     
     public User findOne(UUID id) {
-        if (authenticationInfo.isUserInRole("ROLE_ADMIN") ||
+        if (authenticationInfo.getCurrentUser().isInRole(UserRole.ADMIN) ||
                 authenticationInfo.getCurrentUser().getId().equals(id))
             return userRepository.superFindOne(id);
         else
