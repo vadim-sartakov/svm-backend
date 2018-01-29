@@ -11,5 +11,5 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EntityScan(value = "**.entity")
 public class BasicEntityAutoConfiguration {
-    
+
 }

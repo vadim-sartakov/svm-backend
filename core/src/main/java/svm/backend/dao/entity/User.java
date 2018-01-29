@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
@@ -22,9 +23,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import svm.backend.dao.entity.contact.Contact;
 import svm.backend.dao.entity.contact.Email;
 import svm.backend.dao.entity.contact.PhoneNumber;
+import svm.backend.dao.entity.listeners.OwnerListener;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(of = "username", callSuper = true)
 
 @Entity
 @Table(name = "USERS")
@@ -34,6 +36,7 @@ import svm.backend.dao.entity.contact.PhoneNumber;
     @NamedAttributeNode("emails"),
     @NamedAttributeNode("phoneNumbers")
 })
+@EntityListeners(OwnerListener.class)
 public class User extends UUIDEntity implements UserDetails {
         
     @NotNull
@@ -91,7 +94,7 @@ public class User extends UUIDEntity implements UserDetails {
         roles = new HashSet<>();
         authorities.forEach(authority -> roles.add(UserRole.of(authority.getAuthority())));
     }
-
+    
     @Override
     public boolean isAccountNonExpired() {
         return expiresAt == null || expiresAt.isBefore(ZonedDateTime.now());

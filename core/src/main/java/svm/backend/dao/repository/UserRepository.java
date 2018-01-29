@@ -10,7 +10,6 @@ import org.springframework.security.access.annotation.Secured;
 import svm.backend.dao.entity.User;
 import svm.backend.dao.entity.UserRole;
 
-// TODO: When authentication service will be completed, implement findOne and save.
 public interface UserRepository extends GenericRepository<User, UUID> {
 
     @Secured({ UserRole.ADMIN, UserRole.MODERATOR })

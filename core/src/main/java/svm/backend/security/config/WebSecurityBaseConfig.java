@@ -31,8 +31,9 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
         return new BCryptPasswordEncoder();
     }
     
+    @Override
     @Bean
-    public UserDetailsService customUserDetailsService() {
+    public UserDetailsService userDetailsService() {
         return new CustomUserDetailsService();
     }
     
@@ -109,8 +110,11 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailsService())
+        auth.userDetailsService(userDetailsService())
                 .passwordEncoder(bCryptPasswordEncoder());
     }
+    
+    // TODO: implements multiple authentication providers: Active Directory (Kerberos),
+    // Oauth2 (google, facebook, etc.)
     
 }

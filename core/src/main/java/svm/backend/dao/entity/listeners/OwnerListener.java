@@ -20,9 +20,12 @@ public class OwnerListener {
 
             String ownerField = field.getAnnotation(OneToMany.class).mappedBy();
             
-            Collection collection = PropertyAccessorFactory
+            Collection collection = (Collection) PropertyAccessorFactory
                     .forBeanPropertyAccess(entity)
-                    .convertIfNecessary(field.getName(), Collection.class);
+                    .getPropertyValue(field.getName());
+            
+            if (collection == null)
+                return;
             
             collection.forEach(item -> {
                 
@@ -32,9 +35,9 @@ public class OwnerListener {
                 
             });
             
-        }, field -> field.getType().isAssignableFrom(Collection.class) &&
+        }, field -> Collection.class.isAssignableFrom(field.getType()) &&
                 field.getAnnotation(OneToMany.class) != null);
-        
+
     }
     
 }

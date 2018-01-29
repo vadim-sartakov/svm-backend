@@ -27,4 +27,9 @@ public class UserRepositoryImpl {
         return userRepository.superSave(user);
     }
     
+    public void delete(UUID id) {
+        // TODO: do not delete if it's last admin user.
+        userRepository.superDelete(id);
+    }
+    
 }
