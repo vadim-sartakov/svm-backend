@@ -14,28 +14,29 @@ import lombok.Data;
 public class DatabaseChangelog implements Serializable {
     
     @Id
-    @Column(name = "ID")
+    @Column(columnDefinition = "nvarchar(255)", name = "ID")
     private String id;
     
-    @Column(name = "AUTHOR")
+    @Column(columnDefinition = "nvarchar(255)", name = "AUTHOR")
     private String author;
     
-    @Column(name = "FILENAME")
-    private String filename = "classpath:db/changelog/changelog-master.xml";
+    @Column(columnDefinition = "nvarchar(255)", name = "FILENAME")
+    private String filename;
     
     @Column(name = "DATEEXECUTED")
     private ZonedDateTime dateExecuted = ZonedDateTime.now();
     
     @Column(name = "ORDEREXECUTED")
-    private Integer orderExecuted = 1;
+    private Integer orderExecuted = -1;
     
-    @Column(name = "EXECTYPE")
+    @Column(columnDefinition = "nvarchar(10)", name = "EXECTYPE")
     private String execType = "EXECUTED";
     
-    public static DatabaseChangelog of(String id, String author) {
+    public static DatabaseChangelog of(String id, String author, String filename) {
         DatabaseChangelog databaseChangelog = new DatabaseChangelog();
         databaseChangelog.id = id;
         databaseChangelog.author = author;
+        databaseChangelog.filename = filename;
         return databaseChangelog;
     }
     

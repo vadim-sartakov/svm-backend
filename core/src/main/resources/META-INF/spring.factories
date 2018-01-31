@@ -4,4 +4,4 @@ svm.backend.dao.autoconfigure.BasicEntityAutoConfiguration,\
 svm.backend.dao.autoconfigure.MigrationAutoConfigration,\
 svm.backend.web.autoconfigure.MvcAutoConfiguration,\
 svm.backend.web.autoconfigure.RepositoryRestAutoConfiguration,\
-svm.backend.controller.autoconfigure.ControllerAutoConfig
+svm.backend.web.autoconfigure.ControllerAutoConfiguration

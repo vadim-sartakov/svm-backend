@@ -1,4 +1,4 @@
-package svm.backend.controller.exception;
+package svm.backend.web.exception;
 
 import java.util.List;
 import java.util.stream.Collectors;

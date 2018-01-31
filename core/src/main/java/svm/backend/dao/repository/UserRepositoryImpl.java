@@ -21,7 +21,7 @@ public class UserRepositoryImpl {
             return null;
     }
     
-    public User save(User user) {
+    public User save(User user) {        
         if (user.getId() == null)
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.superSave(user);

@@ -13,7 +13,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import svm.backend.controller.exception.ApiException;
+import svm.backend.web.exception.ApiException;
 
 public class CustomAccessDeniedHandler implements AccessDeniedHandler, AuthenticationEntryPoint {
 

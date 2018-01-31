@@ -1,11 +1,11 @@
-package svm.backend.controller.autoconfigure;
+package svm.backend.web.autoconfigure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import svm.backend.controller.exception.RestExceptionHandler;
+import svm.backend.web.exception.RestExceptionHandler;
 
 @Configuration
-public class ControllerAutoConfig {
+public class ControllerAutoConfiguration {
     
     @Bean
     public RestExceptionHandler restExceptionHandler() {

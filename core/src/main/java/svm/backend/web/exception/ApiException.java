@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package svm.backend.controller.exception;
+package svm.backend.web.exception;
 
 import java.util.HashMap;
 import java.util.Map;
