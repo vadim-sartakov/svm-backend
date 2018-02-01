@@ -18,10 +18,10 @@ public class DatabaseChangelog implements Serializable {
     private String id;
     
     @Column(columnDefinition = "nvarchar(255)", name = "AUTHOR")
-    private String author;
+    private String author = "DataChangeBean";
     
     @Column(columnDefinition = "nvarchar(255)", name = "FILENAME")
-    private String filename;
+    private String filename = "DataChangeBean";
     
     @Column(name = "DATEEXECUTED")
     private ZonedDateTime dateExecuted = ZonedDateTime.now();
@@ -32,11 +32,9 @@ public class DatabaseChangelog implements Serializable {
     @Column(columnDefinition = "nvarchar(10)", name = "EXECTYPE")
     private String execType = "EXECUTED";
     
-    public static DatabaseChangelog of(String id, String author, String filename) {
+    public static DatabaseChangelog of(String id) {
         DatabaseChangelog databaseChangelog = new DatabaseChangelog();
         databaseChangelog.id = id;
-        databaseChangelog.author = author;
-        databaseChangelog.filename = filename;
         return databaseChangelog;
     }
     

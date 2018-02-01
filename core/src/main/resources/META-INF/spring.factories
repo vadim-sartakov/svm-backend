@@ -1,7 +1,7 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 svm.backend.dao.autoconfigure.RepositoryFactoryAutoConfiguration,\
 svm.backend.dao.autoconfigure.BasicEntityAutoConfiguration,\
-svm.backend.dao.autoconfigure.MigrationAutoConfigration,\
+svm.backend.dao.autoconfigure.DataChangeAutoConfigration,\
 svm.backend.web.autoconfigure.MvcAutoConfiguration,\
 svm.backend.web.autoconfigure.RepositoryRestAutoConfiguration,\
 svm.backend.web.autoconfigure.ControllerAutoConfiguration

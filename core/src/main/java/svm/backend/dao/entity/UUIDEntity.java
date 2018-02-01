@@ -1,6 +1,7 @@
 package svm.backend.dao.entity;
 
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
@@ -24,14 +25,14 @@ public abstract class UUIDEntity implements Serializable {
     @Column(length = 16)
     protected UUID id;
         
-    public static <T extends UUIDEntity> T newInstance(UUID id, Class<T> type) {
+    public static <T extends UUIDEntity> T of(UUID id, Class<T> type) {
         
         T newInstance;
         try {
             newInstance = type.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
-}
+        }
 
         newInstance.setId(id);
         
@@ -39,5 +40,9 @@ public abstract class UUIDEntity implements Serializable {
         
     }
     
+    public static <T extends UUIDEntity> T of(String id, Class<T> type) {
+        return of(UUID.nameUUIDFromBytes(id.getBytes(StandardCharsets.UTF_8)), type);
+    }
+        
 }
 

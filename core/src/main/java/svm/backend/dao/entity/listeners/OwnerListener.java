@@ -2,7 +2,9 @@ package svm.backend.dao.entity.listeners;
 
 import java.util.Collection;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.util.ReflectionUtils;
 
@@ -39,5 +41,5 @@ public class OwnerListener {
                 field.getAnnotation(OneToMany.class) != null);
 
     }
-    
+
 }

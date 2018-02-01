@@ -15,8 +15,9 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,8 +26,9 @@ import svm.backend.dao.entity.contact.Email;
 import svm.backend.dao.entity.contact.PhoneNumber;
 import svm.backend.dao.entity.listeners.OwnerListener;
 
-@Data
-@EqualsAndHashCode(of = "username", callSuper = true)
+@Getter
+@Setter
+@ToString(exclude = "roles")
 
 @Entity
 @Table(name = "USERS")
@@ -36,9 +38,10 @@ import svm.backend.dao.entity.listeners.OwnerListener;
     @NamedAttributeNode("emails"),
     @NamedAttributeNode("phoneNumbers")
 })
-@EntityListeners(OwnerListener.class)
 public class User extends UUIDEntity implements UserDetails {
         
+    public final static User ADMIN = UUIDEntity.of("ADMIN", User.class);
+       
     @NotNull
     @Column(nullable = false, unique = true)
     private String username;
@@ -59,11 +62,11 @@ public class User extends UUIDEntity implements UserDetails {
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserRole> roles;
-
+    
     @NotNull
     @Column(nullable = false, length = 150)
     private String password;
-        
+    
     public boolean isInRole(String roleToFind) {
         for (UserRole currentRole : roles)
             if (currentRole.getRole().equals(roleToFind))
@@ -74,7 +77,7 @@ public class User extends UUIDEntity implements UserDetails {
     public void addRole(String role) {
         if (roles == null)
             roles = new HashSet<>();
-        roles.add(UserRole.of(role));
+        roles.add(UserRole.of(this, role));
     }
     
     public void setUsername(String username) {
