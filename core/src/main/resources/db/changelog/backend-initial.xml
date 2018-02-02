@@ -5,7 +5,7 @@
                 
         <createSequence sequenceName="hibernate_sequence"/>
         <createTable tableName="contact">
-            <column name="type" type="varchar(31)">
+            <column name="dtype" type="varchar(31)">
                 <constraints nullable="false"/>
             </column>
             <column name="contact" type="varchar(255)">

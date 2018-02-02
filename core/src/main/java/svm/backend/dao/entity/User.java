@@ -26,11 +26,10 @@ import svm.backend.dao.entity.contact.PhoneNumber;
 
 @Getter
 @Setter
-@ToString(exclude = "roles")
+@ToString
 
-@Entity
+@Entity(name = "BaseUser")
 @Table(name = "USERS")
-//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @NamedEntityGraph(name = "user.overview", attributeNodes = {
     @NamedAttributeNode("roles"),
     @NamedAttributeNode("emails"),

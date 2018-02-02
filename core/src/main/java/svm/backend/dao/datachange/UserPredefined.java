@@ -1,6 +1,5 @@
 package svm.backend.dao.datachange;
 
-import java.time.ZonedDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,7 +33,7 @@ public class UserPredefined implements DataChangeUpdate, DataChangeRollback {
         admin.addRole(UserRole.ADMIN);
         admin.setPassword(passwordEncoder.encode("123456"));
         
-        userRepository.save(admin);
+        userRepository.superSave(admin);
         
     }
 
