@@ -2,13 +2,21 @@ package svm.backend.dao.datachange;
 
 import java.time.ZonedDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import svm.backend.dao.entity.User;
 import svm.backend.dao.entity.UserRole;
 import svm.backend.dao.repository.UserRepository;
 
-public class UserPredefined extends DataChange {
+/**
+ * Provides predefined system users.
+ * @author Sartakov
+ */
+public class UserPredefined implements DataChangeUpdate, DataChangeRollback {
         
+    @Value("${dao.datachange.userPredefined.shouldRollback:false}")
+    private boolean shouldRollback;
+    
     @Autowired private UserRepository userRepository;
     @Autowired private PasswordEncoder passwordEncoder;
     
@@ -30,6 +38,16 @@ public class UserPredefined extends DataChange {
         
         userRepository.save(admin);
         
+    }
+
+    @Override
+    public boolean shouldRollback() {
+        return shouldRollback;
+    }
+    
+    @Override
+    public void rollback() {
+        userRepository.superDelete(User.ADMIN.getId());
     }
     
 }

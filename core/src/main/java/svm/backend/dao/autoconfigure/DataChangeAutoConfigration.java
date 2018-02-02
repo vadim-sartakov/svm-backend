@@ -7,11 +7,16 @@ import svm.backend.dao.datachange.UserPredefined;
 
 @Configuration
 public class DataChangeAutoConfigration {
+        
+    @Bean
+    public DataChangeExecutor dataChangeExecutor() {
+        return new DataChangeExecutor();
+    }
     
     @Bean
     @ConditionalOnMissingBean
     public UserPredefined userPredefined() {
         return new UserPredefined();
     }
-    
+        
 }
