@@ -11,7 +11,7 @@ import javax.persistence.MappedSuperclass;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
-import svm.backend.dao.entity.listeners.OwnerListener;
+import svm.backend.dao.entity.listener.OwnerListener;
 
 @Data
 @MappedSuperclass

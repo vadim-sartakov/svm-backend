@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
@@ -24,7 +23,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import svm.backend.dao.entity.contact.Contact;
 import svm.backend.dao.entity.contact.Email;
 import svm.backend.dao.entity.contact.PhoneNumber;
-import svm.backend.dao.entity.listeners.OwnerListener;
 
 @Getter
 @Setter
@@ -38,7 +36,7 @@ import svm.backend.dao.entity.listeners.OwnerListener;
     @NamedAttributeNode("emails"),
     @NamedAttributeNode("phoneNumbers")
 })
-public class User extends UUIDEntity implements UserDetails {
+public class User extends UUIDEntity implements UserDetails, Creatable {
         
     public final static User ADMIN = UUIDEntity.of("ADMIN", User.class);
        
@@ -47,7 +45,7 @@ public class User extends UUIDEntity implements UserDetails {
     private String username;
     
     @Column(nullable = false)
-    private ZonedDateTime creationDate = ZonedDateTime.now();
+    private ZonedDateTime createdAt;
     private ZonedDateTime expiresAt;
     private ZonedDateTime blockedTill;
     

@@ -1,0 +1,59 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+            
+    <changeSet author="svm" id="backend-initial">
+                
+        <createSequence sequenceName="hibernate_sequence"/>
+        <createTable tableName="contact">
+            <column name="type" type="varchar(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="confirmed" type="bit"/>
+            <column name="user_id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="user_roles">
+            <column name="id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="users">
+            <column name="id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="blocked_till" type="datetime2(7)"/>
+            <column name="created_at" type="datetime2(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="disabled" type="bit">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="datetime2(7)"/>
+            <column name="password" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="contact" constraintName="contactPK" tableName="contact"/>
+        <addPrimaryKey columnNames="id" constraintName="user_rolesPK" tableName="user_roles"/>
+        <addPrimaryKey columnNames="id" constraintName="usersPK" tableName="users"/>
+        <addUniqueConstraint columnNames="username" constraintName="UC_USERSNAME_COL" tableName="users"/>
+        <addUniqueConstraint columnNames="role_id, user_id" constraintName="UKa9dydk3dj4qb8cvmjijqnrg5t" tableName="user_roles"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="contact" constraintName="FKbxl6anxo14q097g8cd2e51v55" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_roles" constraintName="FKhfh9dx7w3ubf1co1vdev94g3f" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users"/>        
+        
+    </changeSet>
+                    
+</databaseChangeLog>

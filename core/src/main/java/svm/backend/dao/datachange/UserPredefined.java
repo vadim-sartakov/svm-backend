@@ -31,8 +31,6 @@ public class UserPredefined implements DataChangeUpdate, DataChangeRollback {
         User admin = new User();
         admin.setId(User.ADMIN.getId());
         admin.setUsername("admin");
-        admin.setCreationDate(ZonedDateTime.now());
-        admin.setDisabled(false);
         admin.addRole(UserRole.ADMIN);
         admin.setPassword(passwordEncoder.encode("123456"));
         
