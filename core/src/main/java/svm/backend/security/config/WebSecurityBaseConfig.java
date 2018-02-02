@@ -23,9 +23,12 @@ import svm.backend.security.filter.JWTAuthorizationFilter;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter {
+                
+    @Bean
+    public CustomAccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
     
-    private final CustomAccessDeniedHandler accessDeniedHandler = new CustomAccessDeniedHandler();
-            
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -98,8 +101,8 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
                     ).logoutSuccessUrl("/")
                 .and()
                     .exceptionHandling()
-                    .accessDeniedHandler(accessDeniedHandler)
-                    .authenticationEntryPoint(accessDeniedHandler)
+                    .accessDeniedHandler(accessDeniedHandler())
+                    .authenticationEntryPoint(accessDeniedHandler())
                 .and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

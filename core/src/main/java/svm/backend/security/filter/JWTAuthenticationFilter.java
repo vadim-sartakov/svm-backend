@@ -12,6 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,11 +23,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import svm.backend.security.JWTService;
 import svm.backend.security.JWTCsrfTokenRepository;
+import svm.backend.web.exception.ApiException;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         
     private final AuthenticationManager authenticationManager;
     
+    @Autowired private MessageSource messageSource;
     @Autowired private JWTService jwtService;
     @Autowired private ObjectMapper objectMapper;
 
@@ -66,7 +72,25 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         addCookie(request, response, JWTCsrfTokenRepository.DEFAULT_CSRF_COOKIE_NAME, csrfToken, false, 0);
         
     }
-    
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+
+        String message = messageSource.getMessage("svm.backend.security.BadCredentials", null, LocaleContextHolder.getLocale());
+        ApiException exception = new ApiException(HttpStatus.UNAUTHORIZED,  message);
+        
+        response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                
+        try {
+            String jsonResponse = objectMapper.writeValueAsString(exception);
+            response.getWriter().write(jsonResponse);
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
+        
+    }
+        
     private void addCookie(HttpServletRequest request, HttpServletResponse response, String name, String value, boolean httpOnly, int maxAge) {
         
         Cookie cookie = new Cookie(name, value);
