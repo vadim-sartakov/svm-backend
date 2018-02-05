@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import svm.backend.dao.entity.User;
-import svm.backend.dao.entity.contact.Contact;
+import svm.backend.dao.entity.useraccount.UserAccount;
 import svm.backend.dao.repository.ContactRepository;
 import svm.backend.dao.repository.UserRepository;
 
@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         username = username.toLowerCase();
         user = userRepository.findByUsername(username);
         if (user == null) {
-            Contact contact = contactRepository.findOne(username);
+            UserAccount contact = contactRepository.findOne(username);
             if (contact != null)
                 user = contact.getUser();
         }

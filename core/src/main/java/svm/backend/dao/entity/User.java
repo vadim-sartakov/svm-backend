@@ -22,9 +22,9 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import svm.backend.dao.entity.contact.Contact;
-import svm.backend.dao.entity.contact.Email;
-import svm.backend.dao.entity.contact.PhoneNumber;
+import svm.backend.dao.entity.useraccount.UserAccount;
+import svm.backend.dao.entity.useraccount.Email;
+import svm.backend.dao.entity.useraccount.PhoneNumber;
 
 @Getter
 @Setter
@@ -58,10 +58,10 @@ public class User extends UUIDEntity implements UserDetails, Creatable {
     @Column(nullable = false)
     private Boolean disabled = false;
         
-    @OneToMany(mappedBy = "user", targetEntity = Contact.class, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", targetEntity = UserAccount.class, cascade = CascadeType.ALL)
     private Set<Email> emails;
     
-    @OneToMany(mappedBy = "user", targetEntity = Contact.class, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", targetEntity = UserAccount.class, cascade = CascadeType.ALL)
     private Set<PhoneNumber> phoneNumbers;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
