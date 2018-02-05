@@ -1,4 +1,4 @@
-package svm.backend.core.beanpostprocess.handler;
+package svm.backend.beanpostprocess.handler;
 
 public interface PostProcessorHandler<T> {
     String getQualifier();

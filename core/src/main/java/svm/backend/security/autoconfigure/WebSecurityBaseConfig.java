@@ -1,6 +1,8 @@
-package svm.backend.security.config;
+package svm.backend.security.autoconfigure;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,7 +21,8 @@ import svm.backend.security.JWTService;
 import svm.backend.security.filter.JWTAuthenticationFilter;
 import svm.backend.security.filter.JWTAuthorizationFilter;
 
-//@Configuration
+@Configuration
+@ConditionalOnMissingBean(WebSecurityBaseConfig.class)
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter {
@@ -30,7 +33,7 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
     }
     
     @Bean
-    public PasswordEncoder bCryptPasswordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     
@@ -63,7 +66,10 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
         }
     }
         
-    // For use of expression language
+    /**
+     * For use of expression language
+     * @return 
+     */
     @Bean
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
@@ -96,7 +102,8 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
                     .antMatchers("/api/home/**")
                         .authenticated()
                 .and()
-                    .logout().logoutUrl("/logout").deleteCookies(JWTService.COOKIE_NAME,
+                    .logout().logoutUrl("/logout").deleteCookies(
+                            JWTService.COOKIE_NAME,
                             JWTCsrfTokenRepository.DEFAULT_CSRF_COOKIE_NAME
                     ).logoutSuccessUrl("/")
                 .and()
@@ -114,7 +121,7 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService())
-                .passwordEncoder(bCryptPasswordEncoder());
+                .passwordEncoder(passwordEncoder());
     }
     
     // TODO: implements multiple authentication providers: Active Directory (Kerberos),

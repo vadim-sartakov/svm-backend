@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -44,7 +45,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                     roles.add(new SimpleGrantedAuthority("ROLE_" + role));
 
             User user = new User();
-            user.setUsername(claims.getSubject());
+            user.setId(UUID.fromString(claims.getSubject()));
             user.setAuthorities(roles);
             
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

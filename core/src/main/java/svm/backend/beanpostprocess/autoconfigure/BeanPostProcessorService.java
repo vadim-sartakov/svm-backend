@@ -1,4 +1,4 @@
-package svm.backend.core.autoconfigure;
+package svm.backend.beanpostprocess.autoconfigure;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import svm.backend.core.beanpostprocess.handler.PostProcessorHandler;
+import svm.backend.beanpostprocess.handler.PostProcessorHandler;
+import svm.backend.beanpostprocess.handler.PostProcessorHandler;
 
 public class BeanPostProcessorService implements BeanPostProcessor {
         

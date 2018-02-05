@@ -42,7 +42,7 @@ public class JWTService  {
         User user = (User) authentication.getPrincipal();
         
         Map<String, Object> claimsMap = new HashMap<>();
-        claimsMap.put("sub", user.getUsername());
+        claimsMap.put("sub", user.getId());
         claimsMap.put("roles", getCommaSeparatedRoles(user.getAuthorities()));
         claimsMap.put("exp", new Date(System.currentTimeMillis() + expirationTime));
         claimsMap.put(JWTCsrfTokenRepository.DEFAULT_CSRF_COOKIE_NAME, csrfToken);
@@ -58,7 +58,7 @@ public class JWTService  {
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         while(iterator.hasNext()) {
             
-            result.append(iterator.next().getAuthority());
+            result.append(iterator.next().getAuthority().replace("ROLE_", ""));
             if (iterator.hasNext())
                 result.append(",");
                 

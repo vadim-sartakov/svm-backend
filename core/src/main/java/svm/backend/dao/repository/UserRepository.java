@@ -13,8 +13,13 @@ import svm.backend.dao.entity.UserRole;
 public interface UserRepository extends GenericRepository<User, UUID> {
 
     @Secured({ UserRole.ADMIN, UserRole.MODERATOR })
+    @EntityGraph("user.overview")
     @Override
     public Page<User> findAll(Predicate predicate, Pageable pageable);
+
+    @EntityGraph("user.overview")
+    @Override
+    public User superFindOne(UUID id);
 
     @Override
     public User findOne(UUID id);

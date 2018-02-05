@@ -21,6 +21,7 @@ public class UserRepositoryImpl {
             return null;
     }
     
+    // TODO: implement controllers and track if password field has been changed.
     public User save(User user) {        
         if (user.getId() == null)
             user.setPassword(passwordEncoder.encode(user.getPassword()));

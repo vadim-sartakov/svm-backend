@@ -1,4 +1,4 @@
-package svm.backend.core.autoconfigure;
+package svm.backend.beanpostprocess.autoconfigure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

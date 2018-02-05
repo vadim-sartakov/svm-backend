@@ -14,6 +14,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.hateoas.EntityLinks;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import svm.backend.dao.entity.User;
 import svm.backend.security.JWTService;
 import svm.backend.security.JWTCsrfTokenRepository;
 import svm.backend.web.exception.ApiException;
@@ -29,6 +31,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         
     private final AuthenticationManager authenticationManager;
     
+    @Autowired private EntityLinks entityLinks;
     @Autowired private MessageSource messageSource;
     @Autowired private JWTService jwtService;
     @Autowired private ObjectMapper objectMapper;
@@ -70,6 +73,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         addCookie(request, response, JWTService.COOKIE_NAME, jwt, true, 7200);
         addCookie(request, response, JWTCsrfTokenRepository.DEFAULT_CSRF_COOKIE_NAME, csrfToken, false, 0);
+
+        User authenticated = (User) authResult.getPrincipal();
+        String userLink = entityLinks
+                .linkToSingleResource(User.class, authenticated.getId())
+                .getHref();
+        response.addHeader(HttpHeaders.LOCATION, userLink);
+        response.setStatus(HttpServletResponse.SC_SEE_OTHER);
         
     }
 

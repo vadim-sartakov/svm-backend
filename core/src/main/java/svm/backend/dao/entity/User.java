@@ -1,5 +1,7 @@
 package svm.backend.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,9 +47,14 @@ public class User extends UUIDEntity implements UserDetails, Creatable {
     
     @Column(nullable = false)
     private ZonedDateTime createdAt;
+    
+    @JsonIgnore
     private ZonedDateTime expiresAt;
+    
+    @JsonIgnore
     private ZonedDateTime blockedTill;
     
+    @JsonIgnore
     @Column(nullable = false)
     private Boolean disabled = false;
         
@@ -60,6 +67,7 @@ public class User extends UUIDEntity implements UserDetails, Creatable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserRole> roles;
     
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
     @Column(nullable = false, length = 150)
     private String password;
@@ -81,6 +89,7 @@ public class User extends UUIDEntity implements UserDetails, Creatable {
         this.username = username.toLowerCase();
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
@@ -90,26 +99,31 @@ public class User extends UUIDEntity implements UserDetails, Creatable {
         return authorities;
     }
     
+    @JsonIgnore
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         roles = new HashSet<>();
         authorities.forEach(authority -> roles.add(UserRole.of(authority.getAuthority())));
     }
     
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return expiresAt == null || expiresAt.isBefore(ZonedDateTime.now());
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return !disabled;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return !disabled;
