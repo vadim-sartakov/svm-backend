@@ -15,6 +15,7 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,6 +38,8 @@ import svm.backend.dao.entity.useraccount.PhoneNumber;
     @NamedAttributeNode("emails"),
     @NamedAttributeNode("phoneNumbers")
 })
+// TODO: implement jsonviews and AbstractMappingJacksonResponseBodyAdvice
+// https://stackoverflow.com/questions/17276081/spring-3-2-filtering-jackson-json-output-based-on-spring-security-role/39852611#39852611
 public class User extends UUIDEntity implements UserDetails, Creatable {
         
     public final static User ADMIN = UUIDEntity.of("ADMIN", User.class);
@@ -48,19 +51,17 @@ public class User extends UUIDEntity implements UserDetails, Creatable {
     @Column(nullable = false)
     private ZonedDateTime createdAt;
     
-    @JsonIgnore
-    private ZonedDateTime expiresAt;
-    
-    @JsonIgnore
+    private ZonedDateTime expiresAt; 
     private ZonedDateTime blockedTill;
     
-    @JsonIgnore
     @Column(nullable = false)
     private Boolean disabled = false;
         
+    @Valid
     @OneToMany(mappedBy = "user", targetEntity = UserAccount.class, cascade = CascadeType.ALL)
     private Set<Email> emails;
     
+    @Valid
     @OneToMany(mappedBy = "user", targetEntity = UserAccount.class, cascade = CascadeType.ALL)
     private Set<PhoneNumber> phoneNumbers;
     

@@ -34,6 +34,6 @@ public abstract class UserAccount implements Serializable {
         
     @NotNull
     @Column(nullable = false)
-    protected Boolean confirmed;
+    protected Boolean confirmed = false;
     
 }

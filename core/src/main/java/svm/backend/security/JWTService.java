@@ -31,10 +31,10 @@ public class JWTService  {
     private static final Logger LOGGER = LoggerFactory.getLogger(JWTService.class);
     public static final String COOKIE_NAME = "token";
     
-    @Value("${jwt.secret}")
+    @Value("${svm.backend.security.jwt.secret}")
     private String secret;
     
-    @Value("${jwt.expirationTime}")
+    @Value("${svm.backend.security.jwt.expires-in}")
     private long expirationTime;
         
     public String generateToken(Authentication authentication, String csrfToken) {

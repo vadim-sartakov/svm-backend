@@ -34,6 +34,10 @@ public class TemporalPassword implements Creatable, Serializable {
     @Column(nullable = false)
     private ZonedDateTime createdAt;
     
+    @NotNull
+    @Column(nullable = false)
+    private ZonedDateTime expiresAt;
+    
     @Column(nullable = false)
     private Integer attempts = 0;
     

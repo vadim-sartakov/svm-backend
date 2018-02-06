@@ -5,4 +5,5 @@ svm.backend.dao.autoconfigure.DataChangeAutoConfigration,\
 svm.backend.web.autoconfigure.MvcAutoConfiguration,\
 svm.backend.web.autoconfigure.RepositoryRestAutoConfiguration,\
 svm.backend.web.autoconfigure.ControllerAutoConfiguration,\
-svm.backend.security.autoconfigure.WebSecurityBaseConfig
+svm.backend.security.autoconfigure.WebSecurityBaseConfig,\
+svm.backend.userselfservice.autoconfigure.UserSelfServiceAutoConfiguration
