@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+            
+    <changeSet author="svm" id="user-self-sevice">
+        
+        <createTable tableName="email_passwords">
+            <column name="account" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime2(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="datetime2(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="phone_passwords">
+            <column name="account" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime2(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="datetime2(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attempts" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <addPrimaryKey columnNames="account" constraintName="email_passwordsPK" tableName="email_passwords"/>
+        <addPrimaryKey columnNames="account" constraintName="phone_passwordsPK" tableName="phone_passwords"/>
+        <addUniqueConstraint columnNames="account" constraintName="UC_EMAIL_PASSWORDSACCOUNT_COL" tableName="email_passwords"/>
+        <addUniqueConstraint columnNames="account" constraintName="UC_PHONE_PASSWORDSACCOUNT_COL" tableName="phone_passwords"/>
+ 
+    </changeSet>
+                    
+</databaseChangeLog>

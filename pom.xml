@@ -16,7 +16,12 @@
     </parent>
     
     <modules>
-        <module>core</module>
+        <module>backend-core</module>
+        <module>backend-data</module>
+        <module>backend-datachange</module>
+        <module>backend-security</module>
+        <module>backend-sms</module>
+        <module>backend-user-self-service</module>
     </modules>
     
     <properties>
