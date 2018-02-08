@@ -21,7 +21,8 @@
         <module>backend-datachange</module>
         <module>backend-security</module>
         <module>backend-sms</module>
-        <module>backend-user-self-service</module>
+        <module>backend-sign-up</module>
+        <module>backend-web</module>
     </modules>
     
     <properties>
@@ -176,7 +177,7 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-java8</artifactId>
         </dependency>
-                
+                                
     </dependencies>
     <build>      
         <plugins>

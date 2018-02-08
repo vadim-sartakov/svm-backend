@@ -36,4 +36,8 @@ public interface UserRepository extends GenericRepository<User, UUID> {
     @RestResource(exported = false)
     public User findByUsername(String username);
     
+    @EntityGraph("user.overview")
+    @RestResource(exported = false)
+    public User findByUsernameIgnoreCase(String username);
+    
 }

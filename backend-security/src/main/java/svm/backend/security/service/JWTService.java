@@ -34,7 +34,7 @@ public class JWTService  {
     @Value("${svm.backend.security.jwt.secret}")
     private String secret;
     
-    @Value("${svm.backend.security.jwt.expires-in}")
+    @Value("${svm.backend.security.jwt.expires-in:7200000}")
     private long expirationTime;
         
     public String generateToken(Authentication authentication, String csrfToken) {

@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+svm.backend.signup.config.PropertyAutoConfiguration,\
+svm.backend.signup.config.EmailAutoConfiguration,\
+svm.backend.signup.config.SMSAutoConfiguration,\
+svm.backend.signup.config.SignUpAutoConfiguration

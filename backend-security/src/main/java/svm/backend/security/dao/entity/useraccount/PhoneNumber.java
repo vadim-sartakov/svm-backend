@@ -8,6 +8,7 @@ import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
+import svm.backend.security.dao.entity.validator.RegexPatterns;
 
 @Getter
 @Setter
@@ -21,8 +22,8 @@ public class PhoneNumber extends UserAccount {
     
     @NotEmpty
     @Pattern(
-            regexp = "^\\+\\d{1,2}\\(\\d{3}\\)\\d{3}\\-\\d{2}\\-\\d{2}$",
-            message = "{svm.backend.dao.entity.useraccount.PhoneNumber.message}")
+            regexp = RegexPatterns.MOBILE_PHONE_PATTERN,
+            message = RegexPatterns.WRONG_MOBILE_PHONE_MESSAGE)
     @Override
     public String getAccount() {
         return account;

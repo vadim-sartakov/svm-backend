@@ -3,6 +3,7 @@ package svm.backend.security.exception;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.ConstraintViolationException;
+import javax.ws.rs.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -108,6 +109,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleAccessDenied(Exception ex, WebRequest request) {
         String message = messageSource.getMessage("AbstractAccessDecisionManager.accessDenied", null, LocaleContextHolder.getLocale());
         return sendException(message, null, new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+    }
+    
+    @ExceptionHandler(BadRequestException.class)
+    protected ResponseEntity<Object> handleBadRequest(Exception ex, WebRequest request) {
+        return handleExceptionInternal(ex, null, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
     
     /**

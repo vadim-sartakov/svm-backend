@@ -68,15 +68,15 @@ public class User extends UUIDEntity implements UserDetails, Creatable {
         
     @Valid
     @OneToMany(mappedBy = "user", targetEntity = UserAccount.class, cascade = CascadeType.ALL)
-    private Set<Email> emails;
+    private Set<Email> emails = new HashSet<>();
     
     @Valid
     @OneToMany(mappedBy = "user", targetEntity = UserAccount.class, cascade = CascadeType.ALL)
-    private Set<PhoneNumber> phoneNumbers;
+    private Set<PhoneNumber> phoneNumbers = new HashSet<>();
     
     @JsonView(View.Admin.class)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<UserRole> roles;
+    private Set<UserRole> roles = new HashSet<>();
     
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
@@ -91,8 +91,6 @@ public class User extends UUIDEntity implements UserDetails, Creatable {
     }
     
     public void addRole(String role) {
-        if (roles == null)
-            roles = new HashSet<>();
         roles.add(UserRole.of(this, role));
     }
     
@@ -112,7 +110,6 @@ public class User extends UUIDEntity implements UserDetails, Creatable {
     
     @JsonIgnore
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
-        roles = new HashSet<>();
         authorities.forEach(authority -> roles.add(UserRole.of(authority.getAuthority())));
     }
     
