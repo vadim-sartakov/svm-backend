@@ -1,4 +1,4 @@
-package svm.backend.security.exception;
+package svm.backend.web.controller;
 
 import java.util.HashMap;
 import java.util.Map;

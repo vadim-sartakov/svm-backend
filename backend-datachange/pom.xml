@@ -8,11 +8,12 @@
     </parent>
     <artifactId>backend-datachange</artifactId>
     <packaging>jar</packaging>
+    <name>backend-datachange</name>
     
     <dependencies>
         <dependency>
             <groupId>svm.backend</groupId>
-            <artifactId>data</artifactId>
+            <artifactId>backend-data</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>
@@ -28,5 +29,5 @@
             </plugin>
         </plugins>
     </build>
-    <name>backend-datachange</name>
+    
 </project>

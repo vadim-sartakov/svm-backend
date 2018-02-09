@@ -15,22 +15,12 @@
     <dependencies>
         <dependency>
             <groupId>svm.backend</groupId>
-            <artifactId>backend-core</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>svm.backend</groupId>
             <artifactId>backend-security</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>svm.backend</groupId>
             <artifactId>backend-sms</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>svm.backend</groupId>
-            <artifactId>backend-web</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>

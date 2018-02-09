@@ -25,7 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import svm.backend.security.dao.entity.User;
 import svm.backend.security.service.JWTService;
 import svm.backend.security.service.JWTCsrfTokenRepository;
-import svm.backend.security.exception.ApiException;
+import svm.backend.web.controller.ApiException;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         

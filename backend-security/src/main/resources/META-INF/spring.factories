@@ -1,4 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 svm.backend.security.config.DataChangeAutoConfigration,\
-svm.backend.security.config.ControllerAutoConfiguration,\
 svm.backend.security.config.WebSecurityBaseConfig

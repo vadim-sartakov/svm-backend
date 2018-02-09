@@ -1,3 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+svm.backend.web.config.ControllerAutoConfiguration,\
+svm.backend.web.config.PropertyAutoConfiguration,\
 svm.backend.web.config.MvcAutoConfiguration,\
 svm.backend.web.config.RepositoryRestAutoConfiguration

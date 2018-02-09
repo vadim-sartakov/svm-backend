@@ -1,8 +1,8 @@
-package svm.backend.security.config;
+package svm.backend.web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import svm.backend.security.exception.RestExceptionHandler;
+import svm.backend.web.controller.RestExceptionHandler;
 
 @Configuration
 public class ControllerAutoConfiguration {

@@ -8,6 +8,15 @@
     </parent>
     <artifactId>backend-sms</artifactId>
     <packaging>jar</packaging>
+    <name>backend-sms</name>
+    
+    <dependencies>
+        <dependency>
+            <groupId>svm.backend</groupId>
+            <artifactId>backend-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
     
     <build>      
         <plugins>
@@ -20,5 +29,5 @@
             </plugin>
         </plugins>
     </build>
-    <name>backend-sms</name>
+    
 </project>

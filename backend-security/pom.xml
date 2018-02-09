@@ -8,11 +8,17 @@
     </parent>
     <artifactId>backend-security</artifactId>
     <packaging>jar</packaging>
+    <name>backend-security</name>
     
     <dependencies>
         <dependency>
             <groupId>svm.backend</groupId>
-            <artifactId>datachange</artifactId>
+            <artifactId>backend-datachange</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>svm.backend</groupId>
+            <artifactId>backend-web</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>
@@ -28,5 +34,5 @@
             </plugin>
         </plugins>
     </build>
-    <name>backend-security</name>
+    
 </project>
