@@ -1,4 +1,4 @@
-package svm.backend.security.dao.entity.validator;
+package svm.backend.signup.dao.entity.validator;
 
 public class RegexPatterns {
     

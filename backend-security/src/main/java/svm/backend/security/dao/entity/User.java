@@ -18,7 +18,6 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,9 +25,6 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import svm.backend.security.dao.entity.useraccount.UserAccount;
-import svm.backend.security.dao.entity.useraccount.Email;
-import svm.backend.security.dao.entity.useraccount.PhoneNumber;
 import svm.backend.security.json.View;
 
 @Getter
@@ -37,51 +33,37 @@ import svm.backend.security.json.View;
 
 @Entity(name = "BaseUser")
 @Table(name = "USERS")
-@NamedEntityGraph(name = "user.overview", attributeNodes = {
-    @NamedAttributeNode("roles"),
-    @NamedAttributeNode("emails"),
-    @NamedAttributeNode("phoneNumbers")
-})
-// TODO: implement jsonviews and AbstractMappingJacksonResponseBodyAdvice
-// https://stackoverflow.com/questions/17276081/spring-3-2-filtering-jackson-json-output-based-on-spring-security-role/39852611#39852611
+@NamedEntityGraph(name = "user.overview", attributeNodes = @NamedAttributeNode("roles"))
 public class User extends UUIDEntity implements UserDetails, Creatable {
         
     public final static User ADMIN = UUIDEntity.of("ADMIN", User.class);
        
     @NotNull
     @Column(nullable = false, unique = true)
-    private String username;
+    protected String username;
     
     @JsonView(View.Admin.class)
     @Column(nullable = false)
-    private ZonedDateTime createdAt;
+    protected ZonedDateTime createdAt;
     
     @JsonView(View.Admin.class)
-    private ZonedDateTime expiresAt;
+    protected ZonedDateTime expiresAt;
     
     @JsonView(View.Admin.class)
-    private ZonedDateTime blockedTill;
+    protected ZonedDateTime blockedTill;
     
     @JsonView(View.Admin.class)
     @Column(nullable = false)
-    private Boolean disabled = false;
-        
-    @Valid
-    @OneToMany(mappedBy = "user", targetEntity = UserAccount.class, cascade = CascadeType.ALL)
-    private Set<Email> emails = new HashSet<>();
-    
-    @Valid
-    @OneToMany(mappedBy = "user", targetEntity = UserAccount.class, cascade = CascadeType.ALL)
-    private Set<PhoneNumber> phoneNumbers = new HashSet<>();
-    
+    protected Boolean disabled = false;
+            
     @JsonView(View.Admin.class)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<UserRole> roles = new HashSet<>();
+    protected Set<UserRole> roles = new HashSet<>();
     
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
     @Column(nullable = false, length = 150)
-    private String password;
+    protected String password;
     
     public boolean isInRole(String roleToFind) {
         for (UserRole currentRole : roles)

@@ -13,12 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import svm.backend.security.dao.entity.validator.RegexPatterns;
+import svm.backend.signup.dao.entity.validator.RegexPatterns;
 import svm.backend.signup.dao.entity.PhonePassword;
 import svm.backend.signup.dao.entity.TemporalPassword;
 import svm.backend.signup.dao.repository.TemporalPasswordRepository;
@@ -43,6 +45,7 @@ public class PhonePasswordController {
     
     @PostMapping
     @Transactional
+    @ResponseStatus(HttpStatus.CREATED)
     public void addPhonePassword(@RequestBody @Valid PhonePasswordRequest passwordRequest) {
 
         TemporalPassword alreadyCreatedPassword = passwordRepository.findByAccountIgnoreCase(passwordRequest.getPhoneNumber());

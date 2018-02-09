@@ -1,28 +1,33 @@
-package svm.backend.security.dao.entity.useraccount;
+package svm.backend.signup.dao.entity.user.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.io.Serializable;
+import java.time.ZonedDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import svm.backend.data.entity.Creatable;
+import svm.backend.data.entity.UUIDEntity;
 import svm.backend.security.dao.entity.User;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "USER_ACCOUNTS")
-@Inheritance
-public abstract class UserAccount implements Serializable {
+public abstract class UserAccount extends UUIDEntity implements Creatable {
     
-    @Id
     @NotNull
+    @Column(nullable = false)
+    protected ZonedDateTime createdAt;
+    
+    @NotNull
+    @Column(nullable = false)
     protected String account;
     
-    @ManyToOne
+    @ManyToOne(optional = false)
     protected User user;
         
     @JsonIgnore

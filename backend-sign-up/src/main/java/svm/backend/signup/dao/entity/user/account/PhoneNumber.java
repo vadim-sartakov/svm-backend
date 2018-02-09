@@ -1,4 +1,4 @@
-package svm.backend.security.dao.entity.useraccount;
+package svm.backend.signup.dao.entity.user.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Entity;
@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
-import svm.backend.security.dao.entity.validator.RegexPatterns;
+import svm.backend.signup.dao.entity.validator.RegexPatterns;
 
 @Getter
 @Setter

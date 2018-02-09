@@ -7,7 +7,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
-import svm.backend.security.dao.entity.User;
+import svm.backend.signup.dao.entity.User;
 
 public class SignUpUserFactory {
     

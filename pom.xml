@@ -201,7 +201,7 @@
                 <version>3.5.3</version>
                 <configuration>
                     
-                    <propertyFile>src/main/resources/config/liquibase.properties</propertyFile>
+                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>
                     <outputChangeLogFile>target/liquibase-outputChangeLog.xml</outputChangeLogFile>
                     <diffChangeLogFile>target/liquibase-diff-changeLog.xml</diffChangeLogFile>
                     

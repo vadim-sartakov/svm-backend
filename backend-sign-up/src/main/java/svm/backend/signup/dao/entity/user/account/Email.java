@@ -1,4 +1,4 @@
-package svm.backend.security.dao.entity.useraccount;
+package svm.backend.signup.dao.entity.user.account;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.Pattern;

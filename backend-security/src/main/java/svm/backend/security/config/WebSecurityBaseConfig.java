@@ -1,5 +1,7 @@
 package svm.backend.security.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import svm.backend.security.service.CustomAccessDeniedHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import svm.backend.security.AuthenticationInfo;
-import svm.backend.security.service.CustomUserDetailsService;
 import svm.backend.security.service.JWTCsrfTokenRepository;
 import svm.backend.security.service.JWTService;
 import svm.backend.security.filter.JWTAuthenticationFilter;
@@ -28,6 +29,11 @@ import svm.backend.security.filter.JWTAuthorizationFilter;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter {
                 
+    @Value("${svm.backend.web.controller.home-path}")
+    protected String homePath;
+    
+    @Autowired private UserDetailsService userDetailsService;
+    
     @Bean
     public CustomAccessDeniedHandler accessDeniedHandler() {
         return new CustomAccessDeniedHandler();
@@ -37,13 +43,7 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
-    @Override
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new CustomUserDetailsService();
-    }
-    
+        
     @Bean
     public JWTService tokenAuthenticationService() {
         return new JWTService();
@@ -68,7 +68,7 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
     }
         
     /**
-     * For use of expression language
+     * For expression language availability.
      * @return 
      */
     @Bean
@@ -97,10 +97,10 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
                     .ignoringAntMatchers(
                             "/*",
                             "/{basePath:^(?!api).*$}/**",
-                            "/api/{basePath:^(?!home).*$}/**")
+                            "/api/{basePath:^(?!" + homePath + ").*$}/**")
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/api/home/**")
+                    .antMatchers("/api/" + homePath + "/**")
                         .authenticated()
                 .and()
                     .logout().logoutUrl("/logout").deleteCookies(
@@ -121,7 +121,7 @@ public abstract class WebSecurityBaseConfig extends WebSecurityConfigurerAdapter
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService())
+        auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
     

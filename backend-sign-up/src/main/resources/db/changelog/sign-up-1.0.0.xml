@@ -3,6 +3,33 @@
             
     <changeSet author="svm" id="user-self-sevice">
         
+        <addColumn tableName="users">
+            <column name="dtype" type="varchar(31)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        
+        <createTable tableName="user_accounts">
+            <column name="id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime2(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dtype" type="varchar(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="confirmed" type="bit">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
         <createTable tableName="email_passwords">
             <column name="account" type="varchar(255)">
                 <constraints nullable="false"/>
@@ -36,12 +63,14 @@
             </column>
         </createTable>
         
+        <addPrimaryKey columnNames="id" constraintName="user_accountsPK" tableName="user_accounts"/>
         <addPrimaryKey columnNames="account" constraintName="email_passwordsPK" tableName="email_passwords"/>
         <addPrimaryKey columnNames="account" constraintName="phone_passwordsPK" tableName="phone_passwords"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_accounts" constraintName="FKeu175seh3s7swirv0s1ugieyu" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users"/>
         <addUniqueConstraint columnNames="account" constraintName="UC_EMAIL_PASSWORDSACCOUNT_COL" tableName="email_passwords"/>
         <addUniqueConstraint columnNames="account" constraintName="UC_PHONE_PASSWORDSACCOUNT_COL" tableName="phone_passwords"/>
         <addUniqueConstraint columnNames="password" constraintName="UC_EMAIL_PASSWORDSPASSWORD_COL" tableName="email_passwords"/>
- 
+        
     </changeSet>
                     
 </databaseChangeLog>
