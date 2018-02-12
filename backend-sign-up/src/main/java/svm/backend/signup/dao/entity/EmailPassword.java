@@ -13,4 +13,5 @@ import javax.persistence.Table;
 )
 public class EmailPassword extends TemporalPassword {
         
+    
 }

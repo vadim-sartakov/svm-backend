@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.hateoas.UriTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -24,12 +25,12 @@ import svm.backend.signup.dao.entity.validator.RegexPatterns;
 import svm.backend.signup.dao.repository.UserAccountRepository;
 import svm.backend.signup.dao.entity.EmailPassword;
 import svm.backend.signup.dao.entity.user.account.UserAccount;
-import svm.backend.signup.dao.repository.TemporalPasswordRepository;
+import svm.backend.signup.dao.repository.EmailPasswordRepository;
 import svm.backend.signup.service.EmailPasswordGenerator;
 import svm.backend.web.utils.WebUtils;
 
 @RestController
-@RequestMapping("${svm.backend.signup.controller.temporal-password-url:password}/email")
+@RequestMapping("${svm.backend.signup.controller.temporal-password-url}/email")
 public class EmailPasswordController {
     
     private final Logger logger = LoggerFactory.getLogger(EmailPasswordController.class);
@@ -40,9 +41,12 @@ public class EmailPasswordController {
     @Value("${svm.backend.signup.controller.restore-url}")
     private String restoreUrl;
     
+    @Value("${spring.mail.username}")
+    private String from;
+    
     @Autowired private JavaMailSender mailSender;
     @Autowired private UserAccountRepository accountRepository;
-    @Autowired private TemporalPasswordRepository passwordRepository;
+    @Autowired private EmailPasswordRepository passwordRepository;
     @Autowired private EmailPasswordGenerator emailPasswordGenerator;
     @Autowired private MessageSource messageSource;
     
@@ -70,19 +74,21 @@ public class EmailPasswordController {
         );
         
         passwordRepository.save(emailPassword);
-
+        
+        UriTemplate uriTemplate = new UriTemplate(
+                WebUtils.getBaseURL(request) +
+                "/" +
+                restoreUrl +
+                "/confirm{?id}"
+        );
+        String link = uriTemplate.expand(generatedPassword).toString();
         String text = messageSource.getMessage(
                 "svm.backend.signup.controller.EmailPasswordController.message",
-                new Object[] {
-                    WebUtils.getBaseURL(request) +
-                            "/" +
-                            restoreUrl +
-                            "/confirm?id=" +
-                            generatedPassword
-                },
+                new Object[] { link },
                 LocaleContextHolder.getLocale());
         
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(from);
         message.setTo(email);
         message.setText(text);
         mailSender.send(message);

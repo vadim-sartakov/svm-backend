@@ -39,6 +39,7 @@ public class MvcAutoConfiguration extends WebMvcConfigurerAdapter {
         Locale.setDefault(Locale.ENGLISH);
         messageSource.addBasenames(
                 "classpath:locale/messages",
+                "classpath:locale/i18n_messages",
                 "classpath:org/springframework/security/messages"
         );
         messageSource.setCacheSeconds(3600);

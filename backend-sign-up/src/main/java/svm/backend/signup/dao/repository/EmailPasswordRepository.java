@@ -2,9 +2,9 @@ package svm.backend.signup.dao.repository;
 
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import svm.backend.data.repository.GenericRepository;
-import svm.backend.signup.dao.entity.TemporalPassword;
+import svm.backend.signup.dao.entity.EmailPassword;
 
 @RepositoryRestResource(exported = false)
-public interface TemporalPasswordRepository extends GenericRepository<TemporalPassword, String> {
-    TemporalPassword findByAccountIgnoreCase(String account);
+public interface EmailPasswordRepository extends GenericRepository<EmailPassword, String> {
+    EmailPassword findByAccountIgnoreCase(String account);
 }

@@ -3,18 +3,15 @@ package svm.backend.signup.dao.entity;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 import svm.backend.data.entity.Creatable;
 
 @Data
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
 public abstract class TemporalPassword implements Creatable, Serializable {
     
     @Id

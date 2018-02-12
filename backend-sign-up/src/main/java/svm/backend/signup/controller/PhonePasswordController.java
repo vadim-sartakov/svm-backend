@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import svm.backend.signup.dao.entity.validator.RegexPatterns;
 import svm.backend.signup.dao.entity.PhonePassword;
 import svm.backend.signup.dao.entity.TemporalPassword;
-import svm.backend.signup.dao.repository.TemporalPasswordRepository;
+import svm.backend.signup.dao.repository.PhonePasswordRepository;
 import svm.backend.signup.service.PhonePasswordGenerator;
 import svm.backend.sms.SmsMessage;
 import svm.backend.sms.SmsSender;
@@ -39,7 +39,7 @@ public class PhonePasswordController {
     
     @Autowired private MessageSource messageSource;
     @Autowired private SmsSender smsSender;
-    @Autowired private TemporalPasswordRepository passwordRepository;
+    @Autowired private PhonePasswordRepository passwordRepository;
     @Autowired private PhonePasswordGenerator phonePasswordGenerator;
     @Autowired private SmsMessage smsTemplate;
     
