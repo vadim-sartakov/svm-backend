@@ -1,6 +1,7 @@
 package svm.backend.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import svm.backend.security.dao.entity.User;
@@ -15,7 +16,23 @@ public class AuthenticationInfo {
     }
         
     public User getCurrentUser() {
-        return (User) getAuthentication().getPrincipal();
+        
+        Authentication authentication = getAuthentication();
+        User user;
+        if (authentication instanceof AnonymousAuthenticationToken)
+            user = new User();
+        else
+            user = (User) authentication.getPrincipal();
+        
+        return user;
+        
+    }
+    
+    public boolean isUserInRole(String roleToFind) {
+        Authentication authentication = getAuthentication();
+        return authentication.getAuthorities()
+                .stream()
+                .anyMatch(authority -> authority.getAuthority().equals(roleToFind));
     }
     
     public User getCurrentUserFromDb() {

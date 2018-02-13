@@ -14,7 +14,7 @@ public class UserRepositoryImpl {
     @Autowired private PasswordEncoder passwordEncoder;
     
     public User findOne(UUID id) {
-        if (authenticationInfo.getCurrentUser().isInRole(UserRole.ADMIN) ||
+        if (authenticationInfo.isUserInRole(UserRole.ADMIN) ||
                 authenticationInfo.getCurrentUser().getId().equals(id))
             return userRepository.superFindOne(id);
         else

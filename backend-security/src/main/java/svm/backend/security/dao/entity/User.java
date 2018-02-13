@@ -64,22 +64,11 @@ public class User extends UUIDEntity implements UserDetails, Creatable {
     @NotNull
     @Column(nullable = false, length = 150)
     protected String password;
-    
-    public boolean isInRole(String roleToFind) {
-        for (UserRole currentRole : roles)
-            if (currentRole.getRole().equals(roleToFind))
-                return true;
-        return false;
-    }
-    
+        
     public void addRole(String role) {
         roles.add(UserRole.of(this, role));
     }
     
-    public void setUsername(String username) {
-        this.username = username.toLowerCase();
-    }
-
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

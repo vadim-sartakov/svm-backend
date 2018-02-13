@@ -1,11 +1,13 @@
-package svm.backend.signup.controller;
+package svm.backend.signup.controller.password;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.ZonedDateTime;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.hateoas.UriTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -32,13 +33,16 @@ import svm.backend.signup.service.EmailPasswordGenerator;
 import svm.backend.web.utils.WebUtils;
 
 @RestController
-@RequestMapping("${svm.backend.signup.controller.temporal-password-url}/email")
+@RequestMapping("${svm.backend.signup.controller.password-url}/email")
 public class EmailPasswordController {
     
     private final Logger logger = LoggerFactory.getLogger(EmailPasswordController.class);
     
-    @Value("${svm.backend.signup.EmailPassword.expiresIn:86400}")
+    @Value("${svm.backend.signup.EmailPassword.expires-in:86400}")
     private int expiresIn;
+    
+    @Value("${svm.backend.signup.controller.sign-up-url}")
+    private String signUpUrl;
     
     @Value("${svm.backend.signup.controller.restore-url}")
     private String restoreUrl;
@@ -51,16 +55,20 @@ public class EmailPasswordController {
     @Autowired private EmailPasswordRepository passwordRepository;
     @Autowired private EmailPasswordGenerator emailPasswordGenerator;
     @Autowired private MessageSource messageSource;
-    
+        
     @Transactional
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void sendRetoreEmail(@RequestBody @Valid EmailRestoreRequest restoreRequest, HttpServletRequest request) {
+    public void sendPasswordEmail(@RequestBody @Valid PasswordRequest passwordRequest, HttpServletRequest request) {
+        sendPasswordEmail(passwordRequest, WebUtils.getBaseURL(request));
+    }
+    
+    public void sendPasswordEmail(PasswordRequest passwordRequest, String baseUrl) {
         
-        String email = restoreRequest.email;
+        String email = passwordRequest.email;
         UserAccount account = accountRepository.findByAccountIgnoreCase(email);
                 
-        if (account == null) {
+        if (account == null && passwordRequest.type.equals(PasswordRequest.Type.RESTORE)) {
             logger.warn("Attempt to restore password with wrong login {}", email);
             return;
         }
@@ -79,34 +87,54 @@ public class EmailPasswordController {
         
         String link;
         try {
-            link = WebUtils.getBaseURL(request) +
+            link = baseUrl +
                     "/" +
-                    restoreUrl +
+                    (passwordRequest.type.equals(PasswordRequest.Type.ACTIVATE) ? signUpUrl : restoreUrl) +
                     "/confirm?id=" +
                     URLEncoder.encode(generatedPassword, "UTF-8");
         } catch(UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+        
+        String subject = messageSource.getMessage(
+                "svm.backend.signup.controller.EmailPasswordController." +
+                        (passwordRequest.type.equals(PasswordRequest.Type.ACTIVATE) ? "activateSubject" : "restoreSubject"),
+                null,
+                LocaleContextHolder.getLocale());
+        
         String text = messageSource.getMessage(
-                "svm.backend.signup.controller.EmailPasswordController.message",
+                "svm.backend.signup.controller.EmailPasswordController." +
+                        (passwordRequest.type.equals(PasswordRequest.Type.ACTIVATE) ? "activateMessage" : "restoreMessage"),
                 new Object[] { link },
                 LocaleContextHolder.getLocale());
         
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setSubject(subject);
         message.setFrom(from);
         message.setTo(email);
         message.setText(text);
         mailSender.send(message);
                         
-        logger.info("Message for restoring {} has been sent", email);
+        logger.info("Message to {} has been sent", email);
         
     }
     
-    public static class EmailRestoreRequest {
+    @AllArgsConstructor
+    public static class PasswordRequest {
+        
         @NotEmpty
         @Pattern(regexp = RegexPatterns.EMAIL_PATTERN,
                 message = RegexPatterns.WRONG_EMAIL_MESSAGE)
-        public String email;
+        private String email;
+        
+        @NotNull
+        private Type type;
+        
+        public static enum Type {
+            ACTIVATE,
+            RESTORE
+        }
+        
     }
     
 }

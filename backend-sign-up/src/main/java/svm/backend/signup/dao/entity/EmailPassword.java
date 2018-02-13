@@ -12,6 +12,8 @@ import javax.persistence.Table;
         column = @Column(nullable = false, unique = true)
 )
 public class EmailPassword extends TemporalPassword {
-        
-    
+    @Override
+    public void setAccount(String account) {
+        this.account = account.toLowerCase();
+    }
 }

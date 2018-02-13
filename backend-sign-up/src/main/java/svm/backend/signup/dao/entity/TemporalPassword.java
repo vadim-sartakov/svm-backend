@@ -9,10 +9,11 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 import svm.backend.data.entity.Creatable;
+import svm.backend.data.entity.Expirable;
 
 @Data
 @MappedSuperclass
-public abstract class TemporalPassword implements Creatable, Serializable {
+public abstract class TemporalPassword implements Creatable, Expirable, Serializable {
     
     @Id
     @Column(unique = true)

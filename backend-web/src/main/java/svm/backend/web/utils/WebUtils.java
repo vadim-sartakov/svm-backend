@@ -4,13 +4,13 @@ import javax.servlet.http.HttpServletRequest;
 
 public class WebUtils {
     
-    public static StringBuffer getBaseURL(HttpServletRequest request) {
+    public static String getBaseURL(HttpServletRequest request) {
         
         StringBuffer url = request.getRequestURL();
         String convertedUrl = url.toString();
         url.delete(convertedUrl.lastIndexOf(request.getRequestURI()), convertedUrl.length());
         
-        return url;
+        return url.toString();
         
     }
     

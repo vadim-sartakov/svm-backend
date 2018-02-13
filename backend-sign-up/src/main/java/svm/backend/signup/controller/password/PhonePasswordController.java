@@ -1,4 +1,4 @@
-package svm.backend.signup.controller;
+package svm.backend.signup.controller.password;
 
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
@@ -28,12 +28,12 @@ import svm.backend.sms.SmsMessage;
 import svm.backend.sms.SmsSender;
 
 @RestController
-@RequestMapping("${svm.backend.signup.controller.temporal-password-url}/phone")
+@RequestMapping("${svm.backend.signup.controller.password-url}/phone")
 public class PhonePasswordController {
     
     private final Logger logger = LoggerFactory.getLogger(PhonePasswordController.class);
     
-    @Value("${svm.backend.signup.PhonePassword.expiresIn:180}")
+    @Value("${svm.backend.signup.PhonePassword.expires-in:180}")
     private int expiresIn;
     
     @Autowired private MessageSource messageSource;

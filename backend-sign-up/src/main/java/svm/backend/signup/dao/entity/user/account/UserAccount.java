@@ -19,7 +19,6 @@ import svm.backend.security.dao.entity.User;
 @Table(name = "USER_ACCOUNTS")
 public abstract class UserAccount extends UUIDEntity implements Creatable {
     
-    @NotNull
     @Column(nullable = false)
     protected ZonedDateTime createdAt;
     
