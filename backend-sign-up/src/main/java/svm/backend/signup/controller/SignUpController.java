@@ -12,14 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import svm.backend.security.dao.repository.UserRepository;
-import svm.backend.signup.controller.password.EmailPasswordController;
-import svm.backend.signup.controller.password.EmailPasswordController.PasswordRequest;
-import svm.backend.signup.controller.password.EmailPasswordController.PasswordRequest.Type;
+import svm.backend.signup.controller.activate.EmailActivateController;
+import svm.backend.signup.controller.activate.PhoneActivateController;
 import svm.backend.signup.dao.entity.User;
-import svm.backend.signup.group.PhonePasswordGroup;
 import svm.backend.signup.group.SignUpGroup;
 import svm.backend.signup.service.SignUpUserFactory;
-import svm.backend.web.utils.WebUtils;
 
 @RestController
 @RequestMapping("${svm.backend.signup.controller.sign-up-url}")
@@ -27,7 +24,8 @@ public class SignUpController {
         
     @Autowired private SignUpUserFactory signUpUserFactory;
     @Autowired private UserRepository userRepository;
-    @Autowired private EmailPasswordController emailPasswordController;
+    @Autowired private EmailActivateController emailController;
+    @Autowired private PhoneActivateController phoneController;
     
     @PutMapping
     public void validate(@RequestBody String userJson) {
@@ -42,21 +40,24 @@ public class SignUpController {
         User user = signUpUserFactory.parseUser(
                 userJson,
                 Default.class,
-                SignUpGroup.class,
-                PhonePasswordGroup.class
+                SignUpGroup.class
         );
         
-        if (user.getEmails().size() > 0 && user.getPhoneNumbers().isEmpty())
-            user.setDisabled(true);
+        user.setDisabled(true);
+        userRepository.save(user);
         
-        user.getEmails().forEach(account ->
-                emailPasswordController.sendPasswordEmail(
-                        new PasswordRequest(account.getAccount(), Type.ACTIVATE),
-                        WebUtils.getBaseURL(request)
+        user.getPhoneNumbers().forEach(account ->
+                phoneController.sendMessage(
+                        new PhoneActivateController.Request(account.getAccount())
                 )
         );
         
-        userRepository.superSave(user);
+        user.getEmails().forEach(account ->
+                emailController.sendEmailPassword(
+                        new EmailActivateController.Request(account.getAccount()),
+                        request
+                )
+        );
         
     }
     

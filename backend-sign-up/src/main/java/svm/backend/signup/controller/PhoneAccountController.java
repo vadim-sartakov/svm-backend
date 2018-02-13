@@ -1,10 +1,10 @@
-package svm.backend.signup.controller.password;
+package svm.backend.signup.controller;
 
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.ws.rs.BadRequestException;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
@@ -13,41 +13,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import svm.backend.signup.dao.entity.TemporalPassword;
+import svm.backend.signup.dao.entity.user.account.UserAccount;
 import svm.backend.signup.dao.entity.validator.RegexPatterns;
-import svm.backend.signup.dao.entity.PhonePassword;
-import svm.backend.signup.dao.repository.PhonePasswordRepository;
+import svm.backend.signup.dao.repository.TemporalPasswordRepository;
+import svm.backend.signup.dao.repository.UserAccountRepository;
 import svm.backend.signup.service.PhonePasswordGenerator;
 import svm.backend.sms.SmsMessage;
 import svm.backend.sms.SmsSender;
 
-@RestController
-@RequestMapping("${svm.backend.signup.controller.password-url}/phone")
-public class PhonePasswordController {
+public abstract class PhoneAccountController {
     
-    private final Logger logger = LoggerFactory.getLogger(PhonePasswordController.class);
+    protected final Logger logger = LoggerFactory.getLogger(PhoneAccountController.class);
     
     @Value("${svm.backend.signup.PhonePassword.expires-in:180}")
-    private int expiresIn;
+    protected int expiresIn;
     
-    @Autowired private MessageSource messageSource;
-    @Autowired private SmsSender smsSender;
-    @Autowired private PhonePasswordRepository passwordRepository;
-    @Autowired private PhonePasswordGenerator phonePasswordGenerator;
-    @Autowired private MessageSource mesasgeSource;
+    @Autowired protected MessageSource messageSource;
+    @Autowired protected SmsSender smsSender;
+    @Autowired protected TemporalPasswordRepository passwordRepository;
+    @Autowired protected UserAccountRepository userAccountRepository;
+    @Autowired protected PhonePasswordGenerator phonePasswordGenerator;
+    @Autowired protected PasswordEncoder passwordEncoder;
+    @Autowired protected MessageSource mesasgeSource;
     
-    @PostMapping
-    @Transactional
-    @ResponseStatus(HttpStatus.CREATED)
-    public void addPhonePassword(@RequestBody @Valid PhonePasswordRequest passwordRequest) {
+    protected void sendMessage(Request passwordRequest) {
 
-        PhonePassword alreadyCreatedPassword = passwordRepository.findByAccountIgnoreCase(passwordRequest.getPhoneNumber());
+        UserAccount account = userAccountRepository.findByAccountIgnoreCase(passwordRequest.getPhoneNumber());
+        TemporalPassword alreadyCreatedPassword = passwordRepository.findByUserAccount(account);
         if (alreadyCreatedPassword != null) {
             
             long secondsLeft = ChronoUnit.SECONDS.between(ZonedDateTime.now(),
@@ -68,10 +62,10 @@ public class PhonePasswordController {
         
         String generatedPassword = phonePasswordGenerator.generate();
         
-        PhonePassword phonePassword = new PhonePassword();
+        TemporalPassword phonePassword = new TemporalPassword();
         phonePassword.setCreatedAt(ZonedDateTime.now());
-        phonePassword.setAccount(passwordRequest.getPhoneNumber());
-        phonePassword.setPassword(generatedPassword);
+        phonePassword.setUserAccount(account);
+        phonePassword.setPassword(passwordEncoder.encode(generatedPassword));
         phonePassword.setExpiresAt(ZonedDateTime.now().plusSeconds(expiresIn));
         
         passwordRepository.save(phonePassword);
@@ -86,12 +80,14 @@ public class PhonePasswordController {
                 
         logger.info("Created phone password {} for {}",
                 phonePassword.getPassword(),
-                phonePassword.getAccount());
+                phonePassword.getUserAccount()
+        );
         
     }
-    
+        
+    @AllArgsConstructor
     @Data
-    public static class PhonePasswordRequest {
+    public static class Request {
         @NotEmpty
         @Pattern(
                 regexp = RegexPatterns.MOBILE_PHONE_PATTERN,

@@ -5,10 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import svm.backend.signup.controller.password.EmailPasswordController;
-import svm.backend.signup.controller.password.PhonePasswordController;
-import svm.backend.signup.controller.restore.RestoreController;
+import svm.backend.signup.controller.restore.EmailRestoreController;
 import svm.backend.signup.controller.SignUpController;
+import svm.backend.signup.controller.activate.EmailActivateController;
+import svm.backend.signup.controller.activate.PhoneActivateController;
+import svm.backend.signup.controller.restore.PhoneRestoreController;
 import svm.backend.signup.service.SignUpUserFactory;
 import svm.backend.signup.service.UserAccountUserDetailsService;
 
@@ -28,18 +29,23 @@ public class SignUpAutoConfiguration {
     }
         
     @Bean
-    public PhonePasswordController phonePasswordController() {
-        return new PhonePasswordController();
+    public EmailActivateController emailActivateController() {
+        return new EmailActivateController();
     }
     
     @Bean
-    public EmailPasswordController emailPasswordController() {
-        return new EmailPasswordController();
+    public PhoneActivateController phoneActivateController() {
+        return new PhoneActivateController();
     }
     
     @Bean
-    public RestoreController restoreController() {
-        return new RestoreController();
+    public EmailRestoreController emailRestoreController() {
+        return new EmailRestoreController();
+    }
+    
+    @Bean
+    public PhoneRestoreController phoneRestoreController() {
+        return new PhoneRestoreController();
     }
     
     @Bean

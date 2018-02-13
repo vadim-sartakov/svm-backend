@@ -3,32 +3,40 @@ package svm.backend.signup.dao.entity;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 import svm.backend.data.entity.Creatable;
 import svm.backend.data.entity.Expirable;
+import svm.backend.data.entity.UUIDEntity;
+import svm.backend.signup.dao.entity.user.account.UserAccount;
 
 @Data
-@MappedSuperclass
-public abstract class TemporalPassword implements Creatable, Expirable, Serializable {
-    
-    @Id
-    @Column(unique = true)
-    protected String account;
-    
-    @NotNull
-    @Column(nullable = false)
-    protected ZonedDateTime createdAt;
+@Entity
+@Table(name = "TEMPORAL_PASSWORDS")
+public class TemporalPassword extends UUIDEntity implements Creatable, Expirable, Serializable {
+        
+    @OneToOne(optional = false)
+    private UserAccount userAccount;
     
     @NotNull
     @Column(nullable = false)
-    protected ZonedDateTime expiresAt;
+    private ZonedDateTime createdAt;
+    
+    @NotNull
+    @Column(nullable = false)
+    private ZonedDateTime expiresAt;
     
     @NotEmpty
-    @Column(nullable = false)
-    protected String password;
-        
+    @Column(nullable = false, unique = true)
+    private String password;
+    
+    private Integer attempts = 0;
+    
 }

@@ -30,8 +30,11 @@
             </column>
         </createTable>
         
-        <createTable tableName="email_passwords">
-            <column name="account" type="varchar(255)">
+        <createTable tableName="temporal_passwords">
+            <column name="id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_account_id" type="binary(16)">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="datetime2(7)">
@@ -43,33 +46,15 @@
             <column name="password" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-        </createTable>
-        
-        <createTable tableName="phone_passwords">
-            <column name="account" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_at" type="datetime2(7)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="expires_at" type="datetime2(7)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="password" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="attempts" type="int">
-                <constraints nullable="false"/>
-            </column>
+            <column name="attempts" type="int"/>
         </createTable>
         
         <addPrimaryKey columnNames="id" constraintName="user_accountsPK" tableName="user_accounts"/>
-        <addPrimaryKey columnNames="account" constraintName="email_passwordsPK" tableName="email_passwords"/>
-        <addPrimaryKey columnNames="account" constraintName="phone_passwordsPK" tableName="phone_passwords"/>
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_accounts" constraintName="FKeu175seh3s7swirv0s1ugieyu" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users"/>
-        <addUniqueConstraint columnNames="account" constraintName="UC_EMAIL_PASSWORDSACCOUNT_COL" tableName="email_passwords"/>
-        <addUniqueConstraint columnNames="account" constraintName="UC_PHONE_PASSWORDSACCOUNT_COL" tableName="phone_passwords"/>
-        <addUniqueConstraint columnNames="password" constraintName="UC_EMAIL_PASSWORDSPASSWORD_COL" tableName="email_passwords"/>
+        <addPrimaryKey columnNames="id" constraintName="temporal_passwordsPK" tableName="temporal_passwords"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_accounts" constraintName="FK_user_accounts_users" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="user_account_id" baseTableName="temporal_passwords" constraintName="FK_temporal_passwords_user_accounts" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user_accounts"/>
+        <addUniqueConstraint columnNames="user_account_id" constraintName="UC_TEMPORAL_PASSWORDS_USERACCOUNT_ID_COL" tableName="temporal_passwords"/>
+        <addUniqueConstraint columnNames="password" constraintName="UC_TEMPORAL_PASSWORDS_PASSWORD_COL" tableName="temporal_passwords"/>
         
     </changeSet>
                     
