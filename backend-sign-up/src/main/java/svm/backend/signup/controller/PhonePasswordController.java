@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import svm.backend.signup.dao.entity.validator.RegexPatterns;
 import svm.backend.signup.dao.entity.PhonePassword;
-import svm.backend.signup.dao.entity.TemporalPassword;
 import svm.backend.signup.dao.repository.PhonePasswordRepository;
 import svm.backend.signup.service.PhonePasswordGenerator;
 import svm.backend.sms.SmsMessage;
@@ -41,15 +40,14 @@ public class PhonePasswordController {
     @Autowired private SmsSender smsSender;
     @Autowired private PhonePasswordRepository passwordRepository;
     @Autowired private PhonePasswordGenerator phonePasswordGenerator;
-    @Autowired private SmsMessage smsTemplate;
+    @Autowired private MessageSource mesasgeSource;
     
     @PostMapping
     @Transactional
     @ResponseStatus(HttpStatus.CREATED)
     public void addPhonePassword(@RequestBody @Valid PhonePasswordRequest passwordRequest) {
 
-        TemporalPassword alreadyCreatedPassword = passwordRepository.findByAccountIgnoreCase(passwordRequest.getPhoneNumber());
-        
+        PhonePassword alreadyCreatedPassword = passwordRepository.findByAccountIgnoreCase(passwordRequest.getPhoneNumber());
         if (alreadyCreatedPassword != null) {
             
             long secondsLeft = ChronoUnit.SECONDS.between(ZonedDateTime.now(),
@@ -78,10 +76,13 @@ public class PhonePasswordController {
         
         passwordRepository.save(phonePassword);
         
-        String text = String.format(smsTemplate.getText(), generatedPassword);
-        smsTemplate.setPhoneNumber(passwordRequest.getPhoneNumber());
-        smsTemplate.setText(text);
-        smsSender.send(smsTemplate);
+        String text = mesasgeSource.getMessage(
+                "svm.backend.signup.controller.PhonePasswordController.message",
+                new Object[] { generatedPassword },
+                LocaleContextHolder.getLocale()
+        );
+        SmsMessage message = new SmsMessage(passwordRequest.phoneNumber, text);
+        smsSender.send(message);
                 
         logger.info("Created phone password {} for {}",
                 phonePassword.getPassword(),

@@ -1,5 +1,7 @@
 package svm.backend.signup.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.ZonedDateTime;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -75,13 +77,16 @@ public class EmailPasswordController {
         
         passwordRepository.save(emailPassword);
         
-        UriTemplate uriTemplate = new UriTemplate(
-                WebUtils.getBaseURL(request) +
-                "/" +
-                restoreUrl +
-                "/confirm{?id}"
-        );
-        String link = uriTemplate.expand(generatedPassword).toString();
+        String link;
+        try {
+            link = WebUtils.getBaseURL(request) +
+                    "/" +
+                    restoreUrl +
+                    "/confirm?id=" +
+                    URLEncoder.encode(generatedPassword, "UTF-8");
+        } catch(UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
         String text = messageSource.getMessage(
                 "svm.backend.signup.controller.EmailPasswordController.message",
                 new Object[] { link },
