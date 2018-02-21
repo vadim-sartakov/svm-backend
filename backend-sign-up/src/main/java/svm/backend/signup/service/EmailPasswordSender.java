@@ -1,12 +1,9 @@
-package svm.backend.signup.controller;
+package svm.backend.signup.service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.ZonedDateTime;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +13,16 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import svm.backend.security.dao.repository.UserRepository;
 import svm.backend.signup.dao.entity.TemporalPassword;
 import svm.backend.signup.dao.entity.user.account.UserAccount;
-import svm.backend.signup.dao.entity.validator.RegexPatterns;
 import svm.backend.signup.dao.repository.TemporalPasswordRepository;
 import svm.backend.signup.dao.repository.UserAccountRepository;
-import svm.backend.signup.service.EmailPasswordGenerator;
 import svm.backend.web.utils.WebUtils;
 
-public abstract class EmailAccountController {
+public class EmailPasswordSender {
     
-    protected final Logger logger = LoggerFactory.getLogger(EmailAccountController.class);
+    protected final Logger logger = LoggerFactory.getLogger(EmailPasswordSender.class);
     
     @Value("${svm.backend.signup.EmailPassword.expires-in:86400}")
     protected int expiresIn;
@@ -40,15 +36,15 @@ public abstract class EmailAccountController {
     @Autowired protected EmailPasswordGenerator emailPasswordGenerator;
     @Autowired protected PasswordEncoder passwordEncoder;
     @Autowired protected MessageSource messageSource;
+    @Autowired protected UserRepository userRepository;
     
-    public void sendMessage(Request passwordRequest,
+    public void sendMessage(String email,
             String urlLink,
             String subjectMessageId,
             String textMessageId,
             HttpServletRequest request) {
         
         String baseUrl = WebUtils.getBaseURL(request);
-        String email = passwordRequest.email;
         UserAccount account = accountRepository.findByAccountIgnoreCase(email);
                             
         String generatedPassword = emailPasswordGenerator.generate();
@@ -91,17 +87,7 @@ public abstract class EmailAccountController {
         message.setText(text);
         mailSender.send(message);
                         
-        logger.info("Message to {} has been sent", email);
-        
-    }
-    
-    @AllArgsConstructor
-    public static class Request {
-        
-        @NotEmpty
-        @Pattern(regexp = RegexPatterns.EMAIL_PATTERN,
-                message = RegexPatterns.WRONG_EMAIL_MESSAGE)
-        private String email;
+        logger.info("Message to {} has been sent successfully", email);
         
     }
     

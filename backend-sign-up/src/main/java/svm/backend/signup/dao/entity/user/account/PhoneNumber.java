@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
-import svm.backend.signup.dao.entity.validator.RegexPatterns;
+import svm.backend.signup.validator.RegexPatterns;
 
 @Getter
 @Setter

@@ -1,12 +1,8 @@
-package svm.backend.signup.controller;
+package svm.backend.signup.service;
 
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import javax.validation.constraints.Pattern;
 import javax.ws.rs.BadRequestException;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +12,14 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import svm.backend.signup.dao.entity.TemporalPassword;
 import svm.backend.signup.dao.entity.user.account.UserAccount;
-import svm.backend.signup.dao.entity.validator.RegexPatterns;
 import svm.backend.signup.dao.repository.TemporalPasswordRepository;
 import svm.backend.signup.dao.repository.UserAccountRepository;
-import svm.backend.signup.service.PhonePasswordGenerator;
 import svm.backend.sms.SmsMessage;
 import svm.backend.sms.SmsSender;
 
-public abstract class PhoneAccountController {
+public class PhonePasswordSender {
     
-    protected final Logger logger = LoggerFactory.getLogger(PhoneAccountController.class);
+    protected final Logger logger = LoggerFactory.getLogger(PhonePasswordSender.class);
     
     @Value("${svm.backend.signup.PhonePassword.expires-in:180}")
     protected int expiresIn;
@@ -38,9 +32,9 @@ public abstract class PhoneAccountController {
     @Autowired protected PasswordEncoder passwordEncoder;
     @Autowired protected MessageSource mesasgeSource;
     
-    protected void sendMessage(Request passwordRequest) {
+    public void sendMessage(String phoneNumber) {
 
-        UserAccount account = userAccountRepository.findByAccountIgnoreCase(passwordRequest.getPhoneNumber());
+        UserAccount account = userAccountRepository.findByAccountIgnoreCase(phoneNumber);
         TemporalPassword alreadyCreatedPassword = passwordRepository.findByUserAccount(account);
         if (alreadyCreatedPassword != null) {
             
@@ -75,7 +69,7 @@ public abstract class PhoneAccountController {
                 new Object[] { generatedPassword },
                 LocaleContextHolder.getLocale()
         );
-        SmsMessage message = new SmsMessage(passwordRequest.phoneNumber, text);
+        SmsMessage message = new SmsMessage(phoneNumber, text);
         smsSender.send(message);
                 
         logger.info("Created phone password {} for {}",
@@ -83,17 +77,6 @@ public abstract class PhoneAccountController {
                 phonePassword.getUserAccount()
         );
         
-    }
-        
-    @AllArgsConstructor
-    @Data
-    public static class Request {
-        @NotEmpty
-        @Pattern(
-                regexp = RegexPatterns.MOBILE_PHONE_PATTERN,
-                message = RegexPatterns.WRONG_MOBILE_PHONE_MESSAGE
-        )
-        private String phoneNumber;
     }
     
 }
