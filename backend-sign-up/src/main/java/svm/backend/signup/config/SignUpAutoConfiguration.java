@@ -1,8 +1,12 @@
 package svm.backend.signup.config;
 
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import svm.backend.signup.controller.confirm.EmailConfirmController;
 import svm.backend.signup.controller.confirm.PhoneConfirmController;
@@ -16,8 +20,10 @@ import svm.backend.signup.service.UserAccountUserDetailsService;
 
 @Configuration
 @ConditionalOnMissingBean(SignUpAutoConfiguration.class)
-public class SignUpAutoConfiguration {
+public class SignUpAutoConfiguration implements InitializingBean {
        
+    @Autowired private ReloadableResourceBundleMessageSource messageSource;
+    
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserAccountUserDetailsService();
@@ -61,6 +67,11 @@ public class SignUpAutoConfiguration {
     @Bean
     public SignUpUserFactory signUpUserFactory() {
         return new SignUpUserFactory();
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        messageSource.addBasenames("classpath:locale/sign_up_messages");
     }
     
 }

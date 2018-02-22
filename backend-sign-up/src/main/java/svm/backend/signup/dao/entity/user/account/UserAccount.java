@@ -12,8 +12,6 @@ import lombok.Setter;
 import svm.backend.data.entity.Creatable;
 import svm.backend.data.entity.UUIDEntity;
 import svm.backend.signup.dao.entity.User;
-import svm.backend.signup.validator.UniqueUserAccount;
-import svm.backend.signup.validator.group.SignUp;
 
 @Getter
 @Setter
@@ -24,7 +22,6 @@ public abstract class UserAccount extends UUIDEntity implements Creatable {
     @Column(nullable = false)
     protected ZonedDateTime createdAt;
     
-    @UniqueUserAccount(groups = SignUp.class)
     @NotNull
     @Column(nullable = false)
     protected String account;

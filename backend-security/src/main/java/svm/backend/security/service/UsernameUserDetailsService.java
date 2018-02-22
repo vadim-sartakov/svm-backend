@@ -12,7 +12,7 @@ public class UsernameUserDetailsService implements UserDetailsService {
 
     @Autowired private UserRepository userRepository;
     
-    @Value("${svm.backend.security.findUserIgnoreCase:true}")
+    @Value("${svm.backend.security.findUserIgnoreCase}")
     private boolean ignoreCase;
     
     @Override
