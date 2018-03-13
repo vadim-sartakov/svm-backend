@@ -1,7 +1,6 @@
 package svm.backend.signup.controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.groups.Default;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,6 @@ import svm.backend.signup.dao.entity.User;
 import svm.backend.signup.service.EmailPasswordSender;
 import svm.backend.signup.service.PhonePasswordSender;
 import svm.backend.signup.service.SignUpUserFactory;
-import svm.backend.signup.validator.group.SignUp;
 
 @RestController
 @RequestMapping("${svm.backend.signup.controller.sign-up-url}")
@@ -33,7 +31,7 @@ public class SignUpController {
     
     @PutMapping
     public void validate(@RequestBody String userJson) {
-        signUpUserFactory.parseUser(userJson, Default.class, SignUp.class);        
+        signUpUserFactory.parseUser(userJson);        
     }
     
     @Transactional
@@ -41,11 +39,7 @@ public class SignUpController {
     @ResponseStatus(HttpStatus.CREATED)
     public void signUp(@RequestBody String userJson, HttpServletRequest request) {
         
-        User user = signUpUserFactory.parseUser(
-                userJson,
-                Default.class,
-                SignUp.class
-        );
+        User user = signUpUserFactory.parseUser(userJson);
         
         user.setDisabled(true);
         userRepository.save(user);

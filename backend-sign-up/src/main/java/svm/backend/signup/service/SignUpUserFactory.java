@@ -14,7 +14,7 @@ public class SignUpUserFactory {
     @Autowired protected ObjectMapper mapper;
     @Autowired protected Validator validator;
     
-    public User parseUser(String userJson, Class<?>... validationGroups) {
+    public User parseUser(String userJson) {
         
         User parsedUser;
         try {
@@ -23,7 +23,7 @@ public class SignUpUserFactory {
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
-        Set<ConstraintViolation<Object>> violations = validator.validate(parsedUser, validationGroups);
+        Set<ConstraintViolation<Object>> violations = validator.validate(parsedUser);
         if (violations.size() > 0)
             throw new ConstraintViolationException(violations);
         

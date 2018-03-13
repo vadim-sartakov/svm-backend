@@ -1,4 +1,4 @@
-package svm.backend.signup.validator;
+package svm.backend.data.entity.validator;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.TYPE;
@@ -21,7 +21,7 @@ public @interface UniqueValues {
     //@Target({ })
     @Retention(RUNTIME)
     public @interface UniqueValue {
-        String field();
+        String[] fields();
         String ignoreCaseExpr() default "true";
         String message() default "{svm.backend.signup.validator.UniqueValue.message}";
     }
