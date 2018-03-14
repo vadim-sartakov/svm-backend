@@ -13,17 +13,30 @@ import javax.validation.Payload;
 @Constraint(validatedBy = CheckUniqueValues.class)
 public @interface UniqueValues {
     
-    String message() default "";
+    String message() default "{svm.backend.signup.validator.UniqueValue.message}";
     Class<?>[] groups() default { };
     Class<? extends Payload>[] payload() default { };
-    UniqueValue[] value();
+    Field[] value();
+    FieldSet[] fieldSet() default { };
     
-    //@Target({ })
     @Retention(RUNTIME)
-    public @interface UniqueValue {
-        String[] fields();
-        String ignoreCaseExpr() default "true";
-        String message() default "{svm.backend.signup.validator.UniqueValue.message}";
+    public @interface FieldSet {
+        Field[] value();
     }
     
+    @Retention(RUNTIME)
+    public @interface Field {
+
+        String value();
+
+        /**
+         * Spel expression to determine either value should be selected ignore case or not.
+         * May contain spring boot parameter reference.
+         * Applicable only for strings. Will be ignored for other types.
+         * @return 
+         */
+        String ignoreCaseExpr() default "true";
+
+    }
+            
 }

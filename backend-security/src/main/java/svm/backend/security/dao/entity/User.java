@@ -26,14 +26,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import svm.backend.data.entity.validator.UniqueValues;
-import svm.backend.data.entity.validator.UniqueValues.UniqueValue;
+import svm.backend.data.entity.validator.UniqueValues.Field;
 import svm.backend.security.json.View;
 
 @Getter
 @Setter
 @ToString
 
-@UniqueValues(@UniqueValue(fields = "username", ignoreCaseExpr = "${svm.backend.security.findUserIgnoreCase}"))
+@UniqueValues(@Field(value = "username", ignoreCaseExpr = "${svm.backend.security.findUserIgnoreCase}"))
 @Entity(name = "BaseUser")
 @Table(name = "USERS")
 @NamedEntityGraph(name = "user.overview", attributeNodes = @NamedAttributeNode("roles"))

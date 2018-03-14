@@ -15,6 +15,15 @@
         <!-- lookup parent from repository -->
     </parent>
     
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <jdbc.dependency.group>com.h2database</jdbc.dependency.group>
+        <jdbc.dependency.artifact>h2</jdbc.dependency.artifact>
+        <jdbc.dependency.version>${h2.version}</jdbc.dependency.version>
+    </properties>
+    
     <modules>
         <module>backend-core</module>
         <module>backend-data</module>
@@ -25,11 +34,79 @@
         <module>backend-web</module>
     </modules>
     
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-    </properties>
+    <profiles>
+        
+        <profile>
+            
+            <id>querydsl-sql</id>
+            <activation>
+                <property>
+                    <name>skip-querydsl-sql</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            
+            <build>
+                <plugins>
+                    
+                    <plugin>
+                        <groupId>com.querydsl</groupId>
+                        <artifactId>querydsl-maven-plugin</artifactId>
+                        <version>${querydsl.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>export</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <jdbcDriver>${jdbc.driverClass}</jdbcDriver>
+                            <jdbcUrl>${jdbc.url}</jdbcUrl>
+                            <jdbcUser>${jdbc.user}</jdbcUser>
+                            <jdbcPassword>${jdbc.password}</jdbcPassword>
+                            <schemaPattern>${querydsl.schemaPattern}</schemaPattern>
+                            <tableNamePattern>${querydsl.tableNamePattern}</tableNamePattern>
+                            <packageName>${querydsl.packageName}</packageName>
+                            <namePrefix>S</namePrefix>
+                            <targetFolder>target/generated-sources/java</targetFolder>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>${jdbc.dependency.group}</groupId>
+                                <artifactId>${jdbc.dependency.artifact}</artifactId>
+                                <version>${jdbc.dependency.version}</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                    
+                </plugins>
+            </build>
+            
+        </profile>
+        
+        <profile>
+            
+            <id>boot-package</id>
+            <activation>
+                <property>
+                    <name>skip-boot-package</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+            
+        </profile>
+        
+    </profiles>
+        
     <dependencies>
                 
         <!-- Spring -->
@@ -121,11 +198,6 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.6</version>
         </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.11</version>
-        </dependency>
         
         <!-- JWT -->
         <dependency>
@@ -159,17 +231,28 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-maven-plugin</artifactId>
-            <version>3.5.3</version>
+            <version>${liquibase.version}</version>
         </dependency> 
         
         <!-- QueryDSL query enhancer -->
         <dependency> 
             <groupId>com.querydsl</groupId> 
             <artifactId>querydsl-apt</artifactId> 
+            <scope>provided</scope>
         </dependency>
         <dependency> 
             <groupId>com.querydsl</groupId> 
-            <artifactId>querydsl-jpa</artifactId> 
+            <artifactId>querydsl-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-sql</artifactId>
+            <version>${querydsl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-sql-spring</artifactId>
+            <version>${querydsl.version}</version>
         </dependency>
                 
         <!-- Support for java 8 features (java.time) -->
@@ -193,12 +276,12 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
-            
+                        
             <!-- Liquibase plugin configuration for liquibase:diff goal -->
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
-                <version>3.5.3</version>
+                <version>${liquibase.version}</version>
                 <configuration>
                     
                     <propertyFile>src/main/resources/liquibase.properties</propertyFile>
@@ -256,7 +339,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+                        
             <!-- Code coverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -277,14 +360,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
-            <!-- Spring boot executable jar builder.
-            Should be skipped in modules -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            
+                        
         </plugins>       
     </build>
 </project>

@@ -12,14 +12,14 @@ import lombok.Setter;
 import svm.backend.data.entity.Creatable;
 import svm.backend.data.entity.UUIDEntity;
 import svm.backend.data.entity.validator.UniqueValues;
-import svm.backend.data.entity.validator.UniqueValues.UniqueValue;
+import svm.backend.data.entity.validator.UniqueValues.Field;
 import svm.backend.signup.dao.entity.User;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "USER_ACCOUNTS")
-@UniqueValues(@UniqueValue(fields = "account"))
+@UniqueValues(@Field(value = "account"))
 public abstract class UserAccount extends UUIDEntity implements Creatable {
     
     @Column(nullable = false)

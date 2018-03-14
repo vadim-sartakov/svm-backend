@@ -15,7 +15,9 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import svm.backend.data.entity.validator.UniqueValues.UniqueValue;
+import svm.backend.data.entity.UUIDEntity;
+import svm.backend.data.entity.validator.UniqueValues.FieldSet;
+import svm.backend.data.entity.validator.UniqueValues.Field;
 
 public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Object> {
 
@@ -29,7 +31,8 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
     private ConstraintValidatorContext context;
     
     private Class<?> objectType;
-    private UniqueValue uniqueValue;
+    //private FieldSet fieldSet;
+    //private Field field;
     private String propertyName;
     private boolean ignoreCase;
     
@@ -43,22 +46,31 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
     public boolean isValid(Object object, ConstraintValidatorContext context) {
         
         this.isValid = true;
+
         this.object = object;
         this.objectType = object.getClass();
         this.context = context;
         
-        for (UniqueValue currentUniqueValue : uniqueValues.value()) {
-            this.uniqueValue = currentUniqueValue;
-            checkFieldSet();
+        if (uniqueValues.fieldSet().length > 0) {
+            
+            for (FieldSet currentFieldSet : uniqueValues.fieldSet()) {
+                //this.fieldSet = currentFieldSet;
+                checkFieldSet(currentFieldSet);
+            }
+            
+        } else {
+            checkFields(uniqueValues.value());            
         }
-        
+                
         return isValid;
         
     }
     
-    private void checkFieldSet() {
+    private void checkFieldSet(FieldSet fieldSet) {
         
-        String expression = beanFactory.resolveEmbeddedValue(uniqueValue.ignoreCaseExpr());
+        checkFields(fieldSet.value());
+        
+        /*String expression = beanFactory.resolveEmbeddedValue(uniqueValue.ignoreCaseExpr());
         ExpressionParser parser = new SpelExpressionParser();
         Expression exp = parser.parseExpression(expression);
         this.ignoreCase = exp.getValue(Boolean.class);
@@ -71,13 +83,22 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
         }
         
         if (getDuplicate(rootPath, predicate) == null)
-            return;
+            return;*/
 
         isValid = false;
         context.disableDefaultConstraintViolation();
         context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
                 .addPropertyNode(propertyName)
                 .addConstraintViolation();
+        
+    }
+    
+    private void checkFields(Field[] fields) {
+        for (Field currentField : fields)
+            checkField(currentField);
+    }
+    
+    private void checkField(Field field) {
         
     }
 
@@ -92,11 +113,11 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
                 rootPath.getString(propertyName).equalsIgnoreCase((String) value) :
                 rootPath.get(propertyName).eq(value);
         
-        /*Class<?> superclass = rootPath.getType().getSuperclass();
+        Class<?> superclass = rootPath.getType().getSuperclass();
         if (superclass != null && superclass != Object.class && superclass != UUIDEntity.class) {
             PathBuilder<?> superclassPath = new PathBuilder(superclass, superclass.getSimpleName().toLowerCase());
             currentPredicate.and(getPredicate(superclassPath, predicate));
-        }*/
+        }
         
         return predicate.or(currentPredicate);
         
