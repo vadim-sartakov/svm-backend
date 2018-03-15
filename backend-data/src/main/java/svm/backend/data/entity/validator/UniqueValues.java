@@ -16,8 +16,8 @@ public @interface UniqueValues {
     String message() default "";
     Class<?>[] groups() default { };
     Class<? extends Payload>[] payload() default { };
-    Field[] value();
-    FieldSet[] fieldSet() default { };
+    Field[] fields() default { };
+    FieldSet[] fieldSets() default { };
     
     @Retention(RUNTIME)
     public @interface FieldSet {

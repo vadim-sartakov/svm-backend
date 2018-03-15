@@ -105,6 +105,80 @@
             
         </profile>
         
+        <!-- Liquibase DB migration -->
+        <profile>
+            
+            <id>liquibase</id>
+            <activation>
+                <property>
+                    <name>skip-liquibase</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            
+            <dependencies>
+                <dependency>
+                    <groupId>org.liquibase</groupId>
+                    <artifactId>liquibase-core</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.liquibase</groupId>
+                    <artifactId>liquibase-maven-plugin</artifactId>
+                    <version>${liquibase.version}</version>
+                </dependency> 
+            </dependencies>
+                        
+            <build>
+                <plugins>
+                    <!-- Liquibase plugin configuration for liquibase:diff goal -->
+                    <plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>${liquibase.version}</version>
+                        <configuration>
+
+                            <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                            <outputChangeLogFile>target/liquibase-outputChangeLog.xml</outputChangeLogFile>
+                            <diffChangeLogFile>target/liquibase-diff-changeLog.xml</diffChangeLogFile>
+
+                        </configuration>
+
+                        <dependencies>
+
+                            <dependency>
+                                <groupId>org.liquibase.ext</groupId>
+                                <artifactId>liquibase-hibernate5</artifactId>
+                                <version>3.6</version>
+                            </dependency>                   
+                            <dependency>
+                                <groupId>org.springframework</groupId>
+                                <artifactId>spring-beans</artifactId>
+                                <version>4.3.10.RELEASE</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.springframework.boot</groupId>
+                                <artifactId>spring-boot</artifactId>
+                                <version>1.5.6.RELEASE</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.springframework.data</groupId>
+                                <artifactId>spring-data-jpa</artifactId>
+                                <version>1.11.6.RELEASE</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>javax.validation</groupId>
+                                <artifactId>validation-api</artifactId>
+                                <version>1.1.0.Final</version>
+                            </dependency>
+
+                        </dependencies>
+
+                    </plugin>
+                </plugins>
+            </build>
+            
+        </profile>
+        
     </profiles>
         
     <dependencies>
@@ -222,18 +296,7 @@
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
         </dependency>
-                
-        <!-- Liquibase DB migration -->
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-maven-plugin</artifactId>
-            <version>${liquibase.version}</version>
-        </dependency> 
-        
+                        
         <!-- QueryDSL query enhancer -->
         <dependency> 
             <groupId>com.querydsl</groupId> 
@@ -276,52 +339,7 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
-                        
-            <!-- Liquibase plugin configuration for liquibase:diff goal -->
-            <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-maven-plugin</artifactId>
-                <version>${liquibase.version}</version>
-                <configuration>
-                    
-                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>
-                    <outputChangeLogFile>target/liquibase-outputChangeLog.xml</outputChangeLogFile>
-                    <diffChangeLogFile>target/liquibase-diff-changeLog.xml</diffChangeLogFile>
-                    
-                </configuration>
-                
-                <dependencies>
-                    
-                    <dependency>
-                        <groupId>org.liquibase.ext</groupId>
-                        <artifactId>liquibase-hibernate5</artifactId>
-                        <version>3.6</version>
-                    </dependency>                   
-                    <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-beans</artifactId>
-                        <version>4.3.10.RELEASE</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot</artifactId>
-                        <version>1.5.6.RELEASE</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.springframework.data</groupId>
-                        <artifactId>spring-data-jpa</artifactId>
-                        <version>1.11.6.RELEASE</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>javax.validation</groupId>
-                        <artifactId>validation-api</artifactId>
-                        <version>1.1.0.Final</version>
-                    </dependency>
-                                        
-                </dependencies>
-                            
-            </plugin>
-            
+                                                
             <!-- QueryDsl annotation processor -->
             <plugin>
                 <groupId>com.mysema.maven</groupId>

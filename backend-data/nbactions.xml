@@ -8,10 +8,25 @@
         <goals>
             <goal>clean</goal>
             <goal>install</goal>
+            <goal>test</goal>
         </goals>
         <properties>
             <skip-querydsl-sql>true</skip-querydsl-sql>
             <skip-boot-package>true</skip-boot-package>
         </properties>
     </action>
+    <action>
+            <actionName>test</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>test</goal>
+            </goals>
+            <properties>
+                <skip-querydsl-sql>true</skip-querydsl-sql>
+                <skip-boot-package>true</skip-boot-package>
+                <skip-liquibase>true</skip-liquibase>
+            </properties>
+        </action>
 </actions>

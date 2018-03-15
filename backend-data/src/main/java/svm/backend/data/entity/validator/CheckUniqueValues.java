@@ -5,11 +5,10 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Arrays;
-import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
-import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -20,18 +19,19 @@ import svm.backend.data.entity.UUIDEntity;
 import svm.backend.data.entity.validator.UniqueValues.FieldSet;
 import svm.backend.data.entity.validator.UniqueValues.Field;
 
+@RequiredArgsConstructor(onConstructor=@__(@Autowired))
 public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Object> {
 
-    @PersistenceContext private EntityManager entityManager;
-    @Autowired private ConfigurableBeanFactory beanFactory;
-    
+    private final JPAQueryFactory jpaQueryFactory;
+    private final ConfigurableBeanFactory beanFactory;
+        
     private UniqueValues uniqueValues;
     
     private boolean isValid;
     private ConstraintValidatorContext context;
     private Object object;
     private PathBuilder<?> rootPath;
-    
+
     @Override
     public void initialize(UniqueValues uniqueValues) {
         this.uniqueValues = uniqueValues;
@@ -48,11 +48,11 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
         Class<?> rootType = getRootClass(object.getClass());
         this.rootPath = new PathBuilder<>(rootType, rootType.getSimpleName().toLowerCase());
         
-        if (uniqueValues.fieldSet().length > 0) {
-            for (FieldSet currentFieldSet : uniqueValues.fieldSet())
+        if (uniqueValues.fieldSets().length > 0) {
+            for (FieldSet currentFieldSet : uniqueValues.fieldSets())
                 checkFieldSet(currentFieldSet);
         } else {
-            checkFields(uniqueValues.value());            
+            checkFields(uniqueValues.fields());            
         }
                 
         return isValid;
@@ -114,8 +114,7 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
     }
     
     private Object getDuplicate(Predicate predicate) {
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-        return queryFactory.selectFrom(rootPath)
+        return jpaQueryFactory.selectFrom(rootPath)
                 .setFlushMode(FlushModeType.COMMIT)
                 .where(predicate)
                 .fetchOne();

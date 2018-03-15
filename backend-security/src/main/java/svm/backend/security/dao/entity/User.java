@@ -18,7 +18,6 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -34,7 +33,7 @@ import svm.backend.security.json.View;
 @Setter
 @ToString
 
-@UniqueValues(@Field(
+@UniqueValues(fields = @Field(
         value = "username",
         ignoreCaseExpr = "${svm.backend.security.findUserIgnoreCase}",
         message = "{svm.backend.security.dao.entity.User.UniqueValues.message}")

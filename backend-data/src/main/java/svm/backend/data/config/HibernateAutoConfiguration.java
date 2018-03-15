@@ -20,12 +20,12 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
  */
 @Configuration
 @AutoConfigureBefore(HibernateJpaAutoConfiguration.class)
-public class HibernateConfig extends HibernateJpaAutoConfiguration {
+public class HibernateAutoConfiguration extends HibernateJpaAutoConfiguration {
     
     @Autowired private MessageSource messageSource;
     @Autowired private LocalValidatorFactoryBean validator;
     
-    public HibernateConfig(DataSource dataSource, JpaProperties jpaProperties, ObjectProvider<JtaTransactionManager> jtaTransactionManager, ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers) {
+    public HibernateAutoConfiguration(DataSource dataSource, JpaProperties jpaProperties, ObjectProvider<JtaTransactionManager> jtaTransactionManager, ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers) {
         super(dataSource, jpaProperties, jtaTransactionManager, transactionManagerCustomizers);
     }
     

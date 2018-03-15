@@ -19,7 +19,7 @@ import svm.backend.signup.dao.entity.User;
 @Setter
 @Entity
 @Table(name = "USER_ACCOUNTS")
-@UniqueValues(@Field(
+@UniqueValues(fields = @Field(
         value = "account",
         message = "{svm.backend.signup.dao.entity.user.account.UniqueValues.message}")
 )
