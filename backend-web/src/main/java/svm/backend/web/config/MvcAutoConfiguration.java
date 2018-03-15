@@ -13,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class MvcAutoConfiguration extends WebMvcConfigurerAdapter {
         
     @Autowired private MessageSource messageSource;
+    @Autowired private LocalValidatorFactoryBean validator;
     
     public static void addLocalhostCors(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -32,10 +33,10 @@ public class MvcAutoConfiguration extends WebMvcConfigurerAdapter {
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/{basePath:^(?!api|static).*$}/**").setViewName("index");
     }
+                
         
     @Override
     public Validator getValidator() {
-        LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
         validator.setValidationMessageSource(messageSource);
         return validator;
     }

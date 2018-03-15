@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,7 +37,7 @@ import svm.backend.security.json.View;
 @UniqueValues(@Field(
         value = "username",
         ignoreCaseExpr = "${svm.backend.security.findUserIgnoreCase}",
-        message = "{svm.backend.security.dao.entity.user.validator.UniqueValues.message}")
+        message = "{svm.backend.security.dao.entity.User.UniqueValues.message}")
 )
 @Entity(name = "BaseUser")
 @Table(name = "USERS")
@@ -45,7 +46,7 @@ public class User extends UUIDEntity implements UserDetails, Creatable {
         
     public final static User ADMIN = UUIDEntity.of("ADMIN", User.class);
        
-    @NotNull
+    @NotEmpty
     @Column(nullable = false, unique = true)
     protected String username;
     
@@ -68,7 +69,7 @@ public class User extends UUIDEntity implements UserDetails, Creatable {
     protected Set<UserRole> roles = new HashSet<>();
     
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotNull
+    @NotEmpty
     @Column(nullable = false, length = 150)
     protected String password;
         

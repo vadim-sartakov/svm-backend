@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import svm.backend.security.dao.entity.User;
 import svm.backend.security.dao.entity.UserRole;
-import svm.backend.security.AuthenticationInfo;
+import svm.backend.security.service.AuthenticationInfo;
 
 public class UserRepositoryImpl {
     

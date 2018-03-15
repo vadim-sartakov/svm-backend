@@ -1,5 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-svm.backend.data.config.PropertyAutoConfiguration,\
+svm.backend.data.config.CoreAutoConfiguration,\
 svm.backend.data.config.EntityScanAutoConfiguration,\
 svm.backend.data.config.RepositoryFactoryAutoConfiguration,\
 svm.backend.data.config.HibernateConfig

@@ -17,7 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
-import svm.backend.security.AuthenticationInfo;
+import svm.backend.security.service.AuthenticationInfo;
 import svm.backend.security.service.JWTCsrfTokenRepository;
 import svm.backend.security.service.JWTService;
 import svm.backend.security.filter.JWTAuthenticationFilter;
