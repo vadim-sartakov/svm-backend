@@ -33,7 +33,11 @@ import svm.backend.security.json.View;
 @Setter
 @ToString
 
-@UniqueValues(@Field(value = "username", ignoreCaseExpr = "${svm.backend.security.findUserIgnoreCase}"))
+@UniqueValues(@Field(
+        value = "username",
+        ignoreCaseExpr = "${svm.backend.security.findUserIgnoreCase}",
+        message = "{svm.backend.security.dao.entity.user.validator.UniqueValues.message}")
+)
 @Entity(name = "BaseUser")
 @Table(name = "USERS")
 @NamedEntityGraph(name = "user.overview", attributeNodes = @NamedAttributeNode("roles"))

@@ -1,9 +1,10 @@
 package svm.backend.data.entity.validator;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.Arrays;
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.PersistenceContext;
@@ -27,14 +28,9 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
     private UniqueValues uniqueValues;
     
     private boolean isValid;
-    private Object object;
     private ConstraintValidatorContext context;
-    
-    private Class<?> objectType;
-    //private FieldSet fieldSet;
-    //private Field field;
-    private String propertyName;
-    private boolean ignoreCase;
+    private Object object;
+    private PathBuilder<?> rootPath;
     
     @Override
     public void initialize(UniqueValues uniqueValues) {
@@ -46,18 +42,15 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
     public boolean isValid(Object object, ConstraintValidatorContext context) {
         
         this.isValid = true;
-
         this.object = object;
-        this.objectType = object.getClass();
         this.context = context;
         
+        Class<?> rootType = getRootClass(object.getClass());
+        this.rootPath = new PathBuilder<>(rootType, rootType.getSimpleName().toLowerCase());
+        
         if (uniqueValues.fieldSet().length > 0) {
-            
-            for (FieldSet currentFieldSet : uniqueValues.fieldSet()) {
-                //this.fieldSet = currentFieldSet;
+            for (FieldSet currentFieldSet : uniqueValues.fieldSet())
                 checkFieldSet(currentFieldSet);
-            }
-            
         } else {
             checkFields(uniqueValues.value());            
         }
@@ -66,70 +59,78 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
         
     }
     
+    private Class<?> getRootClass(Class<?> currentClass) {
+        Class<?> superclass = currentClass.getSuperclass();
+        if (superclass != null && superclass != Object.class && superclass != UUIDEntity.class) {
+            return getRootClass(superclass);
+        } else
+            return currentClass;
+    }
+    
     private void checkFieldSet(FieldSet fieldSet) {
         
-        checkFields(fieldSet.value());
+        Predicate fieldSetPredicate = getFieldSetPredicate(fieldSet);
+        if (getDuplicate(fieldSetPredicate) == null)
+            return;
         
-        /*String expression = beanFactory.resolveEmbeddedValue(uniqueValue.ignoreCaseExpr());
+        for (Field field : fieldSet.value())
+            addError(field.value(), fieldSet.message());
+
+    }
+        
+    private Predicate getFieldSetPredicate(FieldSet fieldSet) {
+        BooleanBuilder predicate = new BooleanBuilder();
+        Arrays.asList(fieldSet.value())
+                .forEach(this::getFieldPredicate); 
+        return predicate;
+    }
+    
+    private Predicate getFieldPredicate(Field field) {
+        
+        String propertyName = field.value();
+        
+        String expression = beanFactory.resolveEmbeddedValue(field.ignoreCaseExpr());
         ExpressionParser parser = new SpelExpressionParser();
         Expression exp = parser.parseExpression(expression);
-        this.ignoreCase = exp.getValue(Boolean.class);
+        boolean ignoreCase = exp.getValue(Boolean.class);
         
-        BooleanBuilder predicate = new BooleanBuilder();
-        PathBuilder<?> rootPath = new PathBuilder(objectType, "root");
-        for (String currentPropertyName : uniqueValue.fields()) {
-            this.propertyName = currentPropertyName;
-            predicate = getPredicate(rootPath, predicate);
-        }
-        
-        if (getDuplicate(rootPath, predicate) == null)
-            return;*/
-
-        isValid = false;
-        context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                .addPropertyNode(propertyName)
-                .addConstraintViolation();
-        
-    }
-    
-    private void checkFields(Field[] fields) {
-        for (Field currentField : fields)
-            checkField(currentField);
-    }
-    
-    private void checkField(Field field) {
-        
-    }
-
-    private BooleanBuilder getPredicate(PathBuilder<?> rootPath, BooleanBuilder predicate) {
-
         Object value = PropertyAccessorFactory
                 .forBeanPropertyAccess(object)
                 .getPropertyValue(propertyName);
         Class<?> valueType = value.getClass();
         
-        BooleanExpression currentPredicate = valueType.equals(String.class) && ignoreCase ?
+        return valueType.equals(String.class) && ignoreCase ?
                 rootPath.getString(propertyName).equalsIgnoreCase((String) value) :
                 rootPath.get(propertyName).eq(value);
         
-        Class<?> superclass = rootPath.getType().getSuperclass();
-        if (superclass != null && superclass != Object.class && superclass != UUIDEntity.class) {
-            PathBuilder<?> superclassPath = new PathBuilder(superclass, superclass.getSimpleName().toLowerCase());
-            currentPredicate.and(getPredicate(superclassPath, predicate));
-        }
+    }
         
-        return predicate.or(currentPredicate);
-        
+    private void addError(String field, String messageTemplate) {
+        isValid = false;
+        context.disableDefaultConstraintViolation();
+        context.buildConstraintViolationWithTemplate(messageTemplate)
+                .addPropertyNode(field)
+                .addConstraintViolation();
     }
     
-    private Object getDuplicate(PathBuilder<?> rootPath, BooleanBuilder predicate) {
+    private Object getDuplicate(Predicate predicate) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-        
         return queryFactory.selectFrom(rootPath)
                 .setFlushMode(FlushModeType.COMMIT)
                 .where(predicate)
                 .fetchOne();
+        
+    }
+    
+    private void checkFields(Field[] fields) {
+                
+        for (Field field : fields) {
+            Predicate predicate = getFieldPredicate(field);
+            if (getDuplicate(predicate) == null)
+                continue;
+            addError(field.value(), field.message());
+        }
+        
     }
     
 }

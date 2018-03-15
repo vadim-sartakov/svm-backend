@@ -13,7 +13,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = CheckUniqueValues.class)
 public @interface UniqueValues {
     
-    String message() default "{svm.backend.signup.validator.UniqueValue.message}";
+    String message() default "";
     Class<?>[] groups() default { };
     Class<? extends Payload>[] payload() default { };
     Field[] value();
@@ -22,13 +22,13 @@ public @interface UniqueValues {
     @Retention(RUNTIME)
     public @interface FieldSet {
         Field[] value();
+        String message() default "{svm.backend.data.entity.validator.UniqueValues.FieldSet.message}";
     }
     
     @Retention(RUNTIME)
     public @interface Field {
-
         String value();
-
+        String message() default "{svm.backend.data.entity.validator.UniqueValues.Field.message}";
         /**
          * Spel expression to determine either value should be selected ignore case or not.
          * May contain spring boot parameter reference.
@@ -36,7 +36,6 @@ public @interface UniqueValues {
          * @return 
          */
         String ignoreCaseExpr() default "true";
-
     }
             
 }
