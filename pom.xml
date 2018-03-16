@@ -16,12 +16,20 @@
     </parent>
     
     <properties>
+        
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        
+        <skip-boot-package>false</skip-boot-package>
+        <skip-querydsl-sql>false</skip-querydsl-sql>
+        
         <jdbc.dependency.group>com.h2database</jdbc.dependency.group>
         <jdbc.dependency.artifact>h2</jdbc.dependency.artifact>
         <jdbc.dependency.version>${h2.version}</jdbc.dependency.version>
+        
+        <querydsl.packageName>sql</querydsl.packageName>
+        
     </properties>
     
     <modules>
@@ -37,83 +45,25 @@
     <profiles>
         
         <profile>
-            
-            <id>querydsl-sql</id>
+            <id>module</id>
             <activation>
-                <property>
-                    <name>skip-querydsl-sql</name>
-                    <value>!true</value>
-                </property>
+                <file>
+                    <exists>module</exists>
+                </file>
             </activation>
-            
-            <build>
-                <plugins>
-                    
-                    <plugin>
-                        <groupId>com.querydsl</groupId>
-                        <artifactId>querydsl-maven-plugin</artifactId>
-                        <version>${querydsl.version}</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>export</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <jdbcDriver>${jdbc.driverClass}</jdbcDriver>
-                            <jdbcUrl>${jdbc.url}</jdbcUrl>
-                            <jdbcUser>${jdbc.user}</jdbcUser>
-                            <jdbcPassword>${jdbc.password}</jdbcPassword>
-                            <schemaPattern>${querydsl.schemaPattern}</schemaPattern>
-                            <tableNamePattern>${querydsl.tableNamePattern}</tableNamePattern>
-                            <packageName>${querydsl.packageName}</packageName>
-                            <namePrefix>S</namePrefix>
-                            <targetFolder>target/generated-sources/java</targetFolder>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>${jdbc.dependency.group}</groupId>
-                                <artifactId>${jdbc.dependency.artifact}</artifactId>
-                                <version>${jdbc.dependency.version}</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                    
-                </plugins>
-            </build>
-            
+            <properties>
+                <skip-boot-package>true</skip-boot-package>
+                <skip-querydsl-sql>true</skip-querydsl-sql>
+            </properties>
         </profile>
-        
-        <profile>
-            
-            <id>boot-package</id>
-            <activation>
-                <property>
-                    <name>skip-boot-package</name>
-                    <value>!true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-            
-        </profile>
-        
+                
         <!-- Liquibase DB migration -->
         <profile>
-            
             <id>liquibase</id>
             <activation>
-                <property>
-                    <name>skip-liquibase</name>
-                    <value>!true</value>
-                </property>
+                <file>
+                    <exists>src/main/resources/db/changelog/changelog-master.xml</exists>
+                </file>
             </activation>
             
             <dependencies>
@@ -127,20 +77,19 @@
                     <version>${liquibase.version}</version>
                 </dependency> 
             </dependencies>
-                        
+            
             <build>
                 <plugins>
+                    
                     <!-- Liquibase plugin configuration for liquibase:diff goal -->
                     <plugin>
                         <groupId>org.liquibase</groupId>
                         <artifactId>liquibase-maven-plugin</artifactId>
                         <version>${liquibase.version}</version>
                         <configuration>
-
                             <propertyFile>src/main/resources/liquibase.properties</propertyFile>
                             <outputChangeLogFile>target/liquibase-outputChangeLog.xml</outputChangeLogFile>
                             <diffChangeLogFile>target/liquibase-diff-changeLog.xml</diffChangeLogFile>
-
                         </configuration>
 
                         <dependencies>
@@ -174,11 +123,11 @@
                         </dependencies>
 
                     </plugin>
+                    
                 </plugins>
             </build>
-            
         </profile>
-        
+
     </profiles>
         
     <dependencies>
@@ -212,6 +161,7 @@
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
         </dependency>
+                
         <!-- For html template mapping -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -357,7 +307,40 @@
                     </execution>
                 </executions>
             </plugin>
-                        
+            
+            <!-- Query dsl sql -->
+            <plugin>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-maven-plugin</artifactId>
+                <version>${querydsl.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>export</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <skip>${skip-querydsl-sql}</skip>
+                    <jdbcDriver>${jdbc.driverClass}</jdbcDriver>
+                    <jdbcUrl>${jdbc.url}</jdbcUrl>
+                    <jdbcUser>${jdbc.user}</jdbcUser>
+                    <jdbcPassword>${jdbc.password}</jdbcPassword>
+                    <schemaPattern>${querydsl.schemaPattern}</schemaPattern>
+                    <tableNamePattern>${querydsl.tableNamePattern}</tableNamePattern>
+                    <packageName>${querydsl.packageName}</packageName>
+                    <namePrefix>S</namePrefix>
+                    <targetFolder>target/generated-sources/java</targetFolder>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>${jdbc.dependency.group}</groupId>
+                        <artifactId>${jdbc.dependency.artifact}</artifactId>
+                        <version>${jdbc.dependency.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+                                                
             <!-- Code coverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -377,6 +360,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            
+            <!-- Uber-jar package -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>${skip-boot-package}</skip>
+                </configuration>
             </plugin>
                         
         </plugins>       

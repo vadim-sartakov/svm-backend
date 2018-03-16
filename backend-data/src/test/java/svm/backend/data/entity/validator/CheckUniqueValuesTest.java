@@ -24,7 +24,6 @@ public class CheckUniqueValuesTest {
     @Autowired private Validator validator;
     
     @Test
-    @Ignore
     public void testIsValid() {
         SingleFieldEntity testEntity = new SingleFieldEntity("Andrew");
         assertEquals(validator.validate(testEntity).size(), 0);
