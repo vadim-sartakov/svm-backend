@@ -25,7 +25,7 @@
         <skip-querydsl-sql>false</skip-querydsl-sql>
         
         <jdbc.dependency.group>com.h2database</jdbc.dependency.group>
-        <jdbc.dependency.artifact>h2</jdbc.dependency.artifact>
+        <jdbc.dependency.artifactId>h2</jdbc.dependency.artifactId>
         <jdbc.dependency.version>${h2.version}</jdbc.dependency.version>
         
         <querydsl.packageName>sql</querydsl.packageName>
@@ -87,7 +87,12 @@
                         <artifactId>liquibase-maven-plugin</artifactId>
                         <version>${liquibase.version}</version>
                         <configuration>
-                            <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                            <changeLogFile>db/changelog/changelog-master.xml</changeLogFile>
+                            <url>${jdbc.url}</url>
+                            <username>${jdbc.user}</username>
+                            <password>${jdbc.password}</password>
+                            <driver>${jdbc.driverClass}</driver>
+                            <referenceUrl>${liquibase.reference-url}</referenceUrl>
                             <outputChangeLogFile>target/liquibase-outputChangeLog.xml</outputChangeLogFile>
                             <diffChangeLogFile>target/liquibase-diff-changeLog.xml</diffChangeLogFile>
                         </configuration>
@@ -205,11 +210,6 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-        </dependency>
         
         <!-- IO libraries -->
         <dependency>
@@ -273,7 +273,13 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-java8</artifactId>
         </dependency>
-                                
+        
+        <!-- jdbc driver -->
+        <dependency>
+            <groupId>${jdbc.dependency.group}</groupId>
+            <artifactId>${jdbc.dependency.artifactId}</artifactId>
+        </dependency>
+                                                                        
     </dependencies>
     <build>      
         <plugins>
@@ -282,7 +288,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
                 <configuration>
                     <compilerArgs>
                       <arg>-Xlint:unchecked</arg>
@@ -335,7 +340,7 @@
                 <dependencies>
                     <dependency>
                         <groupId>${jdbc.dependency.group}</groupId>
-                        <artifactId>${jdbc.dependency.artifact}</artifactId>
+                        <artifactId>${jdbc.dependency.artifactId}</artifactId>
                         <version>${jdbc.dependency.version}</version>
                     </dependency>
                 </dependencies>
@@ -368,6 +373,12 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <skip>${skip-boot-package}</skip>
+                    <arguments>
+                        <argument>--spring.datasource.driverClassName=${jdbc.driverClass}</argument>
+                        <argument>--spring.datasource.url=${jdbc.url}</argument>
+                        <argument>--spring.datasource.username=${jdbc.user}</argument>
+                        <argument>--spring.datasource.password=${jdbc.password}</argument>
+                    </arguments>
                 </configuration>
             </plugin>
                         
