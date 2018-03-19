@@ -32,6 +32,9 @@
         <jdbc.dependency.version>${h2.version}</jdbc.dependency.version>
         
         <querydsl.packageName>sql</querydsl.packageName>
+        <liquibase.reference-url>
+            hibernate:spring:svm.backend.data.entity,svm.backend.security.dao.entity,svm.backend.signup.dao.entity,${orm.entityPackage}?dialect=org.hibernate.dialect.SQLServer2012Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        </liquibase.reference-url>
         
     </properties>
     

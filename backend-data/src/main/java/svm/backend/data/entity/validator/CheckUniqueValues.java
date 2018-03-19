@@ -4,7 +4,6 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.Arrays;
 import javax.persistence.FlushModeType;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -80,8 +79,8 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
         
     private Predicate getFieldSetPredicate(FieldSet fieldSet) {
         BooleanBuilder predicate = new BooleanBuilder();
-        Arrays.asList(fieldSet.value())
-                .forEach(this::getFieldPredicate); 
+        for (Field field : fieldSet.value())
+            predicate.and(getFieldPredicate(field));
         return predicate;
     }
     
@@ -97,6 +96,7 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
         Object value = PropertyAccessorFactory
                 .forBeanPropertyAccess(object)
                 .getPropertyValue(propertyName);
+
         Class<?> valueType = value.getClass();
         
         return valueType.equals(String.class) && ignoreCase ?

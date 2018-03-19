@@ -5,29 +5,29 @@
  */
 package svm.backend.data.entity;
 
-import java.io.Serializable;
+import java.time.ZonedDateTime;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import svm.backend.data.entity.validator.UniqueValues;
 import svm.backend.data.entity.validator.UniqueValues.Field;
 
 @Data
-@UniqueValues(fields = @Field("firstName"))
+@UniqueValues(fields = {
+    @Field("stringIgnoreCase"),
+    @Field(value = "stringExact", ignoreCaseExpr = "${ignoreCaseParam}"),
+    @Field("uniqueNumber")
+})
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class SingleFieldEntity implements Serializable {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String firstName;
-
-    public SingleFieldEntity(String firstName) {
-        this.firstName = firstName;
-    }
-    
+public class SingleFieldEntity extends BaseEntity implements Creatable, Updatable {
+    private String stringIgnoreCase;
+    private String stringExact;
+    private Integer uniqueNumber;
+    private ZonedDateTime createdAt;
+    private ZonedDateTime updatedAt;
 }
