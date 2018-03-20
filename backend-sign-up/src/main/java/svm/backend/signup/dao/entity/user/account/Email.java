@@ -3,8 +3,14 @@ package svm.backend.signup.dao.entity.user.account;
 import javax.persistence.Entity;
 import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.NotEmpty;
+import svm.backend.data.entity.validator.UniqueValues;
+import svm.backend.data.entity.validator.UniqueValues.Field;
 
 @Entity
+@UniqueValues(fields = @Field(
+        value = "account",
+        message = "{svm.backend.signup.dao.entity.user.account.Email.UniqueValues.message}")
+)
 public class Email extends UserAccount {
 
     @NotEmpty

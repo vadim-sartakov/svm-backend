@@ -1,8 +1,5 @@
 package svm.backend.data.entity.validator;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,7 +7,6 @@ import javax.validation.ConstraintViolation;
 import svm.backend.data.entity.SingleFieldEntity;
 import javax.validation.Validator;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

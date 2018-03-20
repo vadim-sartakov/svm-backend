@@ -1,29 +1,23 @@
 package svm.backend.signup.dao.entity.user.account;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Entity;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
-import svm.backend.signup.validator.RegexPatterns;
+import svm.backend.data.entity.validator.UniqueValues;
+import svm.backend.data.entity.validator.UniqueValues.Field;
 
 @Getter
 @Setter
 @Entity
+@UniqueValues(fields = @Field(
+        value = "account",
+        message = "{svm.backend.signup.dao.entity.user.account.PhoneNumber.UniqueValues.message}")
+)
 public class PhoneNumber extends UserAccount {
-    
-    @NotNull
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Transient
-    private String password;
-    
+        
     @NotEmpty
-    @Pattern(
-            regexp = RegexPatterns.MOBILE_PHONE_PATTERN,
-            message = RegexPatterns.WRONG_MOBILE_PHONE_MESSAGE)
+    @svm.backend.signup.validator.PhoneNumber
     @Override
     public String getAccount() {
         return account;

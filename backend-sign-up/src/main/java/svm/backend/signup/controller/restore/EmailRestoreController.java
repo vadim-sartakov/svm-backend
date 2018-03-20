@@ -3,7 +3,6 @@ package svm.backend.signup.controller.restore;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import svm.backend.signup.dao.entity.QTemporalPassword;
 import svm.backend.signup.dao.entity.TemporalPassword;
-import svm.backend.signup.validator.RegexPatterns;
 import svm.backend.signup.service.EmailPasswordSender;
+import svm.backend.signup.validator.Email;
 
 public class EmailRestoreController extends RestoreController {
     
@@ -58,8 +57,7 @@ public class EmailRestoreController extends RestoreController {
     @Data
     public static class RestoreRequest {
         @NotEmpty
-        @Pattern(regexp = RegexPatterns.EMAIL_PATTERN,
-                message = RegexPatterns.WRONG_EMAIL_MESSAGE)
+        @Email
         private String email;
     }
     

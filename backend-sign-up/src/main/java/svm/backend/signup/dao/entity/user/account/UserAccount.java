@@ -19,10 +19,6 @@ import svm.backend.signup.dao.entity.User;
 @Setter
 @Entity
 @Table(name = "USER_ACCOUNTS")
-@UniqueValues(fields = @Field(
-        value = "account",
-        message = "{svm.backend.signup.dao.entity.user.account.UniqueValues.message}")
-)
 public abstract class UserAccount extends UUIDEntity implements Creatable {
     
     @Column(nullable = false)
