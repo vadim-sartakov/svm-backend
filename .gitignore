@@ -24,3 +24,6 @@ nbdist/
 .nb-gradle/
 /core/nbproject/
 /backend-data/nbproject/
+/svm-backend-data/nbproject/
+/svm-backend-data-project/svm-backend-data-core/nbproject/
+/svm-backend-data-project/svm-backend-data/nbproject/

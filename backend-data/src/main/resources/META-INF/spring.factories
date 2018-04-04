@@ -1,5 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-svm.backend.data.config.CoreAutoConfiguration,\
-svm.backend.data.config.RepositoryFactoryAutoConfiguration,\
-svm.backend.data.config.HibernateAutoConfiguration,\
-svm.backend.data.config.QueryFactoryAutoConfiguration

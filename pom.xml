@@ -2,382 +2,39 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>svm.backend</groupId>
-    <artifactId>backend-parent</artifactId>
-    <version>1.0.0</version>
+    <artifactId>svm-backend</artifactId>
+    <version>${backend.version}</version>
     <packaging>pom</packaging>
-    <name>backend-parent</name>
-    <description>Parent project for backend.</description>
+    <name>Backend</name>
+   
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.8.RELEASE</version>
+        <version>1.5.10.RELEASE</version>
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
     
     <properties>
         
+        <backend.version>1.0.0</backend.version>
+        <!-- Duplicate of parent's version definition. Can't use properties there. -->
+        <spring-boot.version>1.5.10.RELEASE</spring-boot.version>
+        
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        
-        <!-- Duplicate of parent's version definition. Can't use properties there. -->
-        <spring-boot.version>1.5.8.RELEASE</spring-boot.version>
-        
-        <skip-boot-package>false</skip-boot-package>
-        <skip-querydsl-sql>false</skip-querydsl-sql>
-        
-        <jdbc.dependency.group>com.h2database</jdbc.dependency.group>
-        <jdbc.dependency.artifactId>h2</jdbc.dependency.artifactId>
-        <jdbc.dependency.version>${h2.version}</jdbc.dependency.version>
-        
-        <querydsl.packageName>sql</querydsl.packageName>
-        <liquibase.reference-url>
-            hibernate:spring:svm.backend.data.entity,svm.backend.security.dao.entity,svm.backend.signup.dao.entity,${orm.entityPackage}?dialect=org.hibernate.dialect.SQLServer2012Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-        </liquibase.reference-url>
-        
+                        
     </properties>
     
     <modules>
-        <module>backend-core</module>
-        <module>backend-data</module>
-        <module>backend-datachange</module>
-        <module>backend-security</module>
-        <module>backend-sms</module>
-        <module>backend-sign-up</module>
-        <module>backend-web</module>
+	<module>svm-backend-parent</module>
+        <module>svm-backend-sms</module>
+        <module>svm-backend-data-project</module>
+        <module>svm-backend-security</module>
+        <module>svm-backend-sign-up</module>
+        <module>svm-backend-web</module>
+        <module>svm-backend-samples</module>
     </modules>
-    
-    <profiles>
         
-        <profile>
-            <id>module</id>
-            <activation>
-                <file>
-                    <exists>module</exists>
-                </file>
-            </activation>
-            <properties>
-                <skip-boot-package>true</skip-boot-package>
-                <skip-querydsl-sql>true</skip-querydsl-sql>
-            </properties>
-        </profile>
-                
-        <!-- Liquibase DB migration -->
-        <profile>
-            <id>liquibase</id>
-            <activation>
-                <file>
-                    <exists>src/main/resources/db/changelog/changelog-master.xml</exists>
-                </file>
-            </activation>
-            
-            <dependencies>
-                <dependency>
-                    <groupId>org.liquibase</groupId>
-                    <artifactId>liquibase-core</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>org.liquibase</groupId>
-                    <artifactId>liquibase-maven-plugin</artifactId>
-                    <version>${liquibase.version}</version>
-                </dependency> 
-            </dependencies>
-            
-            <build>
-                <plugins>
-                    
-                    <!-- Liquibase plugin configuration for liquibase:diff goal -->
-                    <plugin>
-                        <groupId>org.liquibase</groupId>
-                        <artifactId>liquibase-maven-plugin</artifactId>
-                        <version>${liquibase.version}</version>
-                        <configuration>
-                            <changeLogFile>db/changelog/changelog-master.xml</changeLogFile>
-                            <url>${jdbc.url}</url>
-                            <username>${jdbc.user}</username>
-                            <password>${jdbc.password}</password>
-                            <driver>${jdbc.driverClass}</driver>
-                            <referenceUrl>${liquibase.reference-url}</referenceUrl>
-                            <outputChangeLogFile>target/liquibase-outputChangeLog.xml</outputChangeLogFile>
-                            <diffChangeLogFile>target/liquibase-diff-changeLog.xml</diffChangeLogFile>
-                        </configuration>
-
-                        <dependencies>
-
-                            <dependency>
-                                <groupId>org.liquibase.ext</groupId>
-                                <artifactId>liquibase-hibernate5</artifactId>
-                                <version>3.6</version>
-                            </dependency>                   
-                            <dependency>
-                                <groupId>org.springframework.boot</groupId>
-                                <artifactId>spring-boot-starter-data-jpa</artifactId>
-                                <version>${spring-boot.version}</version>
-                            </dependency>
-                            <dependency>
-                                <groupId>org.springframework.boot</groupId>
-                                <artifactId>spring-boot-starter-web</artifactId>
-                                <version>${spring-boot.version}</version>
-                            </dependency>
-
-                        </dependencies>
-
-                    </plugin>
-                    
-                </plugins>
-            </build>
-        </profile>
-
-    </profiles>
-        
-    <dependencies>
-                
-        <!-- Spring -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-data</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-rest</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-hateoas</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jersey</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-        </dependency>
-                
-        <!-- For html template mapping -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        
-        <!-- Boilerplate remover. (Getter, setter, equals, hashCode, etc.) -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        
-        <!-- Testing -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.restdocs</groupId>
-            <artifactId>spring-restdocs-mockmvc</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
-        <!-- IO libraries -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.6</version>
-        </dependency>
-        
-        <!-- JWT -->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.0</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>net.sourceforge.nekohtml</groupId>
-            <artifactId>nekohtml</artifactId>
-        </dependency>
-        
-        <!-- Support of java.time during JSON processing -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-        
-        <!-- JAX-RS client -->
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-client</artifactId>
-        </dependency>
-                        
-        <!-- QueryDSL query enhancer -->
-        <dependency> 
-            <groupId>com.querydsl</groupId> 
-            <artifactId>querydsl-apt</artifactId> 
-            <scope>provided</scope>
-        </dependency>
-        <dependency> 
-            <groupId>com.querydsl</groupId> 
-            <artifactId>querydsl-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-sql</artifactId>
-            <version>${querydsl.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-sql-spring</artifactId>
-            <version>${querydsl.version}</version>
-        </dependency>
-                
-        <!-- Support for java 8 features (java.time) -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-java8</artifactId>
-        </dependency>
-        
-        <!-- jdbc driver -->
-        <dependency>
-            <groupId>${jdbc.dependency.group}</groupId>
-            <artifactId>${jdbc.dependency.artifactId}</artifactId>
-        </dependency>
-                                                                        
-    </dependencies>
-    <build>      
-        <plugins>
-                        
-            <!-- Enabling compile warnings -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <compilerArgs>
-                      <arg>-Xlint:unchecked</arg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
-                                                
-            <!-- QueryDsl annotation processor -->
-            <plugin>
-                <groupId>com.mysema.maven</groupId>
-                <artifactId>apt-maven-plugin</artifactId>
-                <version>1.1.3</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>process</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>target/generated-sources/java</outputDirectory>
-                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            <!-- Query dsl sql -->
-            <plugin>
-                <groupId>com.querydsl</groupId>
-                <artifactId>querydsl-maven-plugin</artifactId>
-                <version>${querydsl.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>export</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <skip>${skip-querydsl-sql}</skip>
-                    <jdbcDriver>${jdbc.driverClass}</jdbcDriver>
-                    <jdbcUrl>${jdbc.url}</jdbcUrl>
-                    <jdbcUser>${jdbc.user}</jdbcUser>
-                    <jdbcPassword>${jdbc.password}</jdbcPassword>
-                    <schemaPattern>${querydsl.schemaPattern}</schemaPattern>
-                    <tableNamePattern>${querydsl.tableNamePattern}</tableNamePattern>
-                    <packageName>${querydsl.packageName}</packageName>
-                    <namePrefix>S</namePrefix>
-                    <targetFolder>target/generated-sources/java</targetFolder>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>${jdbc.dependency.group}</groupId>
-                        <artifactId>${jdbc.dependency.artifactId}</artifactId>
-                        <version>${jdbc.dependency.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-                                                
-            <!-- Code coverage -->
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.9</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            <!-- Uber-jar package -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <skip>${skip-boot-package}</skip>
-                    <arguments>
-                        <argument>--spring.datasource.driverClassName=${jdbc.driverClass}</argument>
-                        <argument>--spring.datasource.url=${jdbc.url}</argument>
-                        <argument>--spring.datasource.username=${jdbc.user}</argument>
-                        <argument>--spring.datasource.password=${jdbc.password}</argument>
-                    </arguments>
-                </configuration>
-            </plugin>
-                        
-        </plugins>       
-    </build>
 </project>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>svm.backend</groupId>
+        <artifactId>svm-backend</artifactId>
+        <version>${backend.version}</version>
+        <relativePath>../</relativePath>
+    </parent>
+    <artifactId>svm-backend-sms</artifactId>
+    <packaging>pom</packaging>
+    <name>Backend sms</name>
+	
+    <modules>
+        <module>svm-backend-sms-core</module>
+        <module>svm-backend-sms-mts</module>
+    </modules>
+    
+</project>
