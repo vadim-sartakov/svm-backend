@@ -1,6 +1,7 @@
 package svm.backend.data.migration.service;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +20,21 @@ public class MigrationExecutor implements InitializingBean {
     private final Logger logger = LoggerFactory.getLogger(MigrationExecutor.class);
     
     private final MigrationRepository migrationRepository;
-    private final List<MigrationUpdate> updates;
-    private final List<MigrationRollback> rollbacks;
+    private final Optional<List<MigrationUpdate>> updates;
+    private final Optional<List<MigrationRollback>> rollbacks;
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        updates.stream().sorted((objectOne, objectTwo) -> objectOne.getOrder().compareTo(objectTwo.getOrder()))
-                .filter(this::shouldUpdate).forEach(this::update);
-        rollbacks.stream().sorted((objectOne, objectTwo) -> objectTwo.getOrder().compareTo(objectOne.getOrder()))
-               .filter(this::shouldRollback).forEach(this::rollback);
+        updates.ifPresent(list -> list.stream()
+                .sorted(this::compareUpdates)
+                .filter(this::shouldUpdate).forEach(this::update));
+        rollbacks.ifPresent(list -> list.stream()
+                .sorted(this::compareRollbacks)
+                .filter(this::shouldRollback).forEach(this::rollback));
+    }
+    
+    private int compareUpdates(MigrationUpdate objectOne, MigrationUpdate objectTwo) {
+        return objectOne.getOrder().compareTo(objectTwo.getOrder());
     }
     
     private boolean shouldUpdate(MigrationUpdate dataChange) {       
@@ -37,14 +44,17 @@ public class MigrationExecutor implements InitializingBean {
     }
 
     private void update(MigrationUpdate updateTask) {
-        String id = updateTask.getId();
         updateTask.update();
         migrationRepository.save(updateTask);
-        logger.info("Successfully applied migration {}", id);
+        logger.info("Successfully applied migration {}", updateTask.getId());
+    }
+    
+    private int compareRollbacks(MigrationRollback objectOne, MigrationRollback objectTwo) {
+        return objectTwo.getOrder().compareTo(objectOne.getOrder());
     }
     
     private boolean shouldRollback(MigrationRollback dataChange) {
-        return dataChange.shouldRollback() && migrationRepository.findById(dataChange.getId()) == null;
+        return dataChange.shouldRollback() && migrationRepository.findById(dataChange.getId()) != null;
     }
     
     private void rollback(MigrationRollback dataChange) {
