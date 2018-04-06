@@ -1,4 +1,4 @@
-package svm.backend.data.entity.validator;
+package svm.backend.data.validator;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.TYPE;

@@ -1,4 +1,4 @@
-package svm.backend.data.entity.validator;
+package svm.backend.data.validator;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
@@ -15,10 +15,10 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import svm.backend.data.entity.UUIDEntity;
-import svm.backend.data.entity.validator.UniqueValues.FieldSet;
-import svm.backend.data.entity.validator.UniqueValues.Field;
+import svm.backend.data.validator.UniqueValues.FieldSet;
+import svm.backend.data.validator.UniqueValues.Field;
 
-@RequiredArgsConstructor(onConstructor=@__(@Autowired))
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Object> {
 
     private final JPAQueryFactory jpaQueryFactory;

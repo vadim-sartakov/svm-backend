@@ -1,8 +1,6 @@
-package svm.backend.data.entity.validator;
+package svm.backend.data.validator;
 
 import java.util.Set;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolation;
 import svm.backend.data.entity.SingleFieldEntity;
 import javax.validation.Validator;
@@ -13,13 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import svm.backend.data.entity.MultipleFieldEntity;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(properties = "ignoreCaseParam=false")
 @AutoConfigureTestDatabase
-@Transactional
 public class CheckUniqueValuesTest {
     
     private final static String TEST_STRING = "aNdrEW";
