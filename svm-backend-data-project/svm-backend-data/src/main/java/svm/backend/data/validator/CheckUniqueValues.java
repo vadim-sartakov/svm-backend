@@ -3,33 +3,33 @@ package svm.backend.data.validator;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import javax.persistence.FlushModeType;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+import org.springframework.data.repository.support.Repositories;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import svm.backend.data.entity.UUIDEntity;
 import svm.backend.data.validator.UniqueValues.FieldSet;
 import svm.backend.data.validator.UniqueValues.Field;
 
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Object> {
 
-    private final JPAQueryFactory jpaQueryFactory;
+    private final Repositories repositories;
     private final ConfigurableBeanFactory beanFactory;
         
     private UniqueValues uniqueValues;
     
     private boolean isValid;
-    private ConstraintValidatorContext context;
     private Object object;
+    private ConstraintValidatorContext context;
     private PathBuilder<?> rootPath;
+    private QueryDslPredicateExecutor repository;
 
     @Override
     public void initialize(UniqueValues uniqueValues) {
@@ -44,8 +44,14 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
         this.object = object;
         this.context = context;
         
-        Class<?> rootType = getRootClass(object.getClass());
-        this.rootPath = new PathBuilder<>(rootType, rootType.getSimpleName().toLowerCase());
+        Class<?> objectType = object.getClass();
+        this.rootPath = new PathBuilder<>(objectType, objectType.getSimpleName().toLowerCase());
+        
+        try {
+            repository = (QueryDslPredicateExecutor) repositories.getRepositoryFor(objectType);
+        } catch(Exception e) {
+            throw new RuntimeException("Unable to retrieve Query dsl repository of type " + objectType.getSimpleName());
+        }
         
         if (uniqueValues.fieldSets().length > 0) {
             for (FieldSet currentFieldSet : uniqueValues.fieldSets())
@@ -56,14 +62,6 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
                 
         return isValid;
         
-    }
-    
-    private Class<?> getRootClass(Class<?> currentClass) {
-        Class<?> superclass = currentClass.getSuperclass();
-        if (superclass != null && superclass != Object.class && superclass != UUIDEntity.class) {
-            return getRootClass(superclass);
-        } else
-            return currentClass;
     }
     
     private void checkFieldSet(FieldSet fieldSet) {
@@ -113,12 +111,16 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
                 .addConstraintViolation();
     }
     
+    /**
+     * To set specific flush mode in JPA repository use
+     * @QueryHints(value = { @QueryHint(name = org.hibernate.annotations.QueryHints.FLUSH_MODE, value = "COMMIT") })
+     * on repository method
+     * This will prevent recursive validation checks in hibernate.
+     * @param predicate
+     * @return 
+     */
     private Object getDuplicate(Predicate predicate) {
-        return jpaQueryFactory.selectFrom(rootPath)
-                .setFlushMode(FlushModeType.COMMIT)
-                .where(predicate)
-                .fetchOne();
-        
+        return repository.findAll(predicate);        
     }
     
     private void checkFields(Field[] fields) {

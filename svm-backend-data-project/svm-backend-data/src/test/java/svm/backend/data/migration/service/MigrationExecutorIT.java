@@ -7,11 +7,15 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
+import svm.backend.data.Application;
+import svm.backend.data.config.MigrationConfig;
 import svm.backend.data.migration.model.MigrationUpdate;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = Application.class)
+@Import(MigrationConfig.class)
 public class MigrationExecutorIT {
     
     @MockBean private MigrationRepository migrationRepository;

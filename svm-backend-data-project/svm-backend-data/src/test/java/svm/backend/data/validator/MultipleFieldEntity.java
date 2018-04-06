@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package svm.backend.data.entity;
+package svm.backend.data.validator;
 
-import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,8 +18,7 @@ import svm.backend.data.validator.UniqueValues.Field;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-public class MultipleFieldEntity extends BaseEntity {
+public class MultipleFieldEntity {
     private String firstName;
     private String lastName;
 }

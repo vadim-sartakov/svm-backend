@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package svm.backend.data.entity;
+package svm.backend.data.validator;
 
 import java.time.ZonedDateTime;
-import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,8 +22,7 @@ import svm.backend.data.validator.UniqueValues.Field;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class SingleFieldEntity extends BaseEntity implements Creatable, Updatable {
+public class SingleFieldEntity {
     private String stringIgnoreCase;
     private String stringExact;
     private Integer uniqueNumber;
