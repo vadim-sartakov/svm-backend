@@ -5,7 +5,7 @@
         <groupId>svm.backend</groupId>
         <artifactId>svm-backend-parent</artifactId>
         <version>${backend.version}</version>
-        <relativePath>../../../svm-backend-parent</relativePath>
+        <relativePath>../../svm-backend-parent</relativePath>
     </parent>
     <artifactId>svm-backend-data-jpa-parent</artifactId>
     <packaging>pom</packaging>

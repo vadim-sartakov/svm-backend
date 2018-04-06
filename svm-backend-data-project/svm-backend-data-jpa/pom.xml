@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>svm.backend</groupId>
-        <artifactId>svm-backend-data-jpa-project</artifactId>
+        <artifactId>svm-backend-data-project</artifactId>
         <version>${backend.version}</version>
         <relativePath>../</relativePath>
     </parent>
