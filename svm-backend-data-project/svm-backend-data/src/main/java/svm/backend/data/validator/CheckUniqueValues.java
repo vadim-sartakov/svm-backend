@@ -113,7 +113,7 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
     
     /**
      * To set specific flush mode in JPA repository use
-     * @QueryHints(value = { @QueryHint(name = org.hibernate.annotations.QueryHints.FLUSH_MODE, value = "COMMIT") })
+     * @QueryHints(@QueryHint(name = org.hibernate.annotations.QueryHints.FLUSH_MODE, value = "COMMIT"))
      * on repository method
      * This will prevent recursive validation checks in hibernate.
      * @param predicate
