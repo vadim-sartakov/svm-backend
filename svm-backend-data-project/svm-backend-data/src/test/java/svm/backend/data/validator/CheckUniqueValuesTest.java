@@ -1,6 +1,7 @@
 package svm.backend.data.validator;
 
 import com.querydsl.core.types.Predicate;
+import java.util.Iterator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
 import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext;
@@ -19,6 +20,13 @@ public class CheckUniqueValuesTest {
         
     private final static String TEST_STRING = "aNdrEW";
     private final Repositories repositories = Mockito.mock(Repositories.class);
+    
+    private final Iterable emptyIterable = Mockito.mock(Iterable.class);
+    private final Iterable populatedIterable = Mockito.mock(Iterable.class);
+    private final Iterable iterable = Mockito.mock(Iterable.class);
+    private final Iterator emptyIterator = Mockito.mock(Iterator.class);
+    private final Iterator populatedIterator = Mockito.mock(Iterator.class);
+    
     private final QueryDslPredicateExecutor<?> repository = Mockito.mock(QueryDslPredicateExecutor.class);
     
     private final ConfigurableBeanFactory beanFactory = Mockito.mock(ConfigurableBeanFactory.class);
@@ -28,14 +36,19 @@ public class CheckUniqueValuesTest {
     private final ConstraintViolationBuilder contextBuilder = Mockito.mock(ConstraintViolationBuilder.class);
         
     public CheckUniqueValuesTest() {
-        Mockito.when(beanFactory.resolveEmbeddedValue(anyString()))
-                .thenReturn("true");
+        
+        Mockito.when(emptyIterable.iterator()).thenReturn(emptyIterator);
+        Mockito.when(populatedIterable.iterator()).thenReturn(populatedIterator);
+        Mockito.when(emptyIterator.hasNext()).thenReturn(false);
+        Mockito.when(populatedIterator.hasNext()).thenReturn(true);
+        
+        Mockito.when(beanFactory.resolveEmbeddedValue(anyString())).thenReturn("true");
         Mockito.when(contextBuilder.addPropertyNode(anyString()))
                 .thenReturn(Mockito.mock(NodeBuilderCustomizableContext.class));
-        Mockito.when(context.buildConstraintViolationWithTemplate(anyString()))
-                .thenReturn(contextBuilder);
-        Mockito.when(repositories.getRepositoryFor(anyObject()))
-                .thenReturn(repository);
+        Mockito.when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(contextBuilder);
+        Mockito.when(repositories.getRepositoryFor(anyObject())).thenReturn(repository);
+        Mockito.when(repository.findAll(any(Predicate.class))).thenReturn(emptyIterable);
+        
     }
     
     @Test
@@ -53,18 +66,36 @@ public class CheckUniqueValuesTest {
         Mockito.verify(contextBuilder, times(0)).addPropertyNode(anyString());
         
         Mockito.when(repository.findAll(any(Predicate.class)))
-                .thenReturn(Mockito.mock(Iterable.class));
+                .thenReturn(populatedIterable, populatedIterable, emptyIterable);
         
         assertEquals(false, instance.isValid(testEntity, context));
         
-        Mockito.verify(contextBuilder, times(1)).addPropertyNode("stringExact");
+        Mockito.verify(contextBuilder, times(2)).addPropertyNode(anyString());
         Mockito.verify(contextBuilder, times(1)).addPropertyNode("stringIgnoreCase");
-        Mockito.verify(contextBuilder, times(1)).addPropertyNode("uniqueNumber");
+        Mockito.verify(contextBuilder, times(1)).addPropertyNode("stringExact");
         
     }
 
     @Test
     public void testFieldSet() {
+        
+        MultipleFieldEntity testEntity = MultipleFieldEntity.builder()
+                .firstName(TEST_STRING)
+                .lastName(TEST_STRING)
+                .build();
+        
+        instance.initialize(testEntity.getClass().getAnnotation(UniqueValues.class));
+        
+        assertEquals(true, instance.isValid(testEntity, context));
+        Mockito.verify(contextBuilder, times(0)).addPropertyNode(anyString());
+        
+        Mockito.when(repository.findAll(any(Predicate.class)))
+                .thenReturn(populatedIterable);
+        
+        assertEquals(false, instance.isValid(testEntity, context));
+        Mockito.verify(contextBuilder, times(2)).addPropertyNode(anyString());
+        Mockito.verify(contextBuilder, times(1)).addPropertyNode("firstName");
+        Mockito.verify(contextBuilder, times(1)).addPropertyNode("lastName");
         
     }
     

@@ -1,7 +1,9 @@
 package svm.backend.data.validator;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.PathBuilder;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -10,6 +12,7 @@ import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+import org.springframework.data.querydsl.SimpleEntityPathResolver;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
@@ -22,13 +25,13 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
 
     private final Repositories repositories;
     private final ConfigurableBeanFactory beanFactory;
-        
+            
     private UniqueValues uniqueValues;
     
     private boolean isValid;
     private Object object;
     private ConstraintValidatorContext context;
-    private PathBuilder<?> rootPath;
+    private EntityPath<?> rootPath;
     private QueryDslPredicateExecutor repository;
 
     @Override
@@ -45,8 +48,8 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
         this.context = context;
         
         Class<?> objectType = object.getClass();
-        this.rootPath = new PathBuilder<>(objectType, objectType.getSimpleName().toLowerCase());
-        
+        //this.rootPath = new PathBuilder<>(objectType, objectType.getSimpleName().toLowerCase());
+        this.rootPath = SimpleEntityPathResolver.INSTANCE.createPath(objectType);
         try {
             repository = (QueryDslPredicateExecutor) repositories.getRepositoryFor(objectType);
         } catch(Exception e) {
@@ -67,7 +70,7 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
     private void checkFieldSet(FieldSet fieldSet) {
         
         Predicate fieldSetPredicate = getFieldSetPredicate(fieldSet);
-        if (getDuplicate(fieldSetPredicate) == null)
+        if (!getDuplicate(fieldSetPredicate).iterator().hasNext())
             return;
         
         for (Field field : fieldSet.value())
@@ -98,8 +101,8 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
         Class<?> valueType = value.getClass();
         
         return valueType.equals(String.class) && ignoreCase ?
-                rootPath.getString(propertyName).equalsIgnoreCase((String) value) :
-                rootPath.get(propertyName).eq(value);
+                Expressions.stringPath(rootPath, propertyName).equalsIgnoreCase((String) value) :
+                Expressions.path(Object.class, rootPath, propertyName).eq(value);
         
     }
         
@@ -119,7 +122,7 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
      * @param predicate
      * @return 
      */
-    private Object getDuplicate(Predicate predicate) {
+    private Iterable getDuplicate(Predicate predicate) {
         return repository.findAll(predicate);        
     }
     
@@ -127,7 +130,7 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
                 
         for (Field field : fields) {
             Predicate predicate = getFieldPredicate(field);
-            if (getDuplicate(predicate) == null)
+            if (!getDuplicate(predicate).iterator().hasNext())
                 continue;
             addError(field.value(), field.message());
         }

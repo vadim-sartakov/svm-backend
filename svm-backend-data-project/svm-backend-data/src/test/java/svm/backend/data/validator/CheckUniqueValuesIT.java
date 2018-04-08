@@ -1,6 +1,8 @@
 package svm.backend.data.validator;
 
 import java.util.Set;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import static org.junit.Assert.assertEquals;
@@ -11,20 +13,26 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import svm.backend.data.Application;
 import svm.backend.data.config.RepositoriesConfig;
 
-/*RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest(properties = "ignoreCaseParam=false", classes = Application.class)
-@Import({ RepositoriesConfig.class, CheckUniqueValues.class })
-@AutoConfigureTestDatabase*/
+@Import({
+    RepositoriesConfig.class,
+    CheckUniqueValues.class
+})
+@AutoConfigureTestDatabase
+@Transactional
 public class CheckUniqueValuesIT {
     
     private final static String TEST_STRING = "aNdrEW";
     @Autowired private Validator validator;
-    private Set<ConstraintViolation<Object>> violations;    
+    @PersistenceContext private EntityManager entityManager;
+    private Set<ConstraintViolation<Object>> violations;
     
-    //@Test
+    @Test
     public void testSingleFields() {
                 
         SingleFieldEntity testEntity = SingleFieldEntity.builder()
@@ -36,8 +44,8 @@ public class CheckUniqueValuesIT {
         violations = validator.validate(testEntity);
         assertEquals(violations.size(), 0);
         
-        //entityManager.persist(testEntity);
-        //entityManager.flush();
+        /*entityManager.persist(testEntity);
+        entityManager.flush();
         
         testEntity.setStringIgnoreCase(TEST_STRING.toLowerCase());
         violations = validator.validate(testEntity);
@@ -45,11 +53,11 @@ public class CheckUniqueValuesIT {
         
         testEntity.setStringExact(TEST_STRING.toLowerCase());
         violations = validator.validate(testEntity);
-        assertEquals(2, violations.size());
+        assertEquals(2, violations.size());*/
                 
     }
         
-    //@Test
+    @Test
     public void testFieldSet() {
         
         MultipleFieldEntity testEntity = MultipleFieldEntity.builder()
@@ -60,8 +68,8 @@ public class CheckUniqueValuesIT {
         violations = validator.validate(testEntity);
         assertEquals(violations.size(), 0);
         
-        //entityManager.persist(testEntity);
-        //entityManager.flush();
+        /*entityManager.persist(testEntity);
+        entityManager.flush();
         
         violations = validator.validate(testEntity);
         assertEquals(2, violations.size());
@@ -72,7 +80,7 @@ public class CheckUniqueValuesIT {
         
         testEntity.setFirstName("");
         violations = validator.validate(testEntity);
-        assertEquals(0, violations.size());
+        assertEquals(0, violations.size());*/
         
     }
     

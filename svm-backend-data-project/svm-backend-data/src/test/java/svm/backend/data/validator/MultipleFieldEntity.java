@@ -5,6 +5,10 @@
  */
 package svm.backend.data.validator;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,12 +17,16 @@ import svm.backend.data.validator.UniqueValues;
 import svm.backend.data.validator.UniqueValues.FieldSet;
 import svm.backend.data.validator.UniqueValues.Field;
 
+@Entity
 @Data
 @UniqueValues(fieldSets = @FieldSet({ @Field("firstName"), @Field(value = "lastName", ignoreCaseExpr = "${ignoreCaseParam}") }))
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class MultipleFieldEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String firstName;
     private String lastName;
 }
