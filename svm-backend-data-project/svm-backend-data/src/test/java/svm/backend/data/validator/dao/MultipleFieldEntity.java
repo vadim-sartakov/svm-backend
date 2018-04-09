@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package svm.backend.data.validator;
+package svm.backend.data.validator.dao;
 
-import java.time.ZonedDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,27 +13,25 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import svm.backend.data.validator.UniqueValues;
+import svm.backend.data.validator.UniqueValues;
+import svm.backend.data.validator.UniqueValues.FieldSet;
 import svm.backend.data.validator.UniqueValues.Field;
 
 @Entity
 @Data
-@UniqueValues(fields = {
-    @Field("stringIgnoreCase"),
-    @Field(value = "stringExact", ignoreCaseExpr = "${ignoreCaseParam}"),
-    @Field("uniqueNumber")
-})
-@Builder
-@AllArgsConstructor
+@UniqueValues(groups = TestGroup.class,
+        fieldSets = @FieldSet({
+            @Field("firstName"),
+            @Field(value = "lastName", ignoreCaseExpr = "${ignoreCaseParam}")
+        }))
 @NoArgsConstructor
-public class SingleFieldEntity {
-    
+@AllArgsConstructor
+@Builder
+public class MultipleFieldEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    private String stringIgnoreCase;
-    private String stringExact;
-    private Integer uniqueNumber;
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
+    private String firstName;
+    private String lastName;
 }

@@ -1,5 +1,7 @@
 package svm.backend.data.validator;
 
+import svm.backend.data.validator.dao.SingleFieldEntity;
+import svm.backend.data.validator.dao.MultipleFieldEntity;
 import com.querydsl.core.types.Predicate;
 import java.util.Iterator;
 import javax.validation.ConstraintValidatorContext;
@@ -16,18 +18,18 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.support.Repositories;
 
+@SuppressWarnings("unchecked")
 public class CheckUniqueValuesTest {
         
     private final static String TEST_STRING = "aNdrEW";
     private final Repositories repositories = Mockito.mock(Repositories.class);
     
-    private final Iterable emptyIterable = Mockito.mock(Iterable.class);
-    private final Iterable populatedIterable = Mockito.mock(Iterable.class);
-    private final Iterable iterable = Mockito.mock(Iterable.class);
-    private final Iterator emptyIterator = Mockito.mock(Iterator.class);
-    private final Iterator populatedIterator = Mockito.mock(Iterator.class);
+    private final Iterable<Object> emptyIterable = Mockito.mock(Iterable.class);
+    private final Iterable<Object> populatedIterable = Mockito.mock(Iterable.class);
+    private final Iterator<Object> emptyIterator = Mockito.mock(Iterator.class);
+    private final Iterator<Object> populatedIterator = Mockito.mock(Iterator.class);
     
-    private final QueryDslPredicateExecutor<?> repository = Mockito.mock(QueryDslPredicateExecutor.class);
+    private final QueryDslPredicateExecutor<Object> repository = Mockito.mock(QueryDslPredicateExecutor.class);
     
     private final ConfigurableBeanFactory beanFactory = Mockito.mock(ConfigurableBeanFactory.class);
     private final CheckUniqueValues instance = new CheckUniqueValues(repositories, beanFactory);

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package svm.backend.data.validator;
+package svm.backend.data.validator.dao;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,19 +14,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import svm.backend.data.validator.UniqueValues;
-import svm.backend.data.validator.UniqueValues.FieldSet;
 import svm.backend.data.validator.UniqueValues.Field;
 
 @Entity
 @Data
-@UniqueValues(fieldSets = @FieldSet({ @Field("firstName"), @Field(value = "lastName", ignoreCaseExpr = "${ignoreCaseParam}") }))
-@NoArgsConstructor
-@AllArgsConstructor
+@UniqueValues(groups = TestGroup.class, fields = {
+    @Field("stringIgnoreCase"),
+    @Field(value = "stringExact", ignoreCaseExpr = "${ignoreCaseParam}"),
+    @Field("uniqueNumber")
+})
 @Builder
-public class MultipleFieldEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+public class SingleFieldEntity {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
+    private String stringIgnoreCase;
+    private String stringExact;
+    private Integer uniqueNumber;
+    
 }

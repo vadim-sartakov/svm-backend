@@ -1,4 +1,4 @@
-package svm.backend.data.validator;
+package svm.backend.data.validator.dao;
 
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;

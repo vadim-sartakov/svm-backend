@@ -40,6 +40,7 @@
     <build>
         <pluginManagement>
             <plugins>
+                
                 <!-- Code coverage -->
                 <plugin>
                     <groupId>org.jacoco</groupId>
@@ -60,6 +61,18 @@
                         </execution>
                     </executions>
                 </plugin>
+                
+                <!-- Enabling compile warnings -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <compilerArgs>
+                          <arg>-Xlint:unchecked</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+                
             </plugins>
         </pluginManagement>
     </build>

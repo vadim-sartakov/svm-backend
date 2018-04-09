@@ -26,7 +26,7 @@ public class MigrationExecutorTest {
         List<MigrationUpdate> updatesSorted = Arrays.asList(udateTask("0", 0), udateTask("1", 1), udateTask("2", 2));
         List<MigrationUpdate> updatesUnsorted = Arrays.asList(updatesSorted.get(2), updatesSorted.get(1), updatesSorted.get(0));
         
-        Mockito.when(migrationRepository.findById("0")).thenReturn(updatesSorted.get(0));
+        Mockito.when(migrationRepository.findOne("0")).thenReturn(updatesSorted.get(0));
         
         MigrationExecutor instance = new MigrationExecutor(
                 migrationRepository,
@@ -47,9 +47,9 @@ public class MigrationExecutorTest {
         List<MigrationRollback> rollbacksSorted = Arrays.asList(combinedTask("2", 2, true), combinedTask("1", 1, true), combinedTask("0", 0, false));
         List<MigrationRollback> rollbacksUnsorted = Arrays.asList(rollbacksSorted.get(2), rollbacksSorted.get(1), rollbacksSorted.get(0));
         
-        Mockito.when(migrationRepository.findById("2")).thenReturn(rollbacksSorted.get(0));
-        Mockito.when(migrationRepository.findById("1")).thenReturn(null);
-        Mockito.when(migrationRepository.findById("0")).thenReturn(rollbacksSorted.get(2));
+        Mockito.when(migrationRepository.findOne("2")).thenReturn(rollbacksSorted.get(0));
+        Mockito.when(migrationRepository.findOne("1")).thenReturn(null);
+        Mockito.when(migrationRepository.findOne("0")).thenReturn(rollbacksSorted.get(2));
         
         MigrationExecutor instance = new MigrationExecutor(
                 migrationRepository,

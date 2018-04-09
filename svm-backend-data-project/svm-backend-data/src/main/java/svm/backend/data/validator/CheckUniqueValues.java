@@ -4,7 +4,6 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.PathBuilder;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +47,6 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
         this.context = context;
         
         Class<?> objectType = object.getClass();
-        //this.rootPath = new PathBuilder<>(objectType, objectType.getSimpleName().toLowerCase());
         this.rootPath = SimpleEntityPathResolver.INSTANCE.createPath(objectType);
         try {
             repository = (QueryDslPredicateExecutor) repositories.getRepositoryFor(objectType);

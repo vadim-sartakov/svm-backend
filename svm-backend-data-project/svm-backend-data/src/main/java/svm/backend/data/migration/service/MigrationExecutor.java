@@ -14,7 +14,7 @@ import svm.backend.data.migration.model.MigrationUpdate;
  * DataChanges will be executed by this service.
  * @author Sartakov
  */
-@AllArgsConstructor(onConstructor_= @Autowired(required = false))
+@AllArgsConstructor(onConstructor_ = @Autowired(required = false))
 public class MigrationExecutor implements InitializingBean {
         
     private final Logger logger = LoggerFactory.getLogger(MigrationExecutor.class);
@@ -37,10 +37,10 @@ public class MigrationExecutor implements InitializingBean {
         return objectOne.getOrder().compareTo(objectTwo.getOrder());
     }
     
-    private boolean shouldUpdate(MigrationUpdate dataChange) {       
+    private boolean shouldUpdate(MigrationUpdate dataChange) {
         return !(dataChange instanceof MigrationRollback
                 && ((MigrationRollback) dataChange).shouldRollback())
-                && migrationRepository.findById(dataChange.getId()) == null;
+                && migrationRepository.findOne(dataChange.getId()) == null;
     }
 
     private void update(MigrationUpdate updateTask) {
@@ -54,7 +54,7 @@ public class MigrationExecutor implements InitializingBean {
     }
     
     private boolean shouldRollback(MigrationRollback dataChange) {
-        return dataChange.shouldRollback() && migrationRepository.findById(dataChange.getId()) != null;
+        return dataChange.shouldRollback() && migrationRepository.findOne(dataChange.getId()) != null;
     }
     
     private void rollback(MigrationRollback dataChange) {
