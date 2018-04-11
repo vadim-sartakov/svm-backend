@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.test.context.junit4.SpringRunner;
 import svm.backend.data.Application;
 import svm.backend.data.config.MigrationConfig;
@@ -18,6 +19,7 @@ import svm.backend.data.migration.model.MigrationUpdate;
 @Import(MigrationConfig.class)
 public class MigrationExecutorIT {
     
+    @MockBean private ReloadableResourceBundleMessageSource messageSource;
     @MockBean private MigrationRepository migrationRepository;
     @MockBean private MigrationUpdate migrationUpdate;
     @Autowired private MigrationExecutor migrationExecutor;    
