@@ -1,4 +1,4 @@
-package svm.backend.data.entity.listener;
+package svm.backend.data.jpa.entity.listener;
 
 import java.util.Collection;
 import javax.persistence.OneToMany;

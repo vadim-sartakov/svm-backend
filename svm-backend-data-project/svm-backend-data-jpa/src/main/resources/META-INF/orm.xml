@@ -6,8 +6,8 @@
     <persistence-unit-metadata>
         <persistence-unit-defaults>
             <entity-listeners>
-                <entity-listener class="svm.backend.data.entity.listener.CreateListener" />
-                <entity-listener class="svm.backend.data.entity.listener.UpdateListener" />
+                <entity-listener class="svm.backend.data.jpa.entity.listener.CreateListener" />
+                <entity-listener class="svm.backend.data.jpa.entity.listener.UpdateListener" />
             </entity-listeners>
         </persistence-unit-defaults>
     </persistence-unit-metadata>

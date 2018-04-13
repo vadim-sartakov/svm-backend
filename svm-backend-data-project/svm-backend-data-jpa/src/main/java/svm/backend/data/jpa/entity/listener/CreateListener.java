@@ -1,8 +1,8 @@
-package svm.backend.data.entity.listener;
+package svm.backend.data.jpa.entity.listener;
 
 import java.time.ZonedDateTime;
 import javax.persistence.PrePersist;
-import svm.backend.data.entity.Creatable;
+import svm.backend.data.jpa.entity.Creatable;
 
 public class CreateListener {
     @PrePersist

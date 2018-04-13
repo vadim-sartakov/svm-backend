@@ -1,4 +1,4 @@
-package svm.backend.data.entity;
+package svm.backend.data.jpa.entity;
 
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
@@ -11,7 +11,7 @@ import javax.persistence.MappedSuperclass;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
-import svm.backend.data.entity.listener.OwnerListener;
+import svm.backend.data.jpa.entity.listener.OwnerListener;
 
 @Data
 @MappedSuperclass

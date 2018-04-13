@@ -1,10 +1,12 @@
-package svm.backend.data.config;
+package svm.backend.data.jpa.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.sql.SQLQueryFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,6 +21,10 @@ public class QueryFactoryAutoConfiguration {
         return new JPAQueryFactory(entityManager);
     }
     
-    // TODO: Make query dsl - sql service
-    
+    @Bean
+    @ConditionalOnBean(com.querydsl.sql.Configuration.class)
+    public SQLQueryFactory sqlQueryFactory(com.querydsl.sql.Configuration configuration) {
+        return new SQLQueryFactory(configuration, dataSource);
+    }
+        
 }

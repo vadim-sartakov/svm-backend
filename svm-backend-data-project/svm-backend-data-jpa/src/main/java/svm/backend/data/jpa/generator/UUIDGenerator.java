@@ -1,11 +1,11 @@
-package svm.backend.data.generator;
+package svm.backend.data.jpa.generator;
 
 import java.io.Serializable;
 import java.util.UUID;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.id.IdentifierGenerator;
-import svm.backend.data.entity.UUIDEntity;
+import svm.backend.data.jpa.entity.UUIDEntity;
 
 public class UUIDGenerator implements IdentifierGenerator {
 

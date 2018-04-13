@@ -1,9 +1,9 @@
-package svm.backend.data.entity.listener;
+package svm.backend.data.jpa.entity.listener;
 
 import java.time.ZonedDateTime;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import svm.backend.data.entity.Updatable;
+import svm.backend.data.jpa.entity.Updatable;
 
 public class UpdateListener {
     

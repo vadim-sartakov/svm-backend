@@ -4,9 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>svm.backend</groupId>
-        <artifactId>svm-backend</artifactId>
+        <artifactId>svm-backend-data-project</artifactId>
         <version>${backend.version}</version>
-        <relativePath>../../</relativePath>
     </parent>
     <artifactId>svm-backend-data</artifactId>
     <packaging>jar</packaging>
@@ -109,6 +108,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+                        
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
             </plugin>
                         
         </plugins>

@@ -5,7 +5,6 @@
         <groupId>svm.backend</groupId>
         <artifactId>svm-backend</artifactId>
         <version>${backend.version}</version>
-        <relativePath>../</relativePath>
     </parent>
     <artifactId>svm-backend-parent</artifactId>
     <packaging>pom</packaging>
@@ -68,7 +67,13 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
                         
-            <!-- Uber-jar package -->
+            <!-- Flattening -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+            </plugin>
+                        
+            <!-- jar packaging -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

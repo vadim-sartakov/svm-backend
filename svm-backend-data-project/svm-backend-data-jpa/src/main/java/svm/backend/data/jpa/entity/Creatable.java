@@ -1,4 +1,4 @@
-package svm.backend.data.entity;
+package svm.backend.data.jpa.entity;
 
 import java.time.ZonedDateTime;
 
