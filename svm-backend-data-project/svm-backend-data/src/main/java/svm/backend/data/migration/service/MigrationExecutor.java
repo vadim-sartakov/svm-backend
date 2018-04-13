@@ -34,7 +34,7 @@ public class MigrationExecutor implements InitializingBean {
     }
     
     private int compareUpdates(MigrationUpdate objectOne, MigrationUpdate objectTwo) {
-        return objectOne.getOrder().compareTo(objectTwo.getOrder());
+        return objectOne.getExecutionOrder().compareTo(objectTwo.getExecutionOrder());
     }
     
     private boolean shouldUpdate(MigrationUpdate dataChange) {
@@ -50,7 +50,7 @@ public class MigrationExecutor implements InitializingBean {
     }
     
     private int compareRollbacks(MigrationRollback objectOne, MigrationRollback objectTwo) {
-        return objectTwo.getOrder().compareTo(objectOne.getOrder());
+        return objectTwo.getExecutionOrder().compareTo(objectOne.getExecutionOrder());
     }
     
     private boolean shouldRollback(MigrationRollback dataChange) {

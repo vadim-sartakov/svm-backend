@@ -68,14 +68,14 @@ public class MigrationExecutorTest {
     private MigrationUpdate udateTask(String id, Integer order) {
         MigrationUpdate migration = Mockito.mock(MigrationUpdate.class);
         Mockito.when(migration.getId()).thenReturn(id);
-        Mockito.when(migration.getOrder()).thenReturn(order);
+        Mockito.when(migration.getExecutionOrder()).thenReturn(order);
         return migration;
     }
     
     private CombinedTask combinedTask(String id, Integer order, boolean shouldRollback) {
         CombinedTask migration = Mockito.mock(CombinedTask.class);
         Mockito.when(migration.getId()).thenReturn(id);
-        Mockito.when(migration.getOrder()).thenReturn(order);
+        Mockito.when(migration.getExecutionOrder()).thenReturn(order);
         Mockito.when(migration.shouldRollback()).thenReturn(shouldRollback);
         return migration;
     }

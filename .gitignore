@@ -1,5 +1,6 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
+.flattened-pom.xml
 
 ### STS ###
 .apt_generated
@@ -27,3 +28,4 @@ nbdist/
 /svm-backend-data/nbproject/
 /svm-backend-data-project/svm-backend-data-core/nbproject/
 /svm-backend-data-project/svm-backend-data/nbproject/
+/svm-backend-data-project/svm-backend-data-jpa/nbproject/

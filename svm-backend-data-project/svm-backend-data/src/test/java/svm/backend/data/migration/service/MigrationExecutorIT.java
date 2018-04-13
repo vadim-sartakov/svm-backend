@@ -27,7 +27,7 @@ public class MigrationExecutorIT {
     @Before
     public void setUp() {
         Mockito.when(migrationUpdate.getId()).thenReturn("0");
-        Mockito.when(migrationUpdate.getOrder()).thenReturn(0);
+        Mockito.when(migrationUpdate.getExecutionOrder()).thenReturn(0);
     }
     
     @Test

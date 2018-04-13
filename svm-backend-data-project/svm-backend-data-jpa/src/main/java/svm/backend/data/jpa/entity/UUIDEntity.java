@@ -20,7 +20,7 @@ public abstract class UUIDEntity implements Serializable {
     
     @Id
     @GeneratedValue(generator = "uuid-generator")
-    @GenericGenerator(name = "uuid-generator", strategy = "svm.backend.data.generator.UUIDGenerator")
+    @GenericGenerator(name = "uuid-generator", strategy = "svm.backend.data.jpa.generator.UUIDGenerator")
     @Type(type = "uuid-binary")
     @Column(length = 16)
     protected UUID id;
