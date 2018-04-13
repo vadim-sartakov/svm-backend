@@ -1,0 +1,10 @@
+D:\NetBeansProjects\svm-backend\svm-backend-data-project\svm-backend-data\src\main\java\svm\backend\data\config\RepositoriesConfig.java
+D:\NetBeansProjects\svm-backend\svm-backend-data-project\svm-backend-data\src\main\java\svm\backend\data\migration\service\MigrationRepository.java
+D:\NetBeansProjects\svm-backend\svm-backend-data-project\svm-backend-data\src\main\java\svm\backend\data\validator\CheckUniqueValues.java
+D:\NetBeansProjects\svm-backend\svm-backend-data-project\svm-backend-data\src\main\java\svm\backend\data\migration\model\MigrationUpdate.java
+D:\NetBeansProjects\svm-backend\svm-backend-data-project\svm-backend-data\src\main\java\svm\backend\data\config\MigrationConfig.java
+D:\NetBeansProjects\svm-backend\svm-backend-data-project\svm-backend-data\src\main\java\svm\backend\data\migration\model\MigrationRollback.java
+D:\NetBeansProjects\svm-backend\svm-backend-data-project\svm-backend-data\src\main\java\svm\backend\data\config\MessagesConfig.java
+D:\NetBeansProjects\svm-backend\svm-backend-data-project\svm-backend-data\src\main\java\svm\backend\data\validator\UniqueValues.java
+D:\NetBeansProjects\svm-backend\svm-backend-data-project\svm-backend-data\src\main\java\svm\backend\data\migration\service\MigrationExecutor.java
+D:\NetBeansProjects\svm-backend\svm-backend-data-project\svm-backend-data\src\main\java\svm\backend\data\migration\model\Migration.java

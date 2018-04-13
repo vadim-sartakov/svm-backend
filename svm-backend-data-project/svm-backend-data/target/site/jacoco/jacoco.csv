@@ -1,0 +1,6 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Backend data,svm.backend.data.config,RepositoriesConfig,8,0,0,0,2,0,2,0,2,0
+Backend data,svm.backend.data.config,MigrationConfig,3,0,0,0,1,0,1,0,1,0
+Backend data,svm.backend.data.config,MessagesConfig,13,0,0,0,3,0,2,0,2,0
+Backend data,svm.backend.data.validator,CheckUniqueValues,14,245,1,17,2,50,1,17,0,9
+Backend data,svm.backend.data.migration.service,MigrationExecutor,4,118,3,7,0,24,2,13,0,10

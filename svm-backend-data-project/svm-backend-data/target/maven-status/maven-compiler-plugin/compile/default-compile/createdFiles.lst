@@ -1,0 +1,12 @@
+svm\backend\data\config\RepositoriesConfig.class
+svm\backend\data\migration\model\MigrationUpdate.class
+svm\backend\data\migration\service\MigrationExecutor.class
+svm\backend\data\migration\model\MigrationRollback.class
+svm\backend\data\validator\CheckUniqueValues.class
+svm\backend\data\validator\UniqueValues.class
+svm\backend\data\config\MessagesConfig.class
+svm\backend\data\migration\model\Migration.class
+svm\backend\data\migration\service\MigrationRepository.class
+svm\backend\data\config\MigrationConfig.class
+svm\backend\data\validator\UniqueValues$Field.class
+svm\backend\data\validator\UniqueValues$FieldSet.class
