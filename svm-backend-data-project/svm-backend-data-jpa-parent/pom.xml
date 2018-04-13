@@ -30,44 +30,6 @@
             <version>${backend.version}</version>
         </dependency>
         
-        <!-- Liquibase -->
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-maven-plugin</artifactId>
-            <version>${liquibase.version}</version>
-        </dependency>
-        
-        <!-- Querydsl -->
-        <dependency> 
-            <groupId>com.querydsl</groupId> 
-            <artifactId>querydsl-apt</artifactId> 
-            <scope>provided</scope>
-        </dependency>
-        <dependency> 
-            <groupId>com.querydsl</groupId> 
-            <artifactId>querydsl-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-sql</artifactId>
-            <version>${querydsl.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-sql-spring</artifactId>
-            <version>${querydsl.version}</version>
-        </dependency>
-                
-        <!-- Support for java 8 features (java.time) -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-java8</artifactId>
-        </dependency>
-          
     </dependencies>
     
     <dependencyManagement>
