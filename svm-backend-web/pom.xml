@@ -5,7 +5,7 @@
     <parent>
         <groupId>svm.backend</groupId>
         <artifactId>svm-backend</artifactId>
-        <version>${revision}</version>
+        <version>${backend.version}</version>
     </parent>
     <artifactId>svm-backend-web</artifactId>
     <packaging>jar</packaging>
@@ -13,10 +13,17 @@
     
     <dependencies>
         <dependency>
-            <groupId>svm.backend</groupId>
-            <artifactId>backend-core</artifactId>
-            <version>1.0.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-rest</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
-        
+                            
 </project>
