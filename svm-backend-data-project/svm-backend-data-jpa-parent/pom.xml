@@ -16,7 +16,7 @@
         <jdbc.dependency.artifactId>h2</jdbc.dependency.artifactId>
         <jdbc.dependency.version>${h2.version}</jdbc.dependency.version>
         
-        <querydsl.packageName>sql</querydsl.packageName>
+        <querydsl.packageName>svm.backend.data.jpa</querydsl.packageName>
         <liquibase.reference-url>
             hibernate:spring:${orm.entityPackage}?dialect=${orm.dialect}&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
         </liquibase.reference-url>
@@ -31,17 +31,7 @@
         </dependency>
         
     </dependencies>
-    
-    <dependencyManagement>
-        <dependencies>
-            <!-- jdbc driver -->
-            <dependency>
-                <groupId>${jdbc.dependency.group}</groupId>
-                <artifactId>${jdbc.dependency.artifactId}</artifactId>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    
+        
     <build>
         
         <plugins>
@@ -111,15 +101,7 @@
                 <groupId>com.querydsl</groupId>
                 <artifactId>querydsl-maven-plugin</artifactId>
                 <version>${querydsl.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>export</goal>
-                        </goals>
-                    </execution>
-                </executions>
                 <configuration>
-                    <skip>${skip-querydsl-sql}</skip>
                     <jdbcDriver>${jdbc.driverClass}</jdbcDriver>
                     <jdbcUrl>${jdbc.url}</jdbcUrl>
                     <jdbcUser>${jdbc.user}</jdbcUser>

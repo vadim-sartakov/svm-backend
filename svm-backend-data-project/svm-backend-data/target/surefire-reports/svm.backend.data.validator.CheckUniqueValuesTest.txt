@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: svm.backend.data.validator.CheckUniqueValuesTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.72 sec - in svm.backend.data.validator.CheckUniqueValuesTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.609 sec - in svm.backend.data.validator.CheckUniqueValuesTest
