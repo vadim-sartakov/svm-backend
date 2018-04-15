@@ -15,8 +15,8 @@
         <module>svm-backend-data</module>
         <module>svm-backend-data-jpa</module>
         <module>svm-backend-data-jpa-parent</module>
-        <!--<module>svm-backend-data-mongodb</module>
-        <module>svm-backend-data-mongodb-parent</module>-->
+        <module>svm-backend-data-mongodb</module>
+        <!--<module>svm-backend-data-mongodb-parent</module>-->
     </modules>
             
 </project>
