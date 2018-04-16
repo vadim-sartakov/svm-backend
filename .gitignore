@@ -30,3 +30,4 @@ nbdist/
 /svm-backend-data-project/svm-backend-data/nbproject/
 /svm-backend-data-project/svm-backend-data-jpa/nbproject/
 !/svm-backend-data-project/svm-backend-data/target/
+/svm-backend-web/nbproject/

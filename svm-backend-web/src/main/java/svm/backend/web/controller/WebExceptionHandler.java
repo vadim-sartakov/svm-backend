@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+public class WebExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Autowired private MessageSource messageSource;
        
@@ -83,18 +83,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return handleConstraintViolation(ex, ex.getFieldErrors(), request);
-    }
-
-    /**
-     * Thrown by hibernate during entity persisting.
-     * @param ex
-     * @param request
-     * @return 
-     */
-    @ExceptionHandler(ConstraintViolationException.class)
-    protected ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
-        List<FieldError> fieldErrors = constraintViolationsToFieldErrors(ex);
-        return handleConstraintViolation(ex, fieldErrors, request);
     }
     
     @Override
