@@ -1,8 +1,6 @@
 package svm.backend.web.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -38,21 +36,6 @@ public class WebExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return sendException(ex.getMessage(), body, headers, status, request);
-    }
-    
-    protected List<FieldError> constraintViolationsToFieldErrors(ConstraintViolationException violations) {
-                    
-        List<FieldError> fieldErrors = violations.getConstraintViolations()
-                .stream()
-                .map(violation -> new FieldError(
-                        violation.getRootBeanClass().getSimpleName(),
-                        violation.getPropertyPath().toString(),
-                        violation.getMessage())
-                )
-                .collect(Collectors.toList());
-
-        return fieldErrors;
-                
     }
     
     private ResponseEntity<Object> handleConstraintViolation(

@@ -9,7 +9,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-public class WebUtilsIT {
+public class WebUtilsTest {
     
     @Test
     public void testGetBaseURL() {

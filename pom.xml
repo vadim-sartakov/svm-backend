@@ -54,12 +54,31 @@
                         </execution>
                         <execution>
                             <id>report</id>
-                            <phase>prepare-package</phase>
+                            <phase>post-integration-test</phase>
                             <goals>
                                 <goal>report</goal>
                             </goals>
                         </execution>
                     </executions>
+                    <configuration>
+                        <propertyName>jacocoArgline</propertyName>
+                    </configuration>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <argLine>${jacocoArgline}</argLine>
+                    </configuration>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <configuration>
+                        <argLine>${jacocoArgline}</argLine>
+                    </configuration>
                 </plugin>
                                 
                 <plugin>
