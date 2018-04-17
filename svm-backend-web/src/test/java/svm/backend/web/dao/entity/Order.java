@@ -1,6 +1,5 @@
 package svm.backend.web.dao.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +31,7 @@ public class Order {
     private Long id;
     
     @NotEmpty private String number;
+    private String employee;
     
     @NotNull
     @Size(min = 1)
