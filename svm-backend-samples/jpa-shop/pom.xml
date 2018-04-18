@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>svm.backend</groupId>
+        <artifactId>svm-backend-data-jpa-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../../svm-backend-data-project/svm-backend-data-jpa-parent/pom.xml</relativePath>
+    </parent>
+    <artifactId>svm-backend-samples-jpa-shop</artifactId>
+    <packaging>jar</packaging>
+    <name>JPA shop</name>
+        
+    <properties>
+        
+        <jdbc.url>jdbc:sqlserver://localhost;databaseName=ShopTest</jdbc.url>
+        <jdbc.username>sa</jdbc.username>
+        <jdbc.password>369852IT</jdbc.password>
+        <jdbc.dependency.groupId>com.microsoft.sqlserver</jdbc.dependency.groupId>
+        <jdbc.dependency.artifactId>mssql-jdbc</jdbc.dependency.artifactId>
+        <jdbc.dependency.version>${mssql-jdbc.version}</jdbc.dependency.version>
+        
+        <orm.dialect>org.hibernate.dialect.SQLServer2012Dialect</orm.dialect>
+        <orm.entityPackage>svm.backend.samples.shop.dao.entity</orm.entityPackage>
+        
+    </properties>
+    
+    <dependencies>
+        
+        <dependency>
+            <groupId>${jdbc.dependency.groupId}</groupId>
+            <artifactId>${jdbc.dependency.artifactId}</artifactId>
+            <version>${jdbc.dependency.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>svm.backend</groupId>
+            <artifactId>svm-backend-web</artifactId>
+        </dependency>
+        
+    </dependencies>
+                                
+    <profiles>
+        
+        <profile>
+            <id>release-profile</id>
+            <properties>
+                <jdbc.url>jdbc:sqlserver://localhost;databaseName=Shop</jdbc.url>
+            </properties>
+        </profile>
+        
+    </profiles>
+    
+</project>

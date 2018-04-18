@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>svm.backend</groupId>
-        <artifactId>svm-backend</artifactId>
-        <version>${backend.version}</version>
+        <artifactId>svm-backend-build</artifactId>
+        <version>${revision}</version>
     </parent>
     <artifactId>svm-backend-data-project</artifactId>
     <packaging>pom</packaging>

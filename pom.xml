@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>svm.backend</groupId>
-    <artifactId>svm-backend</artifactId>
-    <version>${backend.version}</version>
+    <artifactId>svm-backend-build</artifactId>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <name>Backend</name>
    
@@ -18,7 +18,7 @@
         
         <!-- Duplicate of parent's version definition. Can't use properties there. -->
         <spring-boot.version>1.5.10.RELEASE</spring-boot.version>
-        <backend.version>1.0.0</backend.version>
+        <revision>1.0.0</revision>
         
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -30,18 +30,17 @@
 	<module>svm-backend-parent</module>
         <module>svm-backend-data-project</module>
         <module>svm-backend-web</module>
-        <!--
-        <module>svm-backend-sms</module>
+        <module>svm-backend-samples</module>
+        
+        <!--<module>svm-backend-sms</module>
         <module>svm-backend-security</module>
-        <module>svm-backend-sign-up</module>
-        <module>svm-backend-samples</module>-->
+        <module>svm-backend-sign-up</module>-->
     </modules>
     
     <build>
         <pluginManagement>
             <plugins>
                 
-                <!-- Code coverage -->
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
@@ -86,6 +85,15 @@
                     <artifactId>flatten-maven-plugin</artifactId>
                     <version>1.0.1</version>
                     <configuration>
+                        <updatePomFile>true</updatePomFile>
+                        <pomElements>
+                            <parent>expand</parent>
+                            <properties>keep</properties>
+                            <dependencyManagement>keep</dependencyManagement>
+                            <dependencies>keep</dependencies>
+                            <build>keep</build>
+                            <pluginManagement>keep</pluginManagement>
+                        </pomElements>
                     </configuration>
                     <executions>
                         <execution>
@@ -98,10 +106,30 @@
                     </executions>
                 </plugin>
                 
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>properties-maven-plugin</artifactId>
+                    <version>1.0.0</version>
+                    <executions>
+                        <execution>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>read-project-properties</goal>
+                            </goals>
+                            <configuration>
+                                <files>
+                                    <file>${basedir}/my.properties</file>
+                                </files>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                
             </plugins>
         </pluginManagement>
         
         <plugins>
+            
             <!-- Enabling compile warnings -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -112,6 +140,12 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+            </plugin>
+            
         </plugins>
         
     </build>

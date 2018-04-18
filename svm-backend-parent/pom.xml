@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>svm.backend</groupId>
-        <artifactId>svm-backend</artifactId>
-        <version>${backend.version}</version>
+        <artifactId>svm-backend-build</artifactId>
+        <version>${revision}</version>
     </parent>
     <artifactId>svm-backend-parent</artifactId>
     <packaging>pom</packaging>
@@ -12,6 +12,7 @@
     
     <dependencyManagement>
         <dependencies>
+            
             <dependency>
                 <groupId>svm.backend</groupId>
                 <artifactId>svm-backend-data-jpa</artifactId>
@@ -22,17 +23,17 @@
                 <artifactId>svm-backend-data-mongodb</artifactId>
                 <version>1.0.0</version>
             </dependency>
+            <dependency>
+                <groupId>svm.backend</groupId>
+                <artifactId>svm-backend-web</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            
         </dependencies>
     </dependencyManagement>
     
     <dependencies>
-        
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-        </dependency>
-                
-        <!-- Testing -->
+                        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -51,19 +52,15 @@
 
         <plugins>
             
-            <!-- Code coverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
-                        
-            <!-- Flattening -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
+                <inherited>false</inherited>
             </plugin>
-                        
-            <!-- jar packaging -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

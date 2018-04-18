@@ -4,7 +4,7 @@
     <parent>
         <groupId>svm.backend</groupId>
         <artifactId>svm-backend-parent</artifactId>
-        <version>${backend.version}</version>
+        <version>${revision}</version>
         <relativePath>../../svm-backend-parent/pom.xml</relativePath>
     </parent>
     <artifactId>svm-backend-data-mongodb-project</artifactId>
