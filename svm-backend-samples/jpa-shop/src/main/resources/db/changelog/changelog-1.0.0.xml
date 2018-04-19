@@ -1,39 +1,50 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <changeSet author="svm" id="1.0.0">
-        <createTable tableName="order_rows">
-            <column autoIncrement="true" name="id" type="bigint">
-                <constraints primaryKey="true" primaryKeyName="order_rowsPK"/>
-            </column>
-            <column name="price" type="numeric(19, 2)"/>
-            <column name="quantity" type="numeric(19, 2)"/>
-            <column name="order_id" type="bigint">
+        <createTable tableName="order_products">
+            <column name="order_document_id" type="binary(16)">
                 <constraints nullable="false"/>
             </column>
-            <column name="product_id" type="bigint">
+            <column name="price" type="numeric(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="numeric(19, 2)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
         <createTable tableName="orders">
-            <column autoIncrement="true" name="id" type="bigint">
+            <column name="id" type="binary(16)">
                 <constraints primaryKey="true" primaryKeyName="ordersPK"/>
             </column>
-            <column name="number" type="varchar(255)"/>
+            <column name="number" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_date" type="datetime2">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stock_id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <createTable tableName="products">
-            <column autoIncrement="true" name="id" type="bigint">
+            <column name="id" type="binary(16)">
                 <constraints primaryKey="true" primaryKeyName="productsPK"/>
             </column>
             <column name="name" type="varchar(255)"/>
         </createTable>
         <createTable tableName="stocks">
-            <column autoIncrement="true" name="id" type="bigint">
+            <column name="id" type="binary(16)">
                 <constraints primaryKey="true" primaryKeyName="stocksPK"/>
             </column>
-            <column name="name" type="varchar(255)"/>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
-        <addUniqueConstraint columnNames="product_id" constraintName="UK_fyg2upg1xdalsuy8gu5mivscm" tableName="order_rows"/>
-        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="order_rows" constraintName="FKbl4fefb8g6q35dwsfg5t2hbes" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="orders"/>
-        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="order_rows" constraintName="FKjate452iyi7x5j68dtqhuxbkl" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="products"/>
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="order_products" constraintName="FK43vke5jd6eyasd92t3k24kdxq" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="products"/>
+        <addForeignKeyConstraint baseColumnNames="order_document_id" baseTableName="order_products" constraintName="FKph2agbnhar1w8uhwvo18nbhtt" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="orders"/>
+        <addForeignKeyConstraint baseColumnNames="stock_id" baseTableName="orders" constraintName="FK4jg39ja0rjvjyydibgtbp8b6b" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="stocks"/>
     </changeSet>
 </databaseChangeLog>

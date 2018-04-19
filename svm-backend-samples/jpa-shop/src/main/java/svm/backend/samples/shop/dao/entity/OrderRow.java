@@ -2,29 +2,28 @@ package svm.backend.samples.shop.dao.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@Entity
-@Table(name = "ORDER_ROWS")
+@Embeddable
 public class OrderRow implements Serializable {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Valid
+    @NotNull
     @ManyToOne(optional = false)
-    private Order order;
-    
-    @OneToOne(optional = false)
     private Product product;
+    
+    @NotNull
+    @Column(nullable = false)
     private BigDecimal price;
+    
+    @NotNull
+    @Column(nullable = false)
     private BigDecimal quantity;
     
 }

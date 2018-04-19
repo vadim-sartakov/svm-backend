@@ -1,6 +1,7 @@
 package svm.backend.data.jpa.migration;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -22,5 +23,7 @@ public class JpaMigration implements Migration, Serializable {
     @Id
     @NotEmpty
     private String id;
+    
+    @Column(nullable = false)
     private Integer executionOrder;    
 }

@@ -33,7 +33,6 @@
         
     <build>
         
-        <!-- Use @ delimeter -->
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
@@ -98,7 +97,6 @@
                 </executions>
             </plugin>
 
-            <!-- Query dsl sql -->
             <plugin>
                 <groupId>com.querydsl</groupId>
                 <artifactId>querydsl-maven-plugin</artifactId>

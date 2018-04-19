@@ -13,7 +13,7 @@
         
     <properties>
         
-        <jdbc.url>jdbc:sqlserver://localhost;databaseName=ShopTest</jdbc.url>
+        <jdbc.url>jdbc:sqlserver://localhost;databaseName=Shop</jdbc.url>
         <jdbc.username>sa</jdbc.username>
         <jdbc.password>369852IT</jdbc.password>
         <jdbc.dependency.groupId>com.microsoft.sqlserver</jdbc.dependency.groupId>
@@ -45,7 +45,7 @@
         <profile>
             <id>release-profile</id>
             <properties>
-                <jdbc.url>jdbc:sqlserver://localhost;databaseName=Shop</jdbc.url>
+                <jdbc.url>jdbc:sqlserver://localhost;databaseName=ShopRelease</jdbc.url>
             </properties>
         </profile>
         

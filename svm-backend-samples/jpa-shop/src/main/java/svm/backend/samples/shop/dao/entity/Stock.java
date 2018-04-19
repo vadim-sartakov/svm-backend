@@ -1,19 +1,30 @@
 package svm.backend.samples.shop.dao.entity;
 
 import java.io.Serializable;
+import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.NotEmpty;
+import svm.backend.data.jpa.entity.Identifiable;
 
 @Data
 @Entity
 @Table(name = "STOCKS")
-public class Stock implements Serializable {
+public class Stock implements Identifiable, Serializable {
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.generator.UUIDGenerator")
+    @GeneratedValue(generator = "uuid")
+    @Column(length = 16)
+    private UUID id;
+    
+    @NotEmpty
+    @Column(nullable = false)
     private String name;
+    
 }
