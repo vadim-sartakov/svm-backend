@@ -14,7 +14,7 @@ import svm.backend.data.migration.model.MigrationUpdate;
  * DataChanges will be executed by this service.
  * @author Sartakov
  */
-@AllArgsConstructor(onConstructor_ = @Autowired(required = false))
+@AllArgsConstructor(onConstructor_ = @Autowired)
 public class MigrationExecutor implements InitializingBean {
         
     private final Logger logger = LoggerFactory.getLogger(MigrationExecutor.class);

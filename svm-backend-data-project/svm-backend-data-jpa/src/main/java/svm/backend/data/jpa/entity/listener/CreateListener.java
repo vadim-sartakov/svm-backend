@@ -9,7 +9,8 @@ public class CreateListener {
     public void setCreatedAt(Object entity) {
         if (entity instanceof Creatable) {
             Creatable creatable = (Creatable) entity;
-            creatable.setCreatedAt(ZonedDateTime.now());
+            if (creatable.getCreatedAt() == null)
+                creatable.setCreatedAt(ZonedDateTime.now());
         }
     }
 }
