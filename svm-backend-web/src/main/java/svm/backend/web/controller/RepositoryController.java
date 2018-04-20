@@ -54,7 +54,7 @@ public abstract class RepositoryController<T,
         Page<T> page = repository.findAll(predicate, pageable.getPageable());
         
         PagedResources<?> pagedResources = page.hasContent() ?
-                pagedResourcesAssembler.toResource((Page<Object>) page, resourceAssembler) :
+                pagedResourcesAssembler.toResource((Page<Object>) page, resourceAssembler, baseLink) :
                 pagedResourcesAssembler.toEmptyResource(page, getManagedType(), baseLink);
         
         return ResponseEntity.ok(pagedResources);
