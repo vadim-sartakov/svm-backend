@@ -51,7 +51,7 @@ public class OrderRepositoryControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.page.totalElements", is(3)));
         
-        mockMvc.perform(get("/api/orders").param("id", "1"))
+        mockMvc.perform(get("/api/orders").param("number", "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.page.totalElements", is(1)));
@@ -73,9 +73,9 @@ public class OrderRepositoryControllerIT {
     }
     
     @Test
-    public void testRepositoryPostAndDelete() throws Exception {
+    public void testRepositoryPost() throws Exception {
                 
-        Order order = createOrder("1").build();
+        Order order = createOrder("10").build();
         
         String location = mockMvc.perform(post("/api/orders")
                 .content(objectMapper.writeValueAsString(order)).contentType(MediaType.APPLICATION_JSON))
@@ -85,8 +85,19 @@ public class OrderRepositoryControllerIT {
                 .getResponse().getHeader("Location");
         assertThat(location, containsString("/api/orders/"));
         
-        // Delete method has to be still available as it wasn't in custom controller
-        mockMvc.perform(delete(location))
+    }
+    
+    /**
+     * Delete method has to be still available as it wasn't in custom controller
+     * @throws Exception 
+     */
+    @Test
+    public void testRepositoryDelete() throws Exception {
+        
+        Order order = createOrder("1").build();
+        orderRepository.save(order);
+        
+        mockMvc.perform(delete("/api/orders/" + order.getId()))
                 .andExpect(status().isNoContent())
                 .andDo(print());
         
