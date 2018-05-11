@@ -1,7 +1,7 @@
 package svm.backend.data.validator;
 
-import svm.backend.data.validator.dao.SingleFieldEntity;
-import svm.backend.data.validator.dao.MultipleFieldEntity;
+import svm.backend.data.dao.SingleFieldEntity;
+import svm.backend.data.dao.MultipleFieldEntity;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,7 +21,7 @@ import svm.backend.data.Application;
 import svm.backend.data.config.BaseMessagesConfig;
 import svm.backend.data.config.WebMvcConfig;
 import svm.backend.data.migration.service.MigrationRepository;
-import svm.backend.data.validator.dao.TestGroup;
+import svm.backend.data.dao.TestGroup;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(properties = "ignoreCaseParam=false", classes = Application.class)

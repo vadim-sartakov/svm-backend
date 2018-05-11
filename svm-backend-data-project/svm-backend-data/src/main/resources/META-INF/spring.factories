@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+svm.backend.data.config.AspectConfig,\
 svm.backend.data.config.MessagesConfig,\
 svm.backend.data.config.MigrationConfig,\
 svm.backend.data.config.RepositoriesConfig

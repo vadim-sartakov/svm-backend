@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package svm.backend.data.validator.dao;
+package svm.backend.data.dao;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
