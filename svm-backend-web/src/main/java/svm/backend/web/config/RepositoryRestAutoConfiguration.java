@@ -8,14 +8,14 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import svm.backend.web.service.CorsConfigurer;
+import svm.backend.web.config.WebMvcAutoConfiguration.WebMvcConfigurer;
 
 @Configuration
 public class RepositoryRestAutoConfiguration extends RepositoryRestConfigurerAdapter {
         
     @Autowired private MessageSource messageSource;
     @Autowired private LocalValidatorFactoryBean validator;
-    @Autowired private Optional<CorsConfigurer> corsConfigurer;
+    @Autowired private WebMvcConfigurer corsConfigurer;
 
     @Override
     public void configureValidatingRepositoryEventListener(ValidatingRepositoryEventListener validatingListener) {
@@ -26,7 +26,7 @@ public class RepositoryRestAutoConfiguration extends RepositoryRestConfigurerAda
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-        corsConfigurer.ifPresent(configurer -> configurer.addCorsMappings(config.getCorsRegistry()));
+        corsConfigurer.addCorsMappings(config.getCorsRegistry());
     }
-
+    
 }

@@ -19,13 +19,13 @@ import org.springframework.transaction.annotation.Transactional;
 import svm.backend.web.Application;
 import svm.backend.web.dao.entity.Order;
 import svm.backend.web.dao.entity.Order.OrderBuilder;
-import svm.backend.web.dao.entity.Product;
-import svm.backend.web.dao.entity.Product.ProductBuilder;
+import svm.backend.web.dao.entity.Order.Product;
+import svm.backend.web.dao.entity.Order.Product.ProductBuilder;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @AutoConfigureMockMvc
-@Import(OrderController.class)
+@Import(OrderRestController.class)
 @Transactional
 public class WebExceptionHandlerIT {
    
@@ -71,12 +71,12 @@ public class WebExceptionHandlerIT {
     
     @Test
     public void testControllerConstraintViolation() throws Exception {
-        sendOrdersSet("/order-controller");
+        sendOrdersSet("/order-rest-controller");
     }
         
     @Test
     public void testInternalServerError() throws Exception {
-        mockMvc.perform(get("/order-controller"))
+        mockMvc.perform(get("/order-rest-controller"))
                 .andDo(print())
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.message", is("Internal server error")));

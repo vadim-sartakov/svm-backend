@@ -1,8 +1,6 @@
 package svm.backend.web.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -69,28 +67,7 @@ public class WebExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return handleConstraintViolation(ex, ex.getFieldErrors(), request);
     }
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    protected ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
-        List<FieldError> fieldErrors = constraintViolationsToFieldErrors(ex);
-        return handleConstraintViolation(ex, fieldErrors, request);
-    }
-    
-    protected List<FieldError> constraintViolationsToFieldErrors(ConstraintViolationException violations) {
-                    
-        List<FieldError> fieldErrors = violations.getConstraintViolations()
-                .stream()
-                .map(violation -> new FieldError(
-                        violation.getRootBeanClass().getSimpleName(),
-                        violation.getPropertyPath().toString(),
-                        violation.getMessage())
-                )
-                .collect(Collectors.toList());
-
-        return fieldErrors;
-                
-    }
-    
+        
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return handleConstraintViolation(ex, ex.getBindingResult().getFieldErrors(), request);

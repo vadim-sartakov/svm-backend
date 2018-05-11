@@ -1,13 +1,15 @@
 package svm.backend.web.dao.entity;
 
 import java.util.List;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -35,9 +37,25 @@ public class Order {
     
     @NotNull
     @Size(min = 1)
-    @OneToMany(mappedBy = "order")
+    @ElementCollection
     @Singular
     @Valid
     private List<Product> products;
+    
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @Embeddable
+    public static class Product {
+
+        @NotEmpty
+        private String name;
+
+        @NotNull
+        @Max(5)
+        private Integer quantity;
+
+    }
     
 }
