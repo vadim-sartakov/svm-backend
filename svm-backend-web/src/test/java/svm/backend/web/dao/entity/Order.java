@@ -1,5 +1,6 @@
 package svm.backend.web.dao.entity;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
@@ -19,6 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Singular;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @Builder
@@ -33,8 +35,13 @@ public class Order {
     private Long id;
     
     @NotEmpty private String number;
-    private String employee;
+    private Integer code;
     
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private ZonedDateTime date;
+    
+    private String employee;
+        
     @NotNull
     @Size(min = 1)
     @ElementCollection

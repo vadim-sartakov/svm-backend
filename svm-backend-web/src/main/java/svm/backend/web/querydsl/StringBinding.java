@@ -11,6 +11,6 @@ public class StringBinding implements MultiValueBinding<StringPath, String> {
     public Predicate bind(StringPath path, Collection<? extends String> values) {
         Iterator<? extends String> iterator = values.iterator();
         String value = iterator.next();
-        return iterator.hasNext() ? path.in(values) : path.equalsIgnoreCase(value);
+        return iterator.hasNext() ? path.in(values) : path.containsIgnoreCase(value);
     }
 }
