@@ -9,10 +9,12 @@ import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import svm.backend.samples.shop.dao.entity.Order;
+import svm.backend.samples.shop.dao.entity.QOrder;
+import svm.backend.web.querydsl.QueryDslDefaultBinder;
 
 @RepositoryRestResource(excerptProjection = Order.Overview.class)
 public interface OrderRepository extends PagingAndSortingRepository<Order, UUID>,
-        QueryDslPredicateExecutor<Order> {
+        QueryDslPredicateExecutor<Order>, QueryDslDefaultBinder<QOrder> {
 
     @EntityGraph("overview")
     @Override
