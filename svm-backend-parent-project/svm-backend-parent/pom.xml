@@ -3,12 +3,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>svm.backend</groupId>
-        <artifactId>svm-backend-build</artifactId>
+        <artifactId>svm-backend-parent-project</artifactId>
         <version>${revision}</version>
     </parent>
     <artifactId>svm-backend-parent</artifactId>
     <packaging>pom</packaging>
     <name>Backend parent</name>
+    
+    <modules>
+        <module>svm-backend-jpa-parent</module>
+        <module>svm-backend-mongo-parent</module>
+    </modules>
     
     <dependencyManagement>
         <dependencies>
@@ -49,25 +54,17 @@
     </dependencies>
     
     <build>
-
         <plugins>
-            
             <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
                 <inherited>false</inherited>
             </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            
         </plugins>
-        
     </build>
     
 </project>

@@ -5,11 +5,10 @@
         <groupId>svm.backend</groupId>
         <artifactId>svm-backend-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../../svm-backend-parent/pom.xml</relativePath>
     </parent>
-    <artifactId>svm-backend-data-mongodb-project</artifactId>
+    <artifactId>svm-backend-mongo-parent</artifactId>
     <packaging>pom</packaging>
-    <name>Backend data mongodb parent</name>
+    <name>Mongo parent</name>
     
     <build>
         <plugins>
@@ -32,6 +31,12 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <inherited>false</inherited>
             </plugin>
             
         </plugins>

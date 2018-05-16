@@ -3,11 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>svm.backend</groupId>
-        <artifactId>svm-backend-data-jpa-parent</artifactId>
-        <version>1.0.0</version>
-        <relativePath>../../svm-backend-data-project/svm-backend-data-jpa-parent/pom.xml</relativePath>
+        <artifactId>svm-backend-jpa-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../../svm-backend-parent-project/svm-backend-parent/svm-backend-jpa-parent/pom.xml</relativePath>
     </parent>
     <artifactId>svm-backend-samples-jpa-shop</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>JPA shop</name>
         

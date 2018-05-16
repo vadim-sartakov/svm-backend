@@ -3,12 +3,20 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>svm.backend</groupId>
-        <artifactId>svm-backend-data-jpa-parent</artifactId>
-        <version>1.0.0</version>
-        <relativePath />
+        <artifactId>svm-backend-mongo-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../../svm-backend-parent-project/svm-backend-parent/svm-backend-mongo-parent/pom.xml</relativePath>
     </parent>
-    <artifactId>mongo-shop</artifactId>
+    <artifactId>svm-backend-samples-mongo-shop</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>MongoDB shop</name>
-                    
+                  
+    <dependencies>
+        <dependency>
+            <groupId>svm.backend</groupId>
+            <artifactId>svm-backend-web</artifactId>
+        </dependency>
+    </dependencies>
+                        
 </project>

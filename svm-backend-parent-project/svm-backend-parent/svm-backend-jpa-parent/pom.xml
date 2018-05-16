@@ -5,11 +5,10 @@
         <groupId>svm.backend</groupId>
         <artifactId>svm-backend-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../../svm-backend-parent/pom.xml</relativePath>
     </parent>
-    <artifactId>svm-backend-data-jpa-parent</artifactId>
+    <artifactId>svm-backend-jpa-parent</artifactId>
     <packaging>pom</packaging>
-    <name>Backend data jpa parent</name>
+    <name>JPA parent</name>
     
     <properties>
         <jdbc.dependency.groupId>com.h2database</jdbc.dependency.groupId>

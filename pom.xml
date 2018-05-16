@@ -6,16 +6,15 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
     <name>Backend</name>
-   
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.5.10.RELEASE</version>
         <relativePath/>
     </parent>
-    
+
     <properties>
-        
         <!-- Duplicate of parent's version definition. Can't use properties there. -->
         <spring-boot.version>1.5.10.RELEASE</spring-boot.version>
         <revision>1.0.0</revision>
@@ -23,11 +22,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-                        
     </properties>
 
     <modules>
-	<module>svm-backend-parent</module>
+        <module>svm-backend-parent-project</module>
         <module>svm-backend-data-project</module>
         <module>svm-backend-web</module>
         <module>svm-backend-samples</module>
@@ -38,9 +36,10 @@
     </modules>
     
     <build>
+        
         <pluginManagement>
             <plugins>
-                
+
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
@@ -63,7 +62,7 @@
                         <propertyName>jacocoArgline</propertyName>
                     </configuration>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -71,7 +70,7 @@
                         <argLine>${jacocoArgline}</argLine>
                     </configuration>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
@@ -79,7 +78,7 @@
                         <argLine>${jacocoArgline}</argLine>
                     </configuration>
                 </plugin>
-                                
+
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
@@ -105,26 +104,7 @@
                         </execution>
                     </executions>
                 </plugin>
-                
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>properties-maven-plugin</artifactId>
-                    <version>1.0.0</version>
-                    <executions>
-                        <execution>
-                            <phase>initialize</phase>
-                            <goals>
-                                <goal>read-project-properties</goal>
-                            </goals>
-                            <configuration>
-                                <files>
-                                    <file>${basedir}/my.properties</file>
-                                </files>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                
+
             </plugins>
         </pluginManagement>
         
@@ -142,13 +122,16 @@
             </plugin>
             
             <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
-                <inherited>false</inherited>
             </plugin>
             
         </plugins>
         
     </build>
-        
+            
 </project>

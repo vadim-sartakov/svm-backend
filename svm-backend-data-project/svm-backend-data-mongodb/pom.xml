@@ -7,6 +7,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>svm-backend-data-mongodb</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>Backend data mongodb</name>
     
@@ -15,7 +16,6 @@
         <dependency>
             <groupId>svm.backend</groupId>
             <artifactId>svm-backend-data</artifactId>
-            <version>${revision}</version>
         </dependency>
         
         <dependency>

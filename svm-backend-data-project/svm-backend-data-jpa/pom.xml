@@ -7,6 +7,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>svm-backend-data-jpa</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>Backend data jpa</name>
     
@@ -22,7 +23,6 @@
         <dependency>
             <groupId>svm.backend</groupId>
             <artifactId>svm-backend-data</artifactId>
-            <version>${revision}</version>
         </dependency>
         
         <!-- Support for java 8 features (java.time) -->
