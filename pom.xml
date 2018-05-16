@@ -28,10 +28,10 @@
         <module>svm-backend-parent-project</module>
         <module>svm-backend-data-project</module>
         <module>svm-backend-web</module>
+        <module>svm-backend-sms-project</module>
         <module>svm-backend-samples</module>
         
-        <!--<module>svm-backend-sms</module>
-        <module>svm-backend-security</module>
+        <!--<module>svm-backend-security</module>
         <module>svm-backend-sign-up</module>-->
     </modules>
     
