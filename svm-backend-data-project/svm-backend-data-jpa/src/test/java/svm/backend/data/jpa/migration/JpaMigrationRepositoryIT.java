@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import svm.backend.data.jpa.Application;
-import svm.backend.data.jpa.config.BaseMessagesConfig;
 import svm.backend.data.jpa.migration.JpaMigrationRepositoryIT.RollbackMigration;
 import svm.backend.data.jpa.migration.JpaMigrationRepositoryIT.UpdateMigration;
 import svm.backend.data.migration.model.MigrationRollback;
@@ -20,7 +19,7 @@ import svm.backend.data.migration.service.MigrationRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, properties = "shouldRollback=true")
-@Import({ UpdateMigration.class, RollbackMigration.class, BaseMessagesConfig.class })
+@Import({ UpdateMigration.class, RollbackMigration.class })
 @Transactional
 public class JpaMigrationRepositoryIT {
         
