@@ -1,6 +1,5 @@
 package svm.backend.web.config;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Configuration;
@@ -8,10 +7,10 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import svm.backend.web.config.WebMvcAutoConfiguration.WebMvcConfigurer;
+import svm.backend.web.config.WebMvcConfiguration.WebMvcConfigurer;
 
 @Configuration
-public class RepositoryRestAutoConfiguration extends RepositoryRestConfigurerAdapter {
+public class RepositoryRestBaseConfiguration extends RepositoryRestConfigurerAdapter {
         
     @Autowired private MessageSource messageSource;
     @Autowired private LocalValidatorFactoryBean validator;
