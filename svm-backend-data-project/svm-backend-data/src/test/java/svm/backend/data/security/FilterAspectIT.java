@@ -7,27 +7,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import svm.backend.data.Application;
-import svm.backend.data.config.AspectConfig;
-import svm.backend.data.config.BaseMessagesConfig;
 import svm.backend.data.dao.MultipleFieldEntity;
 import svm.backend.data.dao.MultipleFieldEntityRepository;
 import svm.backend.data.dao.SingleFieldEntity;
 import svm.backend.data.dao.SingleFieldEntityRepository;
-import svm.backend.data.migration.service.MigrationRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-@Import({ BaseMessagesConfig.class, AspectConfig.class })
 @Transactional
 public class FilterAspectIT {
     
-    @MockBean private MigrationRepository migrationRepository;
     @Autowired private SingleFieldEntityRepository singleFieldRepository;
     @Autowired private MultipleFieldEntityRepository multipleFieldRepository;
     

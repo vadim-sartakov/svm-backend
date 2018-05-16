@@ -12,20 +12,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import svm.backend.data.Application;
-import svm.backend.data.config.BaseMessagesConfig;
-import svm.backend.data.config.WebMvcConfig;
-import svm.backend.data.migration.service.MigrationRepository;
 import svm.backend.data.dao.TestGroup;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(properties = "ignoreCaseParam=false", classes = Application.class)
-@Import({ BaseMessagesConfig.class, WebMvcConfig.class })
 @AutoConfigureTestDatabase
 @Transactional
 public class CheckUniqueValuesIT {
@@ -33,7 +27,6 @@ public class CheckUniqueValuesIT {
     private final static String TEST_STRING = "aNdrEW";
     
     @Autowired private LocalValidatorFactoryBean validator;
-    @MockBean private MigrationRepository migrationRepository;
     @PersistenceContext private EntityManager entityManager;
     
     private Set<ConstraintViolation<Object>> violations;

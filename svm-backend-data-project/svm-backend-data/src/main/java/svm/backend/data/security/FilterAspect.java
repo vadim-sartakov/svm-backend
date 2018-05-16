@@ -7,7 +7,9 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+import org.springframework.stereotype.Component;
 
+@Component
 @Aspect
 public class FilterAspect {
  
