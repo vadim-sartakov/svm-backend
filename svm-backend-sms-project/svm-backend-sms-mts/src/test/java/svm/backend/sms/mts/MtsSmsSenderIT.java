@@ -1,5 +1,6 @@
 package svm.backend.sms.mts;
 
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,15 @@ public class MtsSmsSenderIT {
     @Autowired private SmsSender smsSender;
     
     @Test
-    public void testSend() {
-        smsSender.send(new SmsMessage("79028284504", "test"));
+    public void testSendAndUpdateStatus() {
+        SmsMessage message = SmsMessage.builder()
+                .phoneNumber("79028284504")
+                .text("test")
+                .build();
+        SmsMessage sentMessage = smsSender.send(message);
+        SmsMessage updatedMessage = smsSender.updateMessageStatus(sentMessage);
+        assertNotNull(updatedMessage.getUpdatedAt());
+        System.out.println(updatedMessage);
     }
-    
+        
 }
