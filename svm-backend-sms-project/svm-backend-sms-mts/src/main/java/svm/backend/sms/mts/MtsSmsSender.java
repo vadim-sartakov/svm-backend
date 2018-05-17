@@ -17,6 +17,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import svm.backend.sms.SmsMessage;
 import svm.backend.sms.SmsSender;
+import svm.backend.sms.SmsStatus;
 import svm.backend.sms.mts.config.MtsProperties;
 import svm.backend.sms.mts.model.SendMessageResponse;
 import svm.backend.sms.mts.model.ArrayOfDeliveryInfo;
@@ -38,7 +39,7 @@ public class MtsSmsSender implements SmsSender {
     }
     
     @Override
-    public SmsMessage send(SmsMessage message) {
+    public String send(SmsMessage message) {
         
         String phoneNumber = normalizePhoneNumber(message.getPhoneNumber());
         
@@ -62,9 +63,7 @@ public class MtsSmsSender implements SmsSender {
         long messageId = response.getId();
         logger.info("SMS to {} has been sent successfully with id {}", phoneNumber, messageId);
                 
-        return message.toBuilder()
-                .id(Long.toString(messageId))
-                .build();
+        return Long.toString(messageId);
         
     }
     
@@ -77,10 +76,10 @@ public class MtsSmsSender implements SmsSender {
     }
         
     @Override
-    public SmsMessage getMessageStatus(SmsMessage smsMessage) {
+    public SmsStatus getMessageStatus(String id) {
                 
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
-        form.add("messageId", smsMessage.getId());
+        form.add("messageId", id);
         form.add("login", properties.getLogin());
         form.add("password", properties.getEncodedPassword());
         
@@ -90,48 +89,46 @@ public class MtsSmsSender implements SmsSender {
         try {
             statusList = restTemplate.postForObject(properties.getGetStatusUrl(), request, ArrayOfDeliveryInfo.class);
         } catch (HttpServerErrorException ex) {
-            logger.error("Failed to get message status for {}. {}", smsMessage.getId(), ex.getResponseBodyAsString());
+            logger.error("Failed to get message status for {}. {}", id, ex.getResponseBodyAsString());
             throw ex;
         }
                         
-        return convert(smsMessage, statusList);
+        return parse(statusList);
         
     }
     
-    private SmsMessage convert(SmsMessage smsMessage, ArrayOfDeliveryInfo statusList) {
+    private SmsStatus parse(ArrayOfDeliveryInfo statusList) {
         
         List<DeliveryInfo> list = statusList.getDeliveryInfoList();
         DeliveryInfo info = list.get(list.size() - 1);
 
         DeliveryInfo.Status deliveryStatus = info.getDeliveryStatus();
-        SmsMessage.Status status;
+        SmsStatus.State state;
         
         switch(deliveryStatus) {
             case PENDING:
-                status = SmsMessage.Status.SENDING;
+                state = SmsStatus.State.SENDING;
                 break;
             case SENDING:
-                status = SmsMessage.Status.SENDING;
+                state = SmsStatus.State.SENDING;
                 break;
             case SENT:
-                status = SmsMessage.Status.SENDING;
+                state = SmsStatus.State.SENDING;
                 break;
             case DELIVERED:
-                status = SmsMessage.Status.DELIVERED;
+                state = SmsStatus.State.DELIVERED;
                 break;
             default:
-                status = SmsMessage.Status.ERROR;
+                state = SmsStatus.State.ERROR;
                 break;
         }
 
         ZonedDateTime createdAt = ZonedDateTime.ofInstant(info.getDeliveryDate().toInstant(), ZoneId.systemDefault());
         ZonedDateTime updatedAt = ZonedDateTime.ofInstant(info.getUserDeliveryDate().toInstant(), ZoneId.systemDefault());
                 
-        return smsMessage.toBuilder()
-                .phoneNumber(info.getMsid())
-                .status(status)
-                .createdAt(createdAt)
-                .updatedAt(updatedAt)
+        return SmsStatus.builder()
+                .state(state)
+                .updatedAt(createdAt.isAfter(updatedAt) ? createdAt : updatedAt)
                 .build();
         
     }

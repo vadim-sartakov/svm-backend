@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
 import svm.backend.sms.SmsMessage;
+import svm.backend.sms.SmsStatus;
 import svm.backend.sms.mts.config.MtsProperties;
 import svm.backend.sms.mts.model.ArrayOfDeliveryInfo;
 import svm.backend.sms.mts.model.SendMessageResponse;
@@ -42,8 +43,8 @@ public class MtsSmsSenderTest {
                 .phoneNumber("123")
                 .text("test")
                 .build();
-        SmsMessage sentMessage = smsSender.send(message);
-        assertThat(sentMessage.getId(), is("123456"));
+        String id = smsSender.send(message);
+        assertThat(id, is("123456"));
     }
 
     @SuppressWarnings("unchecked")
@@ -59,15 +60,12 @@ public class MtsSmsSenderTest {
     public void testGetMessageStatus() throws Exception {
         Mockito.when(restTemplate.postForObject(any(String.class), any(Object.class), any(Class.class)))
                 .thenReturn(parse(ArrayOfDeliveryInfo.class, "/templates/GetMessageStatus.xml"));
-        SmsMessage expectedMessage = SmsMessage.builder()
-                .id("123")
-                .phoneNumber("495")
-                .createdAt(ZonedDateTime.of(2018, 5, 17, 10, 30, 00, 0, ZoneId.systemDefault()))
+        SmsStatus expectedStatus = SmsStatus.builder()
                 .updatedAt(ZonedDateTime.of(2018, 5, 17, 11, 0, 00, 0, ZoneId.systemDefault()))
-                .status(SmsMessage.Status.DELIVERED)
+                .state(SmsStatus.State.DELIVERED)
                 .build();
-        SmsMessage actualMessage = smsSender.getMessageStatus(SmsMessage.builder().id("123").build());
-        assertEquals(expectedMessage, actualMessage);
+        SmsStatus actualStatus = smsSender.getMessageStatus("123");
+        assertEquals(expectedStatus, actualStatus);
     }
         
 }
