@@ -9,6 +9,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("svm.backend.sms.mts")
 public class MtsProperties implements InitializingBean {
     
+    /** Get status timeout in seconds */
+    private Integer getStatusTimeout = 5;
     private String url;
     private String sendUrl;
     private String getStatusUrl;

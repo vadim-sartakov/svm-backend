@@ -11,8 +11,7 @@ import lombok.Data;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class SmsMessage {
     
-    private Long id;
-    private String externalId;
+    private String id;
     private String phoneNumber;
     private String text;
     private ZonedDateTime createdAt;
@@ -23,12 +22,8 @@ public class SmsMessage {
     
     public enum Status {
         SENDING,
-        SENT,
-        NOT_SENT,
         DELIVERED,
-        NOT_DELIVERED,
-        ERROR,
-        CANCELLED
+        ERROR
     }
             
 }

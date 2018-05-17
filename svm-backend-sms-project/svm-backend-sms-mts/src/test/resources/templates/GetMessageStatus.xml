@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfDeliveryInfo xmlns="http://mcommunicator.ru/M2M">
+    <DeliveryInfo>
+        <Msid>495</Msid>
+        <DeliveryStatus>Delivered</DeliveryStatus>
+        <DeliveryDate>2018-05-17T10:30:00+05:00</DeliveryDate>
+        <UserDeliveryDate>2018-05-17T11:00:00+05:00</UserDeliveryDate>
+        <PartCount>0</PartCount>
+    </DeliveryInfo>
+</ArrayOfDeliveryInfo>

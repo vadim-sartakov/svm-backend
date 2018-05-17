@@ -4,6 +4,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import svm.backend.sms.SmsMessage;
 import svm.backend.sms.SmsSender;
@@ -22,12 +22,13 @@ import svm.backend.sms.mts.model.SendMessageResponse;
 import svm.backend.sms.mts.model.ArrayOfDeliveryInfo;
 import svm.backend.sms.mts.model.DeliveryInfo;
 
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class MtsSmsSender implements SmsSender {
     
-    private final static Logger LOGGER = LoggerFactory.getLogger(MtsSmsSender.class);
+    private final Logger logger = LoggerFactory.getLogger(MtsSmsSender.class);
     
-    @Autowired private RestTemplateBuilder restTemplateBuilder;
-    @Autowired private MtsProperties properties;
+    private final RestTemplateBuilder restTemplateBuilder;
+    private final MtsProperties properties;
     
     private RestTemplate restTemplate;
         
@@ -53,17 +54,17 @@ public class MtsSmsSender implements SmsSender {
         SendMessageResponse response;
         try {
             response = restTemplate.postForObject(properties.getSendUrl(), request, SendMessageResponse.class);
-        } catch (RestClientException ex) {
-            LOGGER.error("Failed to send message to {}", phoneNumber, ex);
+        } catch (HttpServerErrorException ex) {
+            logger.error("Failed to send message to {}", phoneNumber, ex);
             throw ex;
         }
 
         long messageId = response.getId();
-        LOGGER.debug("SMS to {} has been sent successfully with id {}", phoneNumber, messageId);
-        
-        SmsMessage newMessage = message.toBuilder().externalId(Long.toString(messageId)).build();
-        
-        return newMessage;
+        logger.info("SMS to {} has been sent successfully with id {}", phoneNumber, messageId);
+                
+        return message.toBuilder()
+                .id(Long.toString(messageId))
+                .build();
         
     }
     
@@ -76,40 +77,63 @@ public class MtsSmsSender implements SmsSender {
     }
         
     @Override
-    public SmsMessage updateMessageStatus(SmsMessage smsMessage) {
-        
+    public SmsMessage getMessageStatus(SmsMessage smsMessage) {
+                
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
-        form.add("messageId", smsMessage.getExternalId());
+        form.add("messageId", smsMessage.getId());
         form.add("login", properties.getLogin());
         form.add("password", properties.getEncodedPassword());
         
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(form, new HttpHeaders());
         
         ArrayOfDeliveryInfo statusList;
-        
         try {
             statusList = restTemplate.postForObject(properties.getGetStatusUrl(), request, ArrayOfDeliveryInfo.class);
         } catch (HttpServerErrorException ex) {
-            LOGGER.error("Failed to get message status for {}. {}", smsMessage.getExternalId(), ex.getResponseBodyAsString());
+            logger.error("Failed to get message status for {}. {}", smsMessage.getId(), ex.getResponseBodyAsString());
             throw ex;
         }
+                        
+        return convert(smsMessage, statusList);
+        
+    }
+    
+    private SmsMessage convert(SmsMessage smsMessage, ArrayOfDeliveryInfo statusList) {
         
         List<DeliveryInfo> list = statusList.getDeliveryInfoList();
         DeliveryInfo info = list.get(list.size() - 1);
 
-        SmsMessage.Status status = null;
-        try {
-            status = SmsMessage.Status.valueOf(info.getDeliveryStatus().toString());
-        } catch (IllegalArgumentException e) { }
-        ZonedDateTime updatedAt = ZonedDateTime.ofInstant(info.getDeliveryDate().toInstant(), ZoneId.systemDefault());
+        DeliveryInfo.Status deliveryStatus = info.getDeliveryStatus();
+        SmsMessage.Status status;
         
-        SmsMessage newMessage = smsMessage.toBuilder()
+        switch(deliveryStatus) {
+            case PENDING:
+                status = SmsMessage.Status.SENDING;
+                break;
+            case SENDING:
+                status = SmsMessage.Status.SENDING;
+                break;
+            case SENT:
+                status = SmsMessage.Status.SENDING;
+                break;
+            case DELIVERED:
+                status = SmsMessage.Status.DELIVERED;
+                break;
+            default:
+                status = SmsMessage.Status.ERROR;
+                break;
+        }
+
+        ZonedDateTime createdAt = ZonedDateTime.ofInstant(info.getDeliveryDate().toInstant(), ZoneId.systemDefault());
+        ZonedDateTime updatedAt = ZonedDateTime.ofInstant(info.getUserDeliveryDate().toInstant(), ZoneId.systemDefault());
+                
+        return smsMessage.toBuilder()
+                .phoneNumber(info.getMsid())
                 .status(status)
+                .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .build();
         
-        return newMessage;
-        
     }
-                    
+                            
 }
