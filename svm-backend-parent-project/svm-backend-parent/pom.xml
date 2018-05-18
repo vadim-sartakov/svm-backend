@@ -33,6 +33,16 @@
                 <artifactId>svm-backend-web</artifactId>
                 <version>1.0.0</version>
             </dependency>
+            <dependency>
+                <groupId>svm.backend</groupId>
+                <artifactId>svm-backend-security</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>svm.backend</groupId>
+                <artifactId>svm-backend-security-jpa</artifactId>
+                <version>1.0.0</version>
+            </dependency>
             
         </dependencies>
     </dependencyManagement>

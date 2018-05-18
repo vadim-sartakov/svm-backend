@@ -1,11 +1,12 @@
-package svm.backend.samples.shop;
+package svm.backend.security;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Import;
+import svm.backend.security.config.TestConfiguration;
 
 @SpringBootApplication
-@EntityScan
+@Import(TestConfiguration.class)
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

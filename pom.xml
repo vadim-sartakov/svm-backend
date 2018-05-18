@@ -30,9 +30,8 @@
         <module>svm-backend-web</module>
         <module>svm-backend-sms-project</module>
         <module>svm-backend-samples</module>
-        
-        <!--<module>svm-backend-security</module>
-        <module>svm-backend-sign-up</module>-->
+        <module>svm-backend-security-project</module>
+        <!--<module>svm-backend-sign-up</module>-->
     </modules>
     
     <build>

@@ -22,7 +22,7 @@
         <jdbc.dependency.version>${mssql-jdbc.version}</jdbc.dependency.version>
         
         <orm.dialect>org.hibernate.dialect.SQLServer2012Dialect</orm.dialect>
-        <orm.entityPackage>svm.backend.samples.shop.dao.entity</orm.entityPackage>
+        <orm.entityPackage>svm.backend.security.jpa.dao.entity,svm.backend.samples.shop.dao.entity</orm.entityPackage>
         
     </properties>
     
@@ -37,6 +37,14 @@
         <dependency>
             <groupId>svm.backend</groupId>
             <artifactId>svm-backend-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>svm.backend</groupId>
+            <artifactId>svm-backend-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>svm.backend</groupId>
+            <artifactId>svm-backend-security-jpa</artifactId>
         </dependency>
         
     </dependencies>
