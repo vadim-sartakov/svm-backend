@@ -25,14 +25,46 @@
     </properties>
 
     <modules>
-        <module>svm-backend-parent-project</module>
+        <module>svm-backend-parent</module>
         <module>svm-backend-data-project</module>
         <module>svm-backend-web</module>
+        <module>svm-backend-security-project</module>
         <module>svm-backend-sms-project</module>
         <module>svm-backend-samples</module>
-        <module>svm-backend-security-project</module>
         <!--<module>svm-backend-sign-up</module>-->
     </modules>
+    
+    <dependencyManagement>
+        <dependencies>
+            
+            <dependency>
+                <groupId>svm.backend</groupId>
+                <artifactId>svm-backend-data-jpa</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>svm.backend</groupId>
+                <artifactId>svm-backend-data-mongodb</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>svm.backend</groupId>
+                <artifactId>svm-backend-web</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>svm.backend</groupId>
+                <artifactId>svm-backend-security</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>svm.backend</groupId>
+                <artifactId>svm-backend-security-jpa</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            
+        </dependencies>
+    </dependencyManagement>
     
     <build>
         

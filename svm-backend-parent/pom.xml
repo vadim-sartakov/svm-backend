@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>svm.backend</groupId>
-        <artifactId>svm-backend-parent-project</artifactId>
+        <artifactId>svm-backend-build</artifactId>
         <version>${revision}</version>
     </parent>
     <artifactId>svm-backend-parent</artifactId>
@@ -14,39 +14,7 @@
         <module>svm-backend-jpa-parent</module>
         <module>svm-backend-mongo-parent</module>
     </modules>
-    
-    <dependencyManagement>
-        <dependencies>
-            
-            <dependency>
-                <groupId>svm.backend</groupId>
-                <artifactId>svm-backend-data-jpa</artifactId>
-                <version>1.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>svm.backend</groupId>
-                <artifactId>svm-backend-data-mongodb</artifactId>
-                <version>1.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>svm.backend</groupId>
-                <artifactId>svm-backend-web</artifactId>
-                <version>1.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>svm.backend</groupId>
-                <artifactId>svm-backend-security</artifactId>
-                <version>1.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>svm.backend</groupId>
-                <artifactId>svm-backend-security-jpa</artifactId>
-                <version>1.0.0</version>
-            </dependency>
-            
-        </dependencies>
-    </dependencyManagement>
-    
+        
     <dependencies>
                         
         <dependency>

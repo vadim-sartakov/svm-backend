@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>svm-backend-security</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>Backend security</name>
     
@@ -19,6 +20,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

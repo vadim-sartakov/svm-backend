@@ -13,12 +13,4 @@
         <module>svm-backend-security</module>
         <module>svm-backend-security-jpa</module>
     </modules>
-    
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-        </dependency>
-    </dependencies>
-    
 </project>

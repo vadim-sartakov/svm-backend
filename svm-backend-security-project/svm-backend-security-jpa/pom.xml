@@ -8,6 +8,7 @@
     </parent>
     <artifactId>svm-backend-security-jpa</artifactId>
     <packaging>jar</packaging>
+    <version>1.0.0</version>
     <name>Backend security jpa</name>
     
     <dependencies>
@@ -18,6 +19,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>svm.backend</groupId>
+            <artifactId>svm-backend-security</artifactId>
         </dependency>
     </dependencies>
     
