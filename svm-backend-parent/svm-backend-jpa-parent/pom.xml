@@ -17,7 +17,7 @@
         
         <querydsl.packageName>svm.backend.data.jpa</querydsl.packageName>
         <liquibase.reference-url>
-            hibernate:spring:svm.backend.data.jpa.migration,${orm.entityPackage}?dialect=${orm.dialect}&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+            hibernate:spring:${hibernate.entityPackages}?dialect=${hibernate.dialect}&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
         </liquibase.reference-url>
     </properties>
     
