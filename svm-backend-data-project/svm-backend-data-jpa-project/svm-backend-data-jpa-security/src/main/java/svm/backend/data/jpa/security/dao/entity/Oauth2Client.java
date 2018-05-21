@@ -1,6 +1,7 @@
-package svm.backend.security.jpa.dao.entity;
+package svm.backend.data.jpa.security.dao.entity;
 
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import svm.backend.data.jpa.entity.Identifiable;
-import svm.backend.security.jpa.dao.entity.converter.Oauth2ClientPropertiesConverter;
+import svm.backend.data.jpa.security.dao.entity.converter.Oauth2ClientPropertiesConverter;
 
 @Data
 @Builder
@@ -73,6 +74,7 @@ public class Oauth2Client implements Serializable, Identifiable, ClientDetails {
         PREDEFINED = new HashMap<>();
         PREDEFINED.put(DEFAULT,
                 Oauth2Client.builder()
+                        .id(UUID.nameUUIDFromBytes(DEFAULT.getBytes(StandardCharsets.UTF_8)))
                         .clientId(DEFAULT)
                         .authority(
                                 JpaGrantedAuthority.builder()

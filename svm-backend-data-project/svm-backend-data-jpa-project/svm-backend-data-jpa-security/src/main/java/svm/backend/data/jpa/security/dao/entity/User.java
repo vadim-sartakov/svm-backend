@@ -1,4 +1,4 @@
-package svm.backend.security.jpa.dao.entity;
+package svm.backend.data.jpa.security.dao.entity;
 
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
@@ -36,18 +36,24 @@ import svm.backend.data.jpa.entity.Updatable;
 @Table(name = "USERS")
 public class User implements UserDetails, Identifiable, Creatable, Updatable, Serializable {
     
+    public static final String SYSTEM = "system";
     public static final String ADMIN = "admin";
     public static final Map<String, User> PREDEFINED = new HashMap<>();
     
     static {
-        PREDEFINED.put(ADMIN, User.builder()
-                .id(UUID.nameUUIDFromBytes(ADMIN.getBytes(StandardCharsets.UTF_8)))
-                .username(ADMIN)
+        PREDEFINED.put(SYSTEM, createUser(SYSTEM, Role.SYSTEM));
+        PREDEFINED.put(ADMIN, createUser(ADMIN, Role.ADMIN));
+    }
+    
+    private static User createUser(String username, String role) {
+        return User.builder()
+                .id(UUID.nameUUIDFromBytes(username.getBytes(StandardCharsets.UTF_8)))
+                .username(username)
                 .authority(
                         JpaGrantedAuthority.builder().role(
-                                Role.PREDEFINED.get(Role.ADMIN)
+                                Role.PREDEFINED.get(role)
                         ).build()
-                ).build());
+                ).build();
     }
     
     @Id

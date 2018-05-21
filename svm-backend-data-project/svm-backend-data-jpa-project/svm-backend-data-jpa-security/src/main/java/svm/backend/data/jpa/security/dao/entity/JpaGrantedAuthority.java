@@ -1,4 +1,4 @@
-package svm.backend.security.jpa.dao.entity;
+package svm.backend.data.jpa.security.dao.entity;
 
 import java.io.Serializable;
 import javax.persistence.Access;

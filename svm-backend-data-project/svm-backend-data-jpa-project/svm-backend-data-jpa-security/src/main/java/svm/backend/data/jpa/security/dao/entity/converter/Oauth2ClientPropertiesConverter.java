@@ -1,10 +1,10 @@
-package svm.backend.security.jpa.dao.entity.converter;
+package svm.backend.data.jpa.security.dao.entity.converter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import javax.persistence.AttributeConverter;
-import svm.backend.security.jpa.dao.entity.Oauth2Client;
+import svm.backend.data.jpa.security.dao.entity.Oauth2Client;
 
 public class Oauth2ClientPropertiesConverter implements AttributeConverter<Oauth2Client.Properties, String> {
 

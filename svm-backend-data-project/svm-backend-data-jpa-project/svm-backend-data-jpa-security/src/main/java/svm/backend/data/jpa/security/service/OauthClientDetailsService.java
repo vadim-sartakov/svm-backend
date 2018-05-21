@@ -1,10 +1,10 @@
-package svm.backend.security.jpa.service;
+package svm.backend.data.jpa.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
-import svm.backend.security.jpa.dao.repository.Oauth2ClientRepository;
+import svm.backend.data.jpa.security.dao.repository.Oauth2ClientRepository;
 
 public class OauthClientDetailsService implements ClientDetailsService {
 
@@ -12,7 +12,7 @@ public class OauthClientDetailsService implements ClientDetailsService {
     
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
-        return repository.findOne(clientId);
+        return repository.findByClientId(clientId);
     }
     
 }
