@@ -26,7 +26,7 @@ public class FilterAspect {
             + "execution(* org.springframework.data.repository.CrudRepository.findOne(..)) && "
             + "target(predicateProvider) && "
             + "args(id)")
-    public <T, ID extends Serializable> T aroundFindAllRepository(ProceedingJoinPoint joinPoint, ID id, Filter predicateProvider) {
+    public <T, ID extends Serializable> T aroundFindOneRepository(ProceedingJoinPoint joinPoint, ID id, Filter predicateProvider) {
         QueryDslPredicateExecutor<T> repository = (QueryDslPredicateExecutor<T>) predicateProvider;        
         return repository.findOne(predicateProvider.getFindOnePredicate(id));
     }
