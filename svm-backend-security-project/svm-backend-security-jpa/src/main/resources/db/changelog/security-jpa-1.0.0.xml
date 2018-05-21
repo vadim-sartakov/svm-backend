@@ -1,10 +1,73 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <changeSet author="svm" id="security-jpa-1.0.0">
-        <createTable tableName="oauth_clients">
-            <column autoIncrement="true" name="id" type="bigint">
-                <constraints primaryKey="true" primaryKeyName="oauth_clientsPK"/>
+        
+        <createTable tableName="oauth2_clients">
+            <column name="client_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="access_token_validity_seconds" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_secret" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="properties" type="varchar(255)"/>
+            <column name="refresh_token_validity_seconds" type="int">
+                <constraints nullable="false"/>
             </column>
         </createTable>
+        <createTable tableName="oauth2_clients_authorities">
+            <column name="oauth2client_client_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="roles">
+            <column name="id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="users">
+            <column name="id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime2(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="disabled" type="bit">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="datetime2(7)"/>
+            <column name="password" type="varchar(255)"/>
+            <column name="updated_at" type="datetime2(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="users_authorities">
+            <column name="user_id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="client_id" constraintName="oauth2_clientsPK" tableName="oauth2_clients"/>
+        <addPrimaryKey columnNames="id" constraintName="rolesPK" tableName="roles"/>
+        <addPrimaryKey columnNames="id" constraintName="usersPK" tableName="users"/>
+        <addUniqueConstraint columnNames="username" constraintName="UC_USERSUSERNAME_COL" tableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="oauth2client_client_id" baseTableName="oauth2_clients_authorities" constraintName="FKnj241rkn91mtsliwlk24nxh5o" deferrable="false" initiallyDeferred="false" referencedColumnNames="client_id" referencedTableName="oauth2_clients"/>
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="oauth2_clients_authorities" constraintName="FKp928vn0ixsfc594myswx3ptpu" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="roles"/>
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="users_authorities" constraintName="FKq2fyu0lvscrowfo3e34vgsc5u" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="roles"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="users_authorities" constraintName="FKq3lq694rr66e6kpo2h84ad92q" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users"/>
+        
     </changeSet>
 </databaseChangeLog>

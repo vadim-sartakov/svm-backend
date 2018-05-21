@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -18,6 +19,7 @@ import svm.backend.data.migration.service.MigrationRepository;
 @Configuration
 @ConditionalOnMissingBean(DataJpaAutoConfiguration.class)
 @PropertySource("classpath:properties/data/application.properties")
+@EntityScan({ "svm.backend.data.jpa.migration", "svm.backend.data.jpa.entity" })
 @Import(HibernateConfiguration.class)
 public class DataJpaAutoConfiguration {
     
