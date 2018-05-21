@@ -14,15 +14,5 @@
         <module>svm-backend-sms</module>
         <module>svm-backend-sms-mts</module>
     </modules>
-    
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>svm.backend</groupId>
-                <artifactId>svm-backend-sms</artifactId>
-                <version>1.0.0</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    
+        
 </project>

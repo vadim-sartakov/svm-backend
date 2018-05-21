@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>svm.backend</groupId>
-        <artifactId>svm-backend-security-project</artifactId>
+        <artifactId>svm-backend-build</artifactId>
         <version>${revision}</version>
     </parent>
     <artifactId>svm-backend-security</artifactId>

@@ -3,16 +3,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>svm.backend</groupId>
-        <artifactId>svm-backend-parent</artifactId>
+        <artifactId>svm-backend-data-project</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>svm-backend-mongo-parent</artifactId>
+    <artifactId>svm-backend-data-mongodb-project</artifactId>
     <packaging>pom</packaging>
-    <name>Mongo parent</name>
-    
+    <name>Backend data mongodb project</name>
+    <modules>
+        <module>svm-backend-data-mongodb</module>
+    </modules>
     <build>
         <plugins>
-            
             <plugin>
                 <groupId>com.mysema.maven</groupId>
                 <artifactId>apt-maven-plugin</artifactId>
@@ -40,8 +41,6 @@
                     </execution>
                 </executions>
             </plugin>
-            
         </plugins>
     </build>
-    
 </project>

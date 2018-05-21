@@ -3,16 +3,19 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>svm.backend</groupId>
-        <artifactId>svm-backend-parent</artifactId>
+        <artifactId>svm-backend-data-project</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>svm-backend-mongo-parent</artifactId>
+    <artifactId>svm-backend-data-jpa-project</artifactId>
     <packaging>pom</packaging>
-    <name>Mongo parent</name>
+    <name>Backend data jpa project</name>
+    <modules>
+        <module>svm-backend-data-jpa</module>
+        <module>svm-backend-data-jpa-security</module>
+    </modules>
     
     <build>
         <plugins>
-            
             <plugin>
                 <groupId>com.mysema.maven</groupId>
                 <artifactId>apt-maven-plugin</artifactId>
@@ -25,7 +28,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>target/generated-sources/java</outputDirectory>
-                            <processor>org.springframework.data.mongodb.repository.support.MongoAnnotationProcessor</processor>
+                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
                         </configuration>
                     </execution>
                     <execution>
@@ -35,12 +38,11 @@
                         </goals>
                         <configuration>
                             <outputDirectory>target/generated-test-sources/java</outputDirectory>
-                            <processor>org.springframework.data.mongodb.repository.support.MongoAnnotationProcessor</processor>
+                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            
         </plugins>
     </build>
     

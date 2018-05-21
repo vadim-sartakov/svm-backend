@@ -44,7 +44,7 @@
         </dependency>
         <dependency>
             <groupId>svm.backend</groupId>
-            <artifactId>svm-backend-security-jpa</artifactId>
+            <artifactId>svm-backend-data-jpa-security</artifactId>
         </dependency>
         
     </dependencies>
