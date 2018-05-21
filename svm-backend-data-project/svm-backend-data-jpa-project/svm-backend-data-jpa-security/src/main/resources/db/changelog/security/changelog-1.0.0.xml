@@ -3,22 +3,25 @@
     <changeSet author="svm" id="security-jpa-1.0.0">
         
         <createTable tableName="oauth2_clients">
-            <column name="client_id" type="varchar(255)">
+            <column name="id" type="binary(16)">
                 <constraints nullable="false"/>
             </column>
             <column name="access_token_validity_seconds" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="client_secret" type="varchar(255)">
+            <column name="client_id" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="properties" type="varchar(255)"/>
+            <column name="client_secret" type="varchar(255)"/>
+            <column name="properties" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="refresh_token_validity_seconds" type="int">
                 <constraints nullable="false"/>
             </column>
         </createTable>
         <createTable tableName="oauth2_clients_authorities">
-            <column name="oauth2client_client_id" type="varchar(255)">
+            <column name="oauth2client_id" type="binary(16)">
                 <constraints nullable="false"/>
             </column>
             <column name="role_id" type="binary(16)">
@@ -60,11 +63,12 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addPrimaryKey columnNames="client_id" constraintName="oauth2_clientsPK" tableName="oauth2_clients"/>
+        <addPrimaryKey columnNames="id" constraintName="oauth2_clientsPK" tableName="oauth2_clients"/>
         <addPrimaryKey columnNames="id" constraintName="rolesPK" tableName="roles"/>
         <addPrimaryKey columnNames="id" constraintName="usersPK" tableName="users"/>
+        <addUniqueConstraint columnNames="client_id" constraintName="UC_OAUTH2_CLIENTSCLIENT_ID_COL" tableName="oauth2_clients"/>
         <addUniqueConstraint columnNames="username" constraintName="UC_USERSUSERNAME_COL" tableName="users"/>
-        <addForeignKeyConstraint baseColumnNames="oauth2client_client_id" baseTableName="oauth2_clients_authorities" constraintName="FKnj241rkn91mtsliwlk24nxh5o" deferrable="false" initiallyDeferred="false" referencedColumnNames="client_id" referencedTableName="oauth2_clients"/>
+        <addForeignKeyConstraint baseColumnNames="oauth2client_id" baseTableName="oauth2_clients_authorities" constraintName="FKc08ffp58cbguqal18ixvfrick" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="oauth2_clients"/>
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="oauth2_clients_authorities" constraintName="FKp928vn0ixsfc594myswx3ptpu" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="roles"/>
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="users_authorities" constraintName="FKq2fyu0lvscrowfo3e34vgsc5u" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="roles"/>
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="users_authorities" constraintName="FKq3lq694rr66e6kpo2h84ad92q" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users"/>

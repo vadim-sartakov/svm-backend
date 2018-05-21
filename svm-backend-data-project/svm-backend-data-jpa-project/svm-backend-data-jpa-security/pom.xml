@@ -9,7 +9,7 @@
     <artifactId>svm-backend-data-jpa-security</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
-    <name>Backend security jpa</name>
+    <name>Backend data jpa security</name>
     
     <dependencies>
         <dependency>

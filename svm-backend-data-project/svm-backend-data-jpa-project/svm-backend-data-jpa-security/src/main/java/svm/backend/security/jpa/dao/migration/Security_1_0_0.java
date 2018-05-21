@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
 import svm.backend.data.migration.model.MigrationUpdate;
+import svm.backend.security.jpa.dao.entity.Oauth2Client;
 import svm.backend.security.jpa.dao.entity.Role;
 import svm.backend.security.jpa.dao.entity.User;
 
@@ -16,6 +17,7 @@ public class Security_1_0_0 implements MigrationUpdate {
     public void update() {
         Role.PREDEFINED.forEach(this::save);
         User.PREDEFINED.forEach(this::save);
+        Oauth2Client.PREDEFINED.forEach(this::save);
     }
     
     private void save(String key, Object value) {
