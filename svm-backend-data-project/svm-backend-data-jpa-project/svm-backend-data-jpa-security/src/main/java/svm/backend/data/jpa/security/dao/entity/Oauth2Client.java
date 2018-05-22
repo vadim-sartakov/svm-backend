@@ -40,9 +40,8 @@ import svm.backend.data.jpa.security.dao.entity.converter.Oauth2ClientProperties
 @Access(AccessType.FIELD)
 public class Oauth2Client implements Serializable, Identifiable, ClientDetails {
         
-    public static final String DEFAULT = "default";
-    public static final Map<String, Oauth2Client> PREDEFINED;
-    
+    public static final Oauth2Client DEFAULT = createClient("default", Role.ADMIN);
+        
     @Id
     @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.generator.UUIDGenerator")
     @GeneratedValue(generator = "uuid")
@@ -69,28 +68,21 @@ public class Oauth2Client implements Serializable, Identifiable, ClientDetails {
     @Convert(converter = Oauth2ClientPropertiesConverter.class)
     @Column(nullable = false)
     private Properties properties;
-    
-    static {
-        PREDEFINED = new HashMap<>();
-        PREDEFINED.put(DEFAULT,
-                Oauth2Client.builder()
-                        .id(UUID.nameUUIDFromBytes(DEFAULT.getBytes(StandardCharsets.UTF_8)))
-                        .clientId(DEFAULT)
-                        .authority(
-                                JpaGrantedAuthority.builder()
-                                        .role(Role.PREDEFINED.get(Role.ADMIN))
-                                        .build()
-                        )
-                        .accessTokenValiditySeconds(60 * 60)
-                        .refreshTokenValiditySeconds(60 * 60 * 24)
-                        .properties(Properties.builder()
-                                .scope("read")
-                                .scope("write")
-                                .build()
-                        ).build()
-        );
-    }
 
+    private static Oauth2Client createClient(String id, Role role) {
+        return Oauth2Client.builder()
+                .id(UUID.nameUUIDFromBytes(id.getBytes(StandardCharsets.UTF_8)))
+                .clientId(id)
+                .authority(JpaGrantedAuthority.builder().role(role).build())
+                .accessTokenValiditySeconds(60 * 60)
+                .refreshTokenValiditySeconds(60 * 60 * 24)
+                .properties(Properties.builder()
+                        .scope("read")
+                        .scope("write")
+                        .build()
+                ).build();
+    }
+    
     @Override
     public Set<String> getRegisteredRedirectUri() {
         return properties.getRegisteredRedirectUri();

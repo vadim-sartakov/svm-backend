@@ -7,7 +7,7 @@ import org.springframework.security.access.annotation.Secured;
 import svm.backend.data.jpa.security.dao.entity.Oauth2Client;
 import svm.backend.data.jpa.security.dao.entity.Role;
 
-@Secured({ Role.SYSTEM, Role.MODERATOR, Role.ADMIN })
+@Secured({ Role.ROLE_SYSTEM, Role.ROLE_MODERATOR, Role.ROLE_ADMIN })
 public interface Oauth2ClientRepository extends PagingAndSortingRepository<Oauth2Client, UUID> {
     @RestResource(exported = false)
     Oauth2Client findByClientId(String id);

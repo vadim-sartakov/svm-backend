@@ -21,12 +21,12 @@ public class Shop_1_0_0 implements MigrationUpdate {
     @Override
     public void update() {
         
-        User user = User.PREDEFINED.get(User.ADMIN);
+        User user = User.ADMIN;
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities())
         );
         
-        Oauth2Client client = clientRepository.findOne(Oauth2Client.PREDEFINED.get(Oauth2Client.DEFAULT).getId());
+        Oauth2Client client = clientRepository.findOne(Oauth2Client.DEFAULT.getId());
         String encodedPassword = passwordEncoder.encode("123456");
         client.setClientSecret(encodedPassword);
         clientRepository.save(client);
@@ -34,6 +34,7 @@ public class Shop_1_0_0 implements MigrationUpdate {
         user = userRepository.findOne(user.getId());
         user.setPassword(encodedPassword);
         userRepository.save(user);
+        
     }
 
     @Override

@@ -3,9 +3,7 @@ package svm.backend.data.jpa.security.dao.entity;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -36,26 +34,9 @@ import svm.backend.data.jpa.entity.Updatable;
 @Table(name = "USERS")
 public class User implements UserDetails, Identifiable, Creatable, Updatable, Serializable {
     
-    public static final String SYSTEM = "system";
-    public static final String ADMIN = "admin";
-    public static final Map<String, User> PREDEFINED = new HashMap<>();
-    
-    static {
-        PREDEFINED.put(SYSTEM, createUser(SYSTEM, Role.SYSTEM));
-        PREDEFINED.put(ADMIN, createUser(ADMIN, Role.ADMIN));
-    }
-    
-    private static User createUser(String username, String role) {
-        return User.builder()
-                .id(UUID.nameUUIDFromBytes(username.getBytes(StandardCharsets.UTF_8)))
-                .username(username)
-                .authority(
-                        JpaGrantedAuthority.builder().role(
-                                Role.PREDEFINED.get(role)
-                        ).build()
-                ).build();
-    }
-    
+    public static final User SYSTEM = createUser("system", Role.SYSTEM, true);
+    public static final User ADMIN = createUser("admin", Role.ADMIN, false);
+
     @Id
     @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.generator.UUIDGenerator")
     @GeneratedValue(generator = "uuid")
@@ -84,6 +65,15 @@ public class User implements UserDetails, Identifiable, Creatable, Updatable, Se
     @Column(nullable = false)
     private Boolean disabled = false;
 
+    private static User createUser(String username, Role role, Boolean disabled) {
+        return User.builder()
+                .id(UUID.nameUUIDFromBytes(username.getBytes(StandardCharsets.UTF_8)))
+                .username(username)
+                .authority(JpaGrantedAuthority.builder().role(role).build())
+                .disabled(disabled)
+                .build();
+    }
+    
     @Override
     public boolean isAccountNonExpired() {
         return expiresAt == null || expiresAt.isAfter(ZonedDateTime.now());

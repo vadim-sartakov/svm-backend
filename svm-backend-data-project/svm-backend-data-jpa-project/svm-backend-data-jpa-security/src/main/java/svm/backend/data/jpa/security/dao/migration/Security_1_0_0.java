@@ -1,9 +1,11 @@
 package svm.backend.data.jpa.security.dao.migration;
 
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ReflectionUtils;
 import svm.backend.data.migration.model.MigrationUpdate;
 import svm.backend.data.jpa.security.dao.entity.Oauth2Client;
 import svm.backend.data.jpa.security.dao.entity.Role;
@@ -16,24 +18,30 @@ public class Security_1_0_0 implements MigrationUpdate {
     @Transactional
     @Override
     public void update() {
-        Role.PREDEFINED.forEach(this::save);
-        User.PREDEFINED.entrySet().stream()
-                .filter(entry -> !entry.getKey().equals(User.SYSTEM))
-                .forEach(this::save);
-        Oauth2Client.PREDEFINED.forEach(this::save);
+        ReflectionUtils.doWithFields(Role.class, this::save, field -> filter(Role.class, field));
+        ReflectionUtils.doWithFields(User.class, this::save, field -> filter(User.class, field));
+        ReflectionUtils.doWithFields(Oauth2Client.class, this::save, field -> filter(Oauth2Client.class, field));
     }
     
-    private void save(String key, Object value) {
-        entityManager.persist(entityManager.merge(value));
+    private boolean filter(Class<?> type, Field field) {
+        int modifiers = field.getModifiers();
+        return Modifier.isPublic(modifiers) &&
+                Modifier.isStatic(modifiers) &&
+                Modifier.isFinal(modifiers) &&
+                field.getType().equals(type);
     }
     
-    private void save(Map.Entry<String, User> entry) {
-        entityManager.persist(entityManager.merge(entry.getValue()));
+    private void save(Field field) {
+        try {
+            entityManager.persist(entityManager.merge(field.get(null)));
+        } catch (IllegalAccessException | IllegalArgumentException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public String getId() {
-        return "security_1_0_0";
+        return "security-1.0.0";
     }
 
     @Override
