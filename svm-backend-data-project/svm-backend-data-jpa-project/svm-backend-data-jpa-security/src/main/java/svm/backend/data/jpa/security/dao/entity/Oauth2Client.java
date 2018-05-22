@@ -1,9 +1,7 @@
 package svm.backend.data.jpa.security.dao.entity;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -17,108 +15,113 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.Valid;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Singular;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import svm.backend.data.jpa.entity.Identifiable;
 import svm.backend.data.jpa.security.dao.entity.converter.Oauth2ClientPropertiesConverter;
+import svm.backend.security.model.BaseOauth2Client;
 
-@Data
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor
-@Entity
+@Entity(name = "Oauth2Client")
 @Table(name = "OAUTH2_CLIENTS")
-@Access(AccessType.FIELD)
-public class Oauth2Client implements Serializable, Identifiable, ClientDetails {
-        
-    public static final Oauth2Client DEFAULT = createClient("default", Role.ADMIN);
-        
+@Access(AccessType.PROPERTY)
+public class Oauth2Client extends BaseOauth2Client implements Serializable, Identifiable, ClientDetails {
+
+    public static final BaseOauth2Client DEFAULT = predefined(Oauth2Client.class, "default", new JpaGrantedAuthority(Role.ADMIN));
+    
     @Id
     @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.generator.UUIDGenerator")
     @GeneratedValue(generator = "uuid")
     @Column(length = 16)
-    private UUID id;
-    
+    @Override
+    public UUID getId() {
+        return id;
+    }
+
     @Column(nullable = false, unique = true)
-    private String clientId;
-    private String clientSecret;
+    @Override
+    public String getClientId() {
+        return clientId;
+    }
+
+    @Override
+    public String getClientSecret() {
+        return clientSecret;
+    }
     
     @Column(nullable = false)
-    private Integer accessTokenValiditySeconds;
-    
+    @Override
+    public Integer getAccessTokenValiditySeconds() {
+        return accessTokenValiditySeconds;
+    }
+
     @Column(nullable = false)
-    private Integer refreshTokenValiditySeconds;
-    
-    @Singular
+    @Override
+    public Integer getRefreshTokenValiditySeconds() {
+        return refreshTokenValiditySeconds;
+    }
+
     @Valid
     @NotEmpty
     @ElementCollection(targetClass = JpaGrantedAuthority.class)
     @CollectionTable(name = "OAUTH2_CLIENTS_AUTHORITIES")
-    private Collection<GrantedAuthority> authorities;
-    
+    @Override
+    public Collection<GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
     @Convert(converter = Oauth2ClientPropertiesConverter.class)
     @Column(nullable = false)
-    private Properties properties;
-
-    private static Oauth2Client createClient(String id, Role role) {
-        return Oauth2Client.builder()
-                .id(UUID.nameUUIDFromBytes(id.getBytes(StandardCharsets.UTF_8)))
-                .clientId(id)
-                .authority(JpaGrantedAuthority.builder().role(role).build())
-                .accessTokenValiditySeconds(60 * 60)
-                .refreshTokenValiditySeconds(60 * 60 * 24)
-                .properties(Properties.builder()
-                        .scope("read")
-                        .scope("write")
-                        .build()
-                ).build();
-    }
+    @Override
+    public Properties getProperties() {
+        return properties;
+    }    
     
+    @Transient
     @Override
     public Set<String> getRegisteredRedirectUri() {
         return properties.getRegisteredRedirectUri();
     }
 
+    @Transient
     @Override
     public Set<String> getAuthorizedGrantTypes() {
         return properties.getAuthorizedGrantTypes();
     }
 
+    @Transient
     @Override
     public Set<String> getResourceIds() {
         return properties.getResourceIds();
     }
 
+    @Transient
     @Override
     public Set<String> getScope() {
         return properties.getScope();
     }
 
+    @Transient
     @Override
     public boolean isSecretRequired() {
         return this.clientSecret != null;
     }
 
+    @Transient
     @Override
     public boolean isScoped() {
-        return properties.scope != null && !properties.scope.isEmpty();
+        return properties.getScope() != null && !properties.getScope().isEmpty();
     }
 
     @Override
     public boolean isAutoApprove(String scope) {
-        if (properties.autoApproveScopes == null) {
+        if (properties.getAutoApproveScopes() == null) {
             return false;
         }
-        for (String auto : properties.autoApproveScopes) {
+        for (String auto : properties.getAutoApproveScopes()) {
             if (auto.equals("true") || scope.matches(auto)) {
                 return true;
             }
@@ -126,26 +129,10 @@ public class Oauth2Client implements Serializable, Identifiable, ClientDetails {
         return false;
     }
 
+    @Transient
     @Override
     public Map<String, Object> getAdditionalInformation() {
         return null;
-    }
-
-    @Data
-    @Builder
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    @NoArgsConstructor
-    public static class Properties implements Serializable {
-        @Singular("registeredRedirectUri")
-        private Set<String> registeredRedirectUri;
-        @Singular
-        private Set<String> authorizedGrantTypes;
-        @Singular
-        private Set<String> resourceIds;
-        @Singular("scope")
-        private Set<String> scope;
-        @Singular
-        private Set<String> autoApproveScopes;
     }
     
 }

@@ -1,6 +1,7 @@
 package svm.backend.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +19,7 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
     
     @Autowired private AuthenticationManager authenticationManager;
-    @Autowired private ClientDetailsService clientDetailsService;
+    @Autowired @Qualifier("daoClientDetailsService") private ClientDetailsService clientDetailsService;
     @Autowired private PasswordEncoder passwordEncoder;
 
     @Override

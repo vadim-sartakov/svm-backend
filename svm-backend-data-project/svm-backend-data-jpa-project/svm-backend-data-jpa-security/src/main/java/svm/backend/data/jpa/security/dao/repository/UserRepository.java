@@ -8,7 +8,7 @@ import svm.backend.data.jpa.security.dao.entity.Role;
 import svm.backend.data.jpa.security.dao.entity.User;
 
 @Secured({ Role.ROLE_SYSTEM, Role.ROLE_MODERATOR, Role.ROLE_ADMIN })
-public interface UserRepository extends PagingAndSortingRepository<User, UUID>,
+public interface UserRepository extends PagingAndSortingRepository<User, UUID>, 
         QueryDslPredicateExecutor<User> {
     
 }

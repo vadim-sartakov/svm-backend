@@ -12,9 +12,9 @@ import svm.backend.data.jpa.security.service.OauthClientDetailsService;
 @EntityScan("svm.backend.data.jpa.security.dao.entity")
 @EnableJpaRepositories("svm.backend.data.jpa.security.dao")
 @Import(MigrationsConfiguration.class)
-public class SecurityJpaAutoConfiguration {
+public class JpaSecurityAutoConfiguration {
     @Bean
-    public ClientDetailsService clientDetailsService() {
+    public ClientDetailsService daoClientDetailsService() {
         return new OauthClientDetailsService();
     }    
 }

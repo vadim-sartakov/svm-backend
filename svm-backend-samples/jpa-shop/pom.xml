@@ -22,7 +22,7 @@
         <jdbc.dependency.version>${mssql-jdbc.version}</jdbc.dependency.version>
         
         <hibernate.dialect>org.hibernate.dialect.SQLServer2012Dialect</hibernate.dialect>
-        <hibernate.entityPackages>svm.backend.data.jpa.migration,svm.backend.security.jpa.dao.entity,svm.backend.samples.shop.dao.entity</hibernate.entityPackages>
+        <hibernate.entityPackages>svm.backend.data.jpa.migration,svm.backend.data.jpa.security.dao.entity,svm.backend.samples.shop.dao.entity</hibernate.entityPackages>
         
     </properties>
     

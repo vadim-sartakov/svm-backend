@@ -5,9 +5,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import svm.backend.data.migration.model.MigrationUpdate;
 import svm.backend.data.jpa.security.dao.entity.Oauth2Client;
 import svm.backend.data.jpa.security.dao.entity.User;
+import svm.backend.data.migration.model.MigrationUpdate;
 import svm.backend.data.jpa.security.dao.repository.Oauth2ClientRepository;
 import svm.backend.data.jpa.security.dao.repository.UserRepository;
 
