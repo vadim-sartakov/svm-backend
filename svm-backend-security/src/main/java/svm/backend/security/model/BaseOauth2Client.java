@@ -79,6 +79,7 @@ public abstract class BaseOauth2Client implements Serializable, ClientDetails {
     public static <T extends BaseOauth2Client> T predefined(Class<T> type, String id, BaseGrantedAuthority... authority) {
         T client = BeanUtils.instantiate(type);
         client.setId(UUID.nameUUIDFromBytes(id.getBytes(StandardCharsets.UTF_8)));
+        client.setClientId(id);
         client.setAuthorities(Arrays.asList(authority));
         client.setAccessTokenValiditySeconds(60 * 60);
         client.setRefreshTokenValiditySeconds(60 * 6 * 24);

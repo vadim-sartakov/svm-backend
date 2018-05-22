@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import svm.backend.data.jpa.migration.JpaMigrationRepository;
+import svm.backend.data.jpa.service.PredefinedProcessor;
 import svm.backend.data.migration.service.MigrationRepository;
 
 @Configuration
@@ -29,6 +30,12 @@ public class DataJpaAutoConfiguration {
     @Bean
     public MigrationRepository migrationRepository() {
         return new JpaMigrationRepository();
+    }
+    
+    // TODO: make conditional on property
+    @Bean
+    public PredefinedProcessor predefinedProcessor() {
+        return new PredefinedProcessor();
     }
     
     @Bean

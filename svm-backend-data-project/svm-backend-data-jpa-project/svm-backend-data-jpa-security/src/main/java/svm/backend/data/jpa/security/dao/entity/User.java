@@ -17,6 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import svm.backend.data.annotation.Predefined;
 import svm.backend.data.jpa.entity.Creatable;
 import svm.backend.data.jpa.entity.Identifiable;
 import svm.backend.data.jpa.entity.Updatable;
@@ -26,8 +27,8 @@ import svm.backend.security.model.BaseUser;
 @Table(name = "USERS")
 public class User extends BaseUser implements UserDetails, Identifiable, Creatable, Updatable, Serializable {
 
-    public static final User SYSTEM = predefined(User.class, "system", true, new JpaGrantedAuthority(Role.SYSTEM));
-    public static final User ADMIN = predefined(User.class, "admin", false, new JpaGrantedAuthority(Role.ADMIN));
+    public static final @Predefined User SYSTEM = predefined(User.class, "system", true, new JpaGrantedAuthority(Role.SYSTEM));
+    public static final @Predefined User ADMIN = predefined(User.class, "admin", false, new JpaGrantedAuthority(Role.ADMIN));
     
     @Id
     @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.generator.UUIDGenerator")

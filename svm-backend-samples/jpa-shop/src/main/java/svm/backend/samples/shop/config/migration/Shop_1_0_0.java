@@ -10,6 +10,7 @@ import svm.backend.data.jpa.security.dao.entity.User;
 import svm.backend.data.migration.model.MigrationUpdate;
 import svm.backend.data.jpa.security.dao.repository.Oauth2ClientRepository;
 import svm.backend.data.jpa.security.dao.repository.UserRepository;
+import svm.backend.security.util.SecurityUtils;
 
 public class Shop_1_0_0 implements MigrationUpdate {
 
@@ -22,9 +23,7 @@ public class Shop_1_0_0 implements MigrationUpdate {
     public void update() {
         
         User user = User.ADMIN;
-        SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities())
-        );
+        SecurityUtils.setAuthentication(user);
         
         Oauth2Client client = clientRepository.findOne(Oauth2Client.DEFAULT.getId());
         String encodedPassword = passwordEncoder.encode("123456");

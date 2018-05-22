@@ -19,6 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
+import svm.backend.data.annotation.Predefined;
 import svm.backend.data.jpa.entity.Identifiable;
 import svm.backend.data.jpa.security.dao.entity.converter.Oauth2ClientPropertiesConverter;
 import svm.backend.security.model.BaseOauth2Client;
@@ -27,7 +28,7 @@ import svm.backend.security.model.BaseOauth2Client;
 @Table(name = "OAUTH2_CLIENTS")
 public class Oauth2Client extends BaseOauth2Client implements Serializable, Identifiable, ClientDetails {
 
-    public static final BaseOauth2Client DEFAULT = predefined(Oauth2Client.class, "default", new JpaGrantedAuthority(Role.ADMIN));
+    public static final @Predefined BaseOauth2Client DEFAULT = predefined(Oauth2Client.class, "default", new JpaGrantedAuthority(Role.ADMIN));
     
     @Id
     @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.generator.UUIDGenerator")

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.NotEmpty;
+import svm.backend.data.annotation.Predefined;
 import svm.backend.data.jpa.entity.Identifiable;
 import svm.backend.security.model.BaseRole;
 
@@ -16,9 +17,9 @@ import svm.backend.security.model.BaseRole;
 @Table(name = "ROLES")
 public class Role extends BaseRole implements Serializable, Identifiable {
         
-    public static final Role SYSTEM = predefined(Role.class, ROLE_SYSTEM);
-    public static final Role ADMIN = predefined(Role.class, ROLE_ADMIN);
-    public static final Role MODERATOR = predefined(Role.class, ROLE_MODERATOR);
+    public static final @Predefined Role SYSTEM = predefined(Role.class, ROLE_SYSTEM);
+    public static final @Predefined Role ADMIN = predefined(Role.class, ROLE_ADMIN);
+    public static final @Predefined Role MODERATOR = predefined(Role.class, ROLE_MODERATOR);
     
     @Id
     @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.generator.UUIDGenerator")

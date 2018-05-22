@@ -1,6 +1,7 @@
 package svm.backend.data.jpa.security.dao.entity;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
@@ -19,7 +20,7 @@ public class JpaGrantedAuthority extends BaseGrantedAuthority implements Seriali
     }
     
     @Valid
-    @ManyToOne(optional = false, targetEntity = Role.class)
+    @ManyToOne(optional = false, targetEntity = Role.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @Override
     public BaseRole getRole() {
         return role;
