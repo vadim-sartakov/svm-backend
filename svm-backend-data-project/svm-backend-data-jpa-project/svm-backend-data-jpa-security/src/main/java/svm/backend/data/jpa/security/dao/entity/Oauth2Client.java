@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -27,7 +25,6 @@ import svm.backend.security.model.BaseOauth2Client;
 
 @Entity(name = "Oauth2Client")
 @Table(name = "OAUTH2_CLIENTS")
-@Access(AccessType.PROPERTY)
 public class Oauth2Client extends BaseOauth2Client implements Serializable, Identifiable, ClientDetails {
 
     public static final BaseOauth2Client DEFAULT = predefined(Oauth2Client.class, "default", new JpaGrantedAuthority(Role.ADMIN));

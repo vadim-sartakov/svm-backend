@@ -1,8 +1,6 @@
 package svm.backend.data.jpa.security.dao.entity;
 
 import java.io.Serializable;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
@@ -14,7 +12,6 @@ import svm.backend.security.model.BaseRole;
 
 @Embeddable
 @NoArgsConstructor
-@Access(AccessType.PROPERTY)
 public class JpaGrantedAuthority extends BaseGrantedAuthority implements Serializable, GrantedAuthority {
     
     public JpaGrantedAuthority(BaseRole role) {

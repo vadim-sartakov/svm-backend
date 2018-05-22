@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -26,7 +24,6 @@ import svm.backend.security.model.BaseUser;
 
 @Entity(name = "User")
 @Table(name = "USERS")
-@Access(AccessType.PROPERTY)
 public class User extends BaseUser implements UserDetails, Identifiable, Creatable, Updatable, Serializable {
 
     public static final User SYSTEM = predefined(User.class, "system", true, new JpaGrantedAuthority(Role.SYSTEM));

@@ -2,8 +2,6 @@ package svm.backend.data.jpa.security.dao.entity;
 
 import java.io.Serializable;
 import java.util.UUID;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +14,6 @@ import svm.backend.security.model.BaseRole;
 
 @Entity(name = "Role")
 @Table(name = "ROLES")
-@Access(AccessType.PROPERTY)
 public class Role extends BaseRole implements Serializable, Identifiable {
         
     public static final Role SYSTEM = predefined(Role.class, ROLE_SYSTEM);
