@@ -16,7 +16,7 @@ import svm.backend.web.querydsl.QueryDslDefaultBinder;
 public interface OrderRepository extends PagingAndSortingRepository<Order, UUID>,
         QueryDslPredicateExecutor<Order>, QueryDslDefaultBinder<QOrder> {
 
-    @EntityGraph("overview")
+    @EntityGraph("OrderOverview")
     @Override
     public Page<Order> findAll(Predicate predicate, Pageable pageable);
     

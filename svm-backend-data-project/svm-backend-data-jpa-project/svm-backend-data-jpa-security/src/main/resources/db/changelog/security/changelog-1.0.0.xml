@@ -6,9 +6,7 @@
             <column name="id" type="binary(16)">
                 <constraints nullable="false"/>
             </column>
-            <column name="access_token_validity_seconds" type="int">
-                <constraints nullable="false"/>
-            </column>
+            <column name="access_token_validity_seconds" type="int"/>
             <column name="client_id" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
@@ -16,9 +14,7 @@
             <column name="properties" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="refresh_token_validity_seconds" type="int">
-                <constraints nullable="false"/>
-            </column>
+            <column name="refresh_token_validity_seconds" type="int"/>
         </createTable>
         <createTable tableName="oauth2_clients_authorities">
             <column name="oauth2client_id" type="binary(16)">

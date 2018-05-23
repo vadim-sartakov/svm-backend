@@ -81,11 +81,10 @@ public abstract class BaseOauth2Client implements Serializable, ClientDetails {
         client.setId(UUID.nameUUIDFromBytes(id.getBytes(StandardCharsets.UTF_8)));
         client.setClientId(id);
         client.setAuthorities(Arrays.asList(authority));
-        client.setAccessTokenValiditySeconds(60 * 60);
-        client.setRefreshTokenValiditySeconds(60 * 6 * 24);
         client.setProperties(Properties.builder()
-                .scope("read")
-                .scope("write")
+                .authorizedGrantType("client_credentials")
+                .authorizedGrantType("password")
+                .authorizedGrantType("refresh_token")
                 .build());
         return client;
     }

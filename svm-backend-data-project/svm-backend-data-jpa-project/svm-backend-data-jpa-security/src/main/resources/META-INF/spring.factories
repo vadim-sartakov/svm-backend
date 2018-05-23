@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-svm.backend.data.jpa.security.config.JpaSecurityAutoConfiguration
+svm.backend.data.jpa.security.config.SecurityJpaAutoConfiguration,\
+svm.backend.data.jpa.security.config.SecurityEntityAutoConfiguration

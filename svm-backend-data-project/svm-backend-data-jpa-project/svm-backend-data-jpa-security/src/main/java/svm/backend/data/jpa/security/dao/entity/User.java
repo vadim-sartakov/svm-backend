@@ -10,6 +10,8 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.Valid;
@@ -25,6 +27,7 @@ import svm.backend.security.model.BaseUser;
 
 @Entity(name = "User")
 @Table(name = "USERS")
+@NamedEntityGraph(name = "UserOverview", attributeNodes = @NamedAttributeNode("authorities"))
 public class User extends BaseUser implements UserDetails, Identifiable, Creatable, Updatable, Serializable {
 
     public static final @Predefined User SYSTEM = predefined(User.class, "system", true, new JpaGrantedAuthority(Role.SYSTEM));

@@ -29,7 +29,7 @@ import svm.backend.data.jpa.entity.Identifiable;
 @Data
 @Entity(name = "OrderDocument")
 @Table(name = "ORDERS")
-@NamedEntityGraph(name = "overview", attributeNodes = @NamedAttributeNode("stock"))
+@NamedEntityGraph(name = "OrderOverview", attributeNodes = @NamedAttributeNode("stock"))
 public class Order implements Serializable, Identifiable, Creatable {
     
     @Id

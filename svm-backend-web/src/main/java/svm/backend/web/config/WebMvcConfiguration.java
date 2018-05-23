@@ -57,7 +57,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         @Override
         public void addViewControllers(ViewControllerRegistry registry) {
             registry.addViewController("/").setViewName("index");
-            registry.addViewController("/{basePath:^(?!api|static).*$}/**").setViewName("index");
+            registry.addViewController("/{basePath:^(?!api|static|oauth).*$}/**").setViewName("index");
         }
     }
       
