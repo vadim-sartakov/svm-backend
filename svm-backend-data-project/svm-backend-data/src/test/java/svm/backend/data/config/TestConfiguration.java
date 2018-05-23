@@ -10,12 +10,14 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import svm.backend.data.annotation.PredefinedProcessor;
 import svm.backend.data.migration.service.MigrationExecutor;
 
 @Configuration
 public class TestConfiguration extends WebMvcConfigurerAdapter {
     
     @MockBean private MigrationExecutor migrationExecutor;
+    @MockBean private PredefinedProcessor predefinedProcessor;
     @Autowired private LocalValidatorFactoryBean validator;
     
     @Bean

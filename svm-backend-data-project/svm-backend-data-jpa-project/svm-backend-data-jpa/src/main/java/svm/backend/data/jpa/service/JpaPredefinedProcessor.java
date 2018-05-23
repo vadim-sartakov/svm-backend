@@ -1,37 +1,29 @@
 package svm.backend.data.jpa.service;
 
 import java.lang.reflect.Field;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.metamodel.EntityType;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.ReflectionUtils;
 import svm.backend.data.annotation.Predefined;
+import svm.backend.data.annotation.PredefinedProcessor;
 
-/**
- * Performs search of predefined elements and
- * persists them in database.
- */
-public class PredefinedProcessor implements InitializingBean {
+public class JpaPredefinedProcessor implements PredefinedProcessor {
 
+    private final Logger logger = LoggerFactory.getLogger(JpaPredefinedProcessor.class);
     @PersistenceContext private EntityManager entityManager;
-    @Autowired private PlatformTransactionManager transactionManager;
     
+    @Transactional
     @Override
-    public void afterPropertiesSet() throws Exception {
-        TransactionTemplate template = new TransactionTemplate(transactionManager);
-        template.execute(this::executeInTransaction);
-    }
-    
-    private TransactionStatus executeInTransaction(TransactionStatus status) {
-        entityManager.getMetamodel().getEntities().stream()
-                .forEach(this::processEntityType);
-        return status;
+    public void process() {
+        logger.info("Processing predefined elements");
+        Set<EntityType<?>> entityTypes = entityManager.getMetamodel().getEntities();
+        entityTypes.stream().forEach(this::processEntityType);
+        logger.info("Sucessfully saved {} predefined elements", entityTypes.size());
     }
     
     private void processEntityType(EntityType<?> entityType) {

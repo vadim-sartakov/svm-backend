@@ -28,7 +28,7 @@ import svm.backend.security.model.BaseOauth2Client;
 @Table(name = "OAUTH2_CLIENTS")
 public class Oauth2Client extends BaseOauth2Client implements Serializable, Identifiable, ClientDetails {
 
-    public static final @Predefined BaseOauth2Client DEFAULT = predefined(Oauth2Client.class, "default", new JpaGrantedAuthority(Role.ADMIN));
+    public static final @Predefined Oauth2Client DEFAULT = predefined(Oauth2Client.class, "default", new JpaGrantedAuthority(Role.ADMIN));
     
     @Id
     @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.generator.UUIDGenerator")
