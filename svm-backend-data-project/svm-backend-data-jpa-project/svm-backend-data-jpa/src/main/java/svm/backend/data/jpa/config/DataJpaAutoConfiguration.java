@@ -20,7 +20,6 @@ import svm.backend.data.migration.service.MigrationRepository;
 @Configuration
 @PropertySource("classpath:properties/data/jpa/application.properties")
 @EntityScan({ "svm.backend.data.jpa.migration", "svm.backend.data.jpa.entity" })
-@Import(HibernateConfiguration.class)
 public class DataJpaAutoConfiguration {
     
     @PersistenceContext private EntityManager entityManager;

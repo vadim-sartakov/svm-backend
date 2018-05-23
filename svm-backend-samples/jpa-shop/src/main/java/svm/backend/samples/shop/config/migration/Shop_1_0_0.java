@@ -22,7 +22,7 @@ public class Shop_1_0_0 implements MigrationUpdate {
     @Override
     public void update() {
         
-        /*User user = User.ADMIN;
+        User user = User.ADMIN;
         SecurityUtils.setAuthentication(user);
         
         Oauth2Client client = clientRepository.findOne(Oauth2Client.DEFAULT.getId());
@@ -32,7 +32,7 @@ public class Shop_1_0_0 implements MigrationUpdate {
         
         user = userRepository.findOne(user.getId());
         user.setPassword(encodedPassword);
-        userRepository.save(user);*/
+        userRepository.save(user);
         
     }
 
