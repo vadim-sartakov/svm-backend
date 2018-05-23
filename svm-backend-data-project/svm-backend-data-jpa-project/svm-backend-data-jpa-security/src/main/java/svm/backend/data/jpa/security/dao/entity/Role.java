@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.NotEmpty;
 import svm.backend.data.annotation.Predefined;
 import svm.backend.data.jpa.entity.Identifiable;
@@ -22,8 +20,6 @@ public class Role extends BaseRole implements Serializable, Identifiable {
     public static final @Predefined Role MODERATOR = predefined(Role.class, ROLE_MODERATOR);
     
     @Id
-    @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.generator.UUIDGenerator")
-    @GeneratedValue(generator = "uuid")
     @Column(length = 16)
     @Override
     public UUID getId() {

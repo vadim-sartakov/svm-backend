@@ -53,13 +53,11 @@ public class Oauth2Client extends BaseOauth2Client implements Serializable, Iden
         return clientSecret;
     }
     
-    @Column(nullable = false)
     @Override
     public Integer getAccessTokenValiditySeconds() {
         return accessTokenValiditySeconds;
     }
 
-    @Column(nullable = false)
     @Override
     public Integer getRefreshTokenValiditySeconds() {
         return refreshTokenValiditySeconds;
