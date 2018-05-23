@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableConfigurationProperties(SecurityProperties.class)
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-@Import({ AuthorizationServerConfiguration.class, MessagesConfiguration.class })
+@Import({ AuthorizationServerConfiguration.class, WebSecurityConfiguration.class, MessagesConfiguration.class })
 public class SecurityAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(PasswordEncoder.class)
