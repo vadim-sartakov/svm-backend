@@ -1,0 +1,50 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="svm" id="1.0.0">
+        <createTable tableName="orders_products">
+            <column name="order_document_id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="numeric(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="numeric(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="orders">
+            <column name="id" type="binary(16)">
+                <constraints primaryKey="true" primaryKeyName="ordersPK"/>
+            </column>
+            <column name="number" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime2">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stock_id" type="binary(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="products">
+            <column name="id" type="binary(16)">
+                <constraints primaryKey="true" primaryKeyName="productsPK"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+        </createTable>
+        <createTable tableName="stocks">
+            <column name="id" type="binary(16)">
+                <constraints primaryKey="true" primaryKeyName="stocksPK"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="orders_products" constraintName="FK43vke5jd6eyasd92t3k24kdxq" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="products"/>
+        <addForeignKeyConstraint baseColumnNames="order_document_id" baseTableName="orders_products" constraintName="FKph2agbnhar1w8uhwvo18nbhtt" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="orders"/>
+        <addForeignKeyConstraint baseColumnNames="stock_id" baseTableName="orders" constraintName="FK4jg39ja0rjvjyydibgtbp8b6b" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="stocks"/>
+    </changeSet>
+</databaseChangeLog>
