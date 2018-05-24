@@ -11,9 +11,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="client_secret" type="varchar(255)"/>
-            <column name="properties" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="registered_redirect_uri" type="varchar(255)" />
+            <column name="authorized_grant_types" type="varchar(255)" />
+            <column name="resource_ids" type="varchar(255)" />
+            <column name="scope" type="varchar(255)" />
+            <column name="auto_approve_scopes" type="varchar(255)" />
+            <column name="additional_information" type="varchar(255)" />
             <column name="refresh_token_validity_seconds" type="int"/>
         </createTable>
         <createTable tableName="oauth2_clients_authorities">

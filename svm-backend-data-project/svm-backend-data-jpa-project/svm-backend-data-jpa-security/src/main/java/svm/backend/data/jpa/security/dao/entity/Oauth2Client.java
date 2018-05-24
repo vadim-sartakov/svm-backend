@@ -23,7 +23,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import svm.backend.data.annotation.Predefined;
 import svm.backend.data.jpa.entity.Identifiable;
-import svm.backend.data.jpa.security.dao.entity.converter.Oauth2ClientPropertiesConverter;
+import svm.backend.data.jpa.converter.MapJsonStringConverter;
+import svm.backend.data.jpa.converter.StringSetConverter;
 import svm.backend.security.model.BaseOauth2Client;
 
 @Entity(name = "Oauth2Client")
@@ -72,66 +73,52 @@ public class Oauth2Client extends BaseOauth2Client implements Serializable, Iden
         return authorities;
     }
 
-    @Convert(converter = Oauth2ClientPropertiesConverter.class)
-    @Column(nullable = false)
+    @Convert(converter = StringSetConverter.class)
     @Override
-    public Properties getProperties() {
-        return properties;
-    }    
-    
-    @Transient
-    @Override
-    public Set<String> getRegisteredRedirectUri() {
-        return properties.getRegisteredRedirectUri();
+    public Set<String> getAutoApproveScopes() {
+        return super.getAutoApproveScopes();
     }
 
-    @Transient
-    @Override
-    public Set<String> getAuthorizedGrantTypes() {
-        return properties.getAuthorizedGrantTypes();
-    }
-
-    @Transient
-    @Override
-    public Set<String> getResourceIds() {
-        return properties.getResourceIds();
-    }
-
-    @Transient
+    @Convert(converter = StringSetConverter.class)
     @Override
     public Set<String> getScope() {
-        return properties.getScope();
+        return super.getScope();
+    }
+
+    @Convert(converter = StringSetConverter.class)
+    @Override
+    public Set<String> getResourceIds() {
+        return super.getResourceIds();
+    }
+
+    @Convert(converter = StringSetConverter.class)
+    @Override
+    public Set<String> getAuthorizedGrantTypes() {
+        return super.getAuthorizedGrantTypes();
+    }
+
+    @Convert(converter = StringSetConverter.class)
+    @Override
+    public Set<String> getRegisteredRedirectUri() {
+        return super.getRegisteredRedirectUri();
     }
 
     @Transient
     @Override
     public boolean isSecretRequired() {
-        return this.clientSecret != null;
+        return super.isSecretRequired();
     }
 
     @Transient
     @Override
     public boolean isScoped() {
-        return properties.getScope() != null && !properties.getScope().isEmpty();
+        return super.isScoped();
     }
 
-    @Override
-    public boolean isAutoApprove(String scope) {
-        if (properties.getAutoApproveScopes() == null) {
-            return false;
-        }
-        for (String auto : properties.getAutoApproveScopes()) {
-            if (auto.equals("true") || scope.matches(auto)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Transient
+    @Convert(converter = MapJsonStringConverter.class)
     @Override
     public Map<String, Object> getAdditionalInformation() {
-        return null;
+        return super.getAdditionalInformation();
     }
     
 }

@@ -10,6 +10,7 @@ import org.springframework.data.rest.core.RepositoryConstraintViolationException
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -73,6 +74,12 @@ public class WebExceptionHandler extends ResponseEntityExceptionHandler {
         return handleConstraintViolation(ex, ex.getBindingResult().getFieldErrors(), request);
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    protected ResponseEntity<Object> handleAccesssDenied(Exception ex, WebRequest request) {
+        String message = messageSource.getMessage("svm.backend.web.AccessDenied", null, LocaleContextHolder.getLocale());
+        return sendException(message, null, new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+    }
+    
     /**
      * In none exception has been intercepted - throw internal server error.
      * @param ex

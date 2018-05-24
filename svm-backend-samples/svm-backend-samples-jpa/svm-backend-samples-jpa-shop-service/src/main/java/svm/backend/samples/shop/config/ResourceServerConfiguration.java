@@ -16,7 +16,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .antMatchers("/home/protected")
                 .authenticated()
                 .antMatchers("/home/public")
-                .permitAll();
+                .permitAll()
+                .antMatchers("/api/orders")
+                .hasAnyAuthority("ROLE_MANAGER");
     }
     
 }
