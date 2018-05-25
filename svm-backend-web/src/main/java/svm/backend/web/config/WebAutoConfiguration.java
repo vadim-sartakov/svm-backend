@@ -1,6 +1,8 @@
 package svm.backend.web.config;
 
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -9,6 +11,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import svm.backend.core.service.ExceptionFactory;
 import svm.backend.core.service.MessagesBasenameProvider;
+import svm.backend.web.exception.CustomErrorAttributes;
 import svm.backend.web.exception.DefaultExceptionFactory;
 
 @Configuration
@@ -29,5 +32,5 @@ public class WebAutoConfiguration {
     public ExceptionFactory defaultExceptionFactory() {
         return new DefaultExceptionFactory();
     }
-    
+        
 }

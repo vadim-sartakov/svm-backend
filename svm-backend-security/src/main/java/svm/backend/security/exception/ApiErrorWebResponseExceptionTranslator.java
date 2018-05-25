@@ -36,7 +36,7 @@ public class ApiErrorWebResponseExceptionTranslator extends DefaultWebResponseEx
                 return "svm.backend.security.Unauthorized";
             case "access_denied":
                 return "svm.backend.security.AccessDenied";
-            case "invalid_client":
+            case "invalid_grant":
                 return "svm.backend.security.BadCredentials";
             default:
                 return "empty";
