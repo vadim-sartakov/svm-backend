@@ -13,6 +13,12 @@
     <name>Backend security</name>
     
     <dependencies>
+        
+        <dependency>
+            <groupId>svm.backend</groupId>
+            <artifactId>svm-backend-core</artifactId>
+        </dependency>
+        
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -30,13 +36,9 @@
             <artifactId>spring-security-jwt</artifactId>
         </dependency>
         
-        <!--<dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-        </dependency>-->
-        <dependency>
-            <groupId>svm.backend</groupId>
-            <artifactId>svm-backend-web</artifactId>
         </dependency>
         
         <dependency>

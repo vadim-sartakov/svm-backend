@@ -13,6 +13,12 @@
     <name>Backend data</name>
             
     <dependencies>
+        
+        <dependency>
+            <groupId>svm.backend</groupId>
+            <artifactId>svm-backend-core</artifactId>
+        </dependency>
+        
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

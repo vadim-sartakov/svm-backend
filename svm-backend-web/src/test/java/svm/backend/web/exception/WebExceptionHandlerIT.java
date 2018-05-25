@@ -1,4 +1,4 @@
-package svm.backend.web.controller;
+package svm.backend.web.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.hamcrest.CoreMatchers.*;

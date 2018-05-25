@@ -34,6 +34,10 @@
         
         <dependency>
             <groupId>svm.backend</groupId>
+            <artifactId>svm-backend-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>svm.backend</groupId>
             <artifactId>svm-backend-security</artifactId>
         </dependency>
         <dependency>

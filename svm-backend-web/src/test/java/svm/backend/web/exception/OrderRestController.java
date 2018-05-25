@@ -1,4 +1,4 @@
-package svm.backend.web.controller;
+package svm.backend.web.exception;
 
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

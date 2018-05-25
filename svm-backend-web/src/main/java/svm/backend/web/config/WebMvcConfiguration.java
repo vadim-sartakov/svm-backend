@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
+@ConditionalOnMissingBean(WebMvcConfiguration.class)
 public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         
     @Autowired private MessageSource messageSource;

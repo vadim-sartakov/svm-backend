@@ -1,6 +1,9 @@
-package svm.backend.web.controller;
+package svm.backend.web.exception;
 
+import java.util.HashMap;
+import svm.backend.core.service.ExceptionFactory;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -24,13 +27,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class WebExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Autowired private MessageSource messageSource;
+    @Autowired private ExceptionFactory<?> exceptionFactory;
        
     protected ResponseEntity<Object> sendException(String message, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
         if (body == null)
-            body = ApiException.builder()
-                    .status(status)
-                    .message(message)
-                    .build();
+            body = new DefaultException(status, message, null);
         return new ResponseEntity<>(body, headers, status);
     }
     
@@ -44,17 +45,17 @@ public class WebExceptionHandler extends ResponseEntityExceptionHandler {
             List<FieldError> fieldErrors,
             WebRequest request) {
         
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         String message = messageSource.getMessage("svm.backend.web.WrongObject", null, LocaleContextHolder.getLocale());
-        ApiException.ApiExceptionBuilder exceptionBuilder = ApiException.builder()
-                .status(HttpStatus.BAD_REQUEST)
-                .message(message);
+        Object exception = exceptionFactory.createDetailedException(status.toString(), message, fieldErrorsToMap(fieldErrors));        
+        return handleExceptionInternal(ex, exception, new HttpHeaders(), status, request);
         
-        fieldErrors.forEach(fieldError ->
-                exceptionBuilder.error(fieldError.getField(), fieldError.getDefaultMessage()));
-        
-        ApiException exception = exceptionBuilder.build();
-        return handleExceptionInternal(ex, exception, new HttpHeaders(), exception.getStatus(), request);
-        
+    }
+    
+    private Map<String, String> fieldErrorsToMap(List<FieldError> fieldErrors) {
+        Map<String, String> errorsMap = new HashMap<>();
+        fieldErrors.forEach(fieldError -> errorsMap.put(fieldError.getField(), fieldError.getDefaultMessage()));
+        return errorsMap;
     }
     
     @ExceptionHandler(RepositoryConstraintViolationException.class)

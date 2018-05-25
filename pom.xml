@@ -25,6 +25,7 @@
     </properties>
 
     <modules>
+        <module>svm-backend-core</module>
         <module>svm-backend-parent</module>
         <module>svm-backend-data-project</module>
         <module>svm-backend-web</module>
@@ -36,6 +37,12 @@
     
     <dependencyManagement>
         <dependencies>
+            
+            <dependency>
+                <groupId>svm.backend</groupId>
+                <artifactId>svm-backend-core</artifactId>
+                <version>1.0.0</version>
+            </dependency>
             
             <!-- JPA -->
             <dependency>
