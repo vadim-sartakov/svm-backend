@@ -9,9 +9,7 @@ public class CustomOAuth2ExceptionSerializer extends JsonSerializer<CustomOAuth2
     
     @Override
     public void serialize(CustomOAuth2Exception value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeStartObject();
-        gen.writeStringField("test", "test exception");
-        gen.writeEndObject();
+        gen.writeObject(value.getApiException());
     }
     
 }

@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
@@ -29,10 +30,12 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Autowired private UserDetailsService userDetailsService;
     @Autowired private TokenStore tokenStore;
     @Autowired private TokenEnhancer tokenEnhancer;
+    @Autowired private WebResponseExceptionTranslator translator;
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
+                .exceptionTranslator(translator)
                 .tokenEnhancer(tokenEnhancer)
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)

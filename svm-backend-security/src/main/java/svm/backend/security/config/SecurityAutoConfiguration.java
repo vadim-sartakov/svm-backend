@@ -16,7 +16,6 @@ import svm.backend.security.exception.ApiErrorWebResponseExceptionTranslator;
 @Configuration
 @EnableConfigurationProperties(SecurityProperties.class)
 @PropertySource("classpath:properties/security/application.properties")
-//@ComponentScan("svm.backend.security.exception")
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Import({ AuthorizationServerConfiguration.class, MessagesConfiguration.class })
 public class SecurityAutoConfiguration {

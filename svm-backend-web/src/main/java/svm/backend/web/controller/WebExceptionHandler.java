@@ -76,7 +76,7 @@ public class WebExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     protected ResponseEntity<Object> handleAccesssDenied(Exception ex, WebRequest request) {
-        String message = messageSource.getMessage("svm.backend.web.AccessDenied", null, LocaleContextHolder.getLocale());
+        String message = messageSource.getMessage("svm.backend.security.AccessDenied", null, LocaleContextHolder.getLocale());
         return sendException(message, null, new HttpHeaders(), HttpStatus.FORBIDDEN, request);
     }
     
