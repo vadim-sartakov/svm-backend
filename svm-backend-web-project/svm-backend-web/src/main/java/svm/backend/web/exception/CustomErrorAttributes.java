@@ -8,21 +8,24 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
 import org.springframework.web.context.request.RequestAttributes;
+import svm.backend.web.core.exception.ByStatusExceptionHandler;
+import svm.backend.web.core.exception.ByTypeExceptionHandler;
 
 public class CustomErrorAttributes extends DefaultErrorAttributes {
 
-    private final Map<Integer, ExceptionHandler> handlersByStatus;
-    private final Map<Class<? extends Throwable>, ExceptionHandler> handlersByClass;
+    private final Map<Class<? extends Throwable>, ByTypeExceptionHandler<?>> byClassHandlers;
+    private final Map<Integer, ByStatusExceptionHandler> byStatusHandlers;    
     
-    @SuppressWarnings("unchecked")
-    public CustomErrorAttributes(@Autowired List<ExceptionHandler<?>> handlers) {
-        this.handlersByStatus = handlers.stream()
-                .collect(Collectors.toMap(ExceptionHandler::getStatusCode,
+    @Autowired
+    public CustomErrorAttributes(List<ByTypeExceptionHandler<?>> byClassHandlers,
+            List<ByStatusExceptionHandler> byStatusHandlers) {
+        this.byClassHandlers = byClassHandlers.stream()
+                .collect(Collectors.toMap(ByTypeExceptionHandler::getExceptionType, Function.identity(),
+                        (first, second) -> second));
+        this.byStatusHandlers = byStatusHandlers.stream()
+                .collect(Collectors.toMap(ByStatusExceptionHandler::getStatusCode,
                         Function.identity(),
-                        (first, second) -> first));
-        this.handlersByClass = handlers.stream()
-                .collect(Collectors.toMap(ExceptionHandler::getExceptionType, Function.identity(),
-                        (first, second) -> first));
+                        (first, second) -> second));
     }
     
     @Override
@@ -40,13 +43,13 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
         ExceptionHandler exceptionHandler = null;
         
         if (exception != null)
-            exceptionHandler = handlersByClass.get(exception.getClass());
+            exceptionHandler = byClassHandlers.get(exception.getClass());
         
         if (exceptionHandler == null && exception != null)
-            exceptionHandler = handlersByStatus.get(status);
+            exceptionHandler = byStatusHandlers.get(status);
         
         if (exceptionHandler == null)
-            exceptionHandler = handlersByStatus.get(500);
+            exceptionHandler = byStatusHandlers.get(500);
         
         exceptionHandler.preHandle(requestAttributes);
         exceptionHandler.handle(attributes, exception);

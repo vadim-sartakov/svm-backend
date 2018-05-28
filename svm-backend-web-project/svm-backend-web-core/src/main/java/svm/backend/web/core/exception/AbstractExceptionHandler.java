@@ -12,29 +12,13 @@ public abstract class AbstractExceptionHandler<T extends Throwable> implements E
     public static final String ERRORS = "ERRORS";
     
     private final MessageSource messageSource;
-    private final Class<T> exceptionType;
     
     public AbstractExceptionHandler(@Autowired MessageSource messageSource) {
-        this(messageSource, null);
-    }
-    
-    public AbstractExceptionHandler(@Autowired MessageSource messageSource, Class<T> exceptionType) {
         this.messageSource = messageSource;
-        this.exceptionType = exceptionType;
     }
-    
-    @Override
-    public Integer getStatusCode() {
-        return null;
-    }
-    
+        
     protected void setStatusCode(RequestAttributes attributes, int status) {
         attributes.setAttribute("javax.servlet.error.status_code", status, 0);
-    }
-
-    @Override
-    public Class<T> getExceptionType() {
-        return exceptionType;
     }
 
     @Override

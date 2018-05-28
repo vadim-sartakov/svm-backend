@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class RepositoryConstraintViolationExceptionHandler extends ConstraintViolationExceptionHandler<RepositoryConstraintViolationException> {
 
     public RepositoryConstraintViolationExceptionHandler(MessageSource messageSource) {
-        super(messageSource);
+        super(messageSource, RepositoryConstraintViolationException.class);
     }
 
     @Override

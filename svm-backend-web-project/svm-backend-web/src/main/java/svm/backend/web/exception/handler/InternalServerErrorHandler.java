@@ -3,10 +3,10 @@ package svm.backend.web.exception.handler;
 import java.util.Map;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
-import svm.backend.web.core.exception.AbstractExceptionHandler;
+import svm.backend.web.core.exception.AbstractByStatusExceptionHandler;
 
 @Component
-public class InternalServerErrorHandler extends AbstractExceptionHandler<Throwable> {
+public class InternalServerErrorHandler extends AbstractByStatusExceptionHandler {
 
     public InternalServerErrorHandler(MessageSource messageSource) {
         super(messageSource);

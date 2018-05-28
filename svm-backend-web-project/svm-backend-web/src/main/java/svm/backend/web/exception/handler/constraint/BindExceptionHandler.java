@@ -9,7 +9,7 @@ import org.springframework.validation.BindException;
 public class BindExceptionHandler extends ConstraintViolationExceptionHandler<BindException> {
 
     public BindExceptionHandler(MessageSource messageSource) {
-        super(messageSource);
+        super(messageSource, BindException.class);
     }
 
     @Override

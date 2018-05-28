@@ -9,7 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 public class MethodArgumentNotValidExceptionHandler extends ConstraintViolationExceptionHandler<MethodArgumentNotValidException> {
 
     public MethodArgumentNotValidExceptionHandler(MessageSource messageSource) {
-        super(messageSource);
+        super(messageSource, MethodArgumentNotValidException.class);
     }
 
     @Override
