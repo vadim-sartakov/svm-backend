@@ -20,6 +20,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -37,7 +38,7 @@ import svm.backend.web.dao.entity.Order.Product.ProductBuilder;
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(OrderRestController.class)
 @Transactional
-public class WebExceptionHandlerIT {
+public class CustomErrorAttributesIT {
    
     @Autowired private TestRestTemplate restTemplate;
     @Autowired private ObjectMapper objectMapper;
@@ -45,8 +46,15 @@ public class WebExceptionHandlerIT {
     @LocalServerPort
     int port;
     
+    private String url;
+    
     private final OrderBuilder orderBuilder = Order.builder();
     private final ProductBuilder productBuilder = Product.builder();
+    
+    @Before
+    public void setUp() {
+        url = "http://localhost:" + port;
+    }
     
     /*@Test
     public void testRepositoryConstraintViolation() throws Exception {
@@ -88,13 +96,57 @@ public class WebExceptionHandlerIT {
     }*/
         
     @Test
-    public void testInternalServerError() throws Exception {
-        String response = restTemplate.getForObject(
-                "http://localhost:" + port + "/order-rest-controller",
-                String.class);
-        String actualMessage = objectMapper.readTree(response).at("/message").asText();
-        assertEquals("Internal server error", actualMessage);
+    public void wrongRequest() throws Exception {
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        
+        HttpEntity<?> requestEntity = new HttpEntity<>(null, headers);
+        
+        ResponseEntity<String> response = restTemplate.exchange(url + "/order-rest-controller", HttpMethod.POST, requestEntity, String.class);
+        String actualMessage = objectMapper.readTree(response.getBody()).at("/message").asText();
+        assertEquals(400, response.getStatusCodeValue());
+        assertEquals("Wrong object", actualMessage);
         
     }
     
+    @Test
+    public void testNotFoundError() throws Exception {
+        ResponseEntity<String> response = restTemplate.getForEntity(url + "/api/non-existent", String.class);
+        String actualMessage = objectMapper.readTree(response.getBody()).at("/message").asText();
+        assertEquals(404, response.getStatusCodeValue());
+        assertEquals("Not found", actualMessage);
+    }
+    
+    @Test
+    public void methodNotAllowed() throws Exception {
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        
+        HttpEntity<?> requestEntity = new HttpEntity<>("", headers);
+        
+        ResponseEntity<String> response = restTemplate.exchange(url + "/order-rest-controller", HttpMethod.POST, requestEntity, String.class);
+        String actualMessage = objectMapper.readTree(response.getBody()).at("/message").asText();
+        assertEquals(405, response.getStatusCodeValue());
+        assertEquals("Method not allowed", actualMessage);
+        
+    }
+    
+    @Test
+    public void methodUnsupportedMediaType() throws Exception {
+        ResponseEntity<String> response = restTemplate.postForEntity(url + "/order-rest-controller", null, String.class);
+        String actualMessage = objectMapper.readTree(response.getBody()).at("/message").asText();
+        assertEquals(415, response.getStatusCodeValue());
+        assertEquals("Unsupported media type", actualMessage);
+    }
+    
+    @Test
+    public void testInternalServerError() throws Exception {
+        ResponseEntity<String> response = restTemplate.getForEntity(url + "/order-rest-controller", String.class);
+        String actualMessage = objectMapper.readTree(response.getBody()).at("/message").asText();
+        assertEquals(500, response.getStatusCodeValue());
+        assertEquals("Internal server error", actualMessage);
+    }
+        
 }

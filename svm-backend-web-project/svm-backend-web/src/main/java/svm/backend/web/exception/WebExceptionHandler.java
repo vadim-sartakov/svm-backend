@@ -1,5 +1,6 @@
 package svm.backend.web.exception;
 
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -10,6 +11,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+/**
+ * Intercepts exceptions thrown by controllers and throws it further.
+ * This approach sends all exceptions to ErrorController.
+ * @author Sartakov
+ */
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class WebExceptionHandler extends ResponseEntityExceptionHandler {
@@ -23,7 +29,7 @@ public class WebExceptionHandler extends ResponseEntityExceptionHandler {
     }    
     
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handleAll(Exception ex, WebRequest request) throws Exception {
+    protected ResponseEntity<Object> handleAll(Exception ex, HttpServletRequest request) throws Exception {
         throw ex;
     }
         

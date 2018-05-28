@@ -21,5 +21,5 @@ public class WebAutoConfiguration {
     public MessagesBasenameProvider webMessagesBasenames() {
         return () -> "classpath:locale/web/messages";
     }
-            
+                
 }
