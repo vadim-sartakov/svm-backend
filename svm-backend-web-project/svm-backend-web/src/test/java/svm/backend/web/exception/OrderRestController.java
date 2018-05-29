@@ -3,6 +3,7 @@ package svm.backend.web.exception;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,4 +30,9 @@ public class OrderRestController {
         throw new RuntimeException("Test");
     }
     
+    @GetMapping("/secured")
+    public void getSecured() {
+        
+    }
+        
 }

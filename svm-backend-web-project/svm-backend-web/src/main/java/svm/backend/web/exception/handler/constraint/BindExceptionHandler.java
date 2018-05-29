@@ -2,10 +2,13 @@ package svm.backend.web.exception.handler.constraint;
 
 import java.util.Map;
 import org.springframework.context.MessageSource;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 
 @Component
+@Order(Ordered.LOWEST_PRECEDENCE)
 public class BindExceptionHandler extends ConstraintViolationExceptionHandler<BindException> {
 
     public BindExceptionHandler(MessageSource messageSource) {

@@ -2,10 +2,13 @@ package svm.backend.web.exception.handler;
 
 import java.util.Map;
 import org.springframework.context.MessageSource;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import svm.backend.web.core.exception.AbstractByStatusExceptionHandler;
 
 @Component
+@Order(Ordered.LOWEST_PRECEDENCE)
 public class NotFoundErrorHandler extends AbstractByStatusExceptionHandler {
 
     public NotFoundErrorHandler(MessageSource messageSource) {

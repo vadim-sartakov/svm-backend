@@ -28,6 +28,7 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
                         (first, second) -> second));
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public Map<String, Object> getErrorAttributes(RequestAttributes requestAttributes, boolean includeStackTrace) {
         
@@ -45,7 +46,7 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
         if (exception != null)
             exceptionHandler = byClassHandlers.get(exception.getClass());
         
-        if (exceptionHandler == null && exception != null)
+        if (exceptionHandler == null)
             exceptionHandler = byStatusHandlers.get(status);
         
         if (exceptionHandler == null)

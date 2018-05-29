@@ -1,10 +1,9 @@
 package svm.backend.web.exception;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,13 +20,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import svm.backend.web.Application;
+import svm.backend.web.config.TestSecurityConfig;
 import svm.backend.web.dao.entity.Order;
 import svm.backend.web.dao.entity.Order.OrderBuilder;
 import svm.backend.web.dao.entity.Order.Product;
@@ -36,7 +33,7 @@ import svm.backend.web.dao.entity.Order.Product.ProductBuilder;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(OrderRestController.class)
+@Import({ OrderRestController.class, TestSecurityConfig.class })
 @Transactional
 public class CustomErrorAttributesIT {
    
@@ -96,57 +93,67 @@ public class CustomErrorAttributesIT {
     }*/
         
     @Test
-    public void wrongRequest() throws Exception {
+    public void wrongRequest() throws Exception {        
+        ResponseEntity<String> response = postJson("/order-rest-controller", null);
+        assertEquals(400, response.getStatusCodeValue());
+        checkJsonPath(response.getBody(), "/message", "Bad request");
+    }
+    
+    @Test
+    public void unauthorized() throws Exception {    
         
         HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.AUTHORIZATION, "Basic 123");
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+        
+        ResponseEntity<String> response = restTemplate.exchange(url + "/order-rest-controller/secured", HttpMethod.GET, requestEntity, String.class);
+        assertEquals(401, response.getStatusCodeValue());
+        checkJsonPath(response.getBody(), "/message", "Wrong username or password");
+        
+    }
+    
+    @Test
+    public void accessDenied() throws Exception {  
+        ResponseEntity<String> response = restTemplate.getForEntity(url + "/order-rest-controller/secured", String.class);
+        assertEquals(403, response.getStatusCodeValue());
+        checkJsonPath(response.getBody(), "/message", "Access is denied");
+    }
+    
+    private ResponseEntity<String> postJson(String path, String content) {
+        HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        
-        HttpEntity<?> requestEntity = new HttpEntity<>(null, headers);
-        
-        ResponseEntity<String> response = restTemplate.exchange(url + "/order-rest-controller", HttpMethod.POST, requestEntity, String.class);
-        String actualMessage = objectMapper.readTree(response.getBody()).at("/message").asText();
-        assertEquals(400, response.getStatusCodeValue());
-        assertEquals("Wrong object", actualMessage);
-        
+        HttpEntity<?> requestEntity = new HttpEntity<>(content, headers);
+        return restTemplate.exchange(url + path, HttpMethod.POST, requestEntity, String.class);
+    }
+    
+    private void checkJsonPath(String json, String path, String expectedValue) {
+        try {
+            String actualValue = objectMapper.readTree(json).at(path).asText();
+            assertEquals(expectedValue, actualValue);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     @Test
     public void testNotFoundError() throws Exception {
         ResponseEntity<String> response = restTemplate.getForEntity(url + "/api/non-existent", String.class);
-        String actualMessage = objectMapper.readTree(response.getBody()).at("/message").asText();
         assertEquals(404, response.getStatusCodeValue());
-        assertEquals("Not found", actualMessage);
+        checkJsonPath(response.getBody(), "/message", "Not found");
     }
-    
+        
     @Test
-    public void methodNotAllowed() throws Exception {
-        
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        
-        HttpEntity<?> requestEntity = new HttpEntity<>("", headers);
-        
-        ResponseEntity<String> response = restTemplate.exchange(url + "/order-rest-controller", HttpMethod.POST, requestEntity, String.class);
-        String actualMessage = objectMapper.readTree(response.getBody()).at("/message").asText();
-        assertEquals(405, response.getStatusCodeValue());
-        assertEquals("Method not allowed", actualMessage);
-        
-    }
-    
-    @Test
-    public void methodUnsupportedMediaType() throws Exception {
+    public void unsupportedMediaType() throws Exception {
         ResponseEntity<String> response = restTemplate.postForEntity(url + "/order-rest-controller", null, String.class);
-        String actualMessage = objectMapper.readTree(response.getBody()).at("/message").asText();
         assertEquals(415, response.getStatusCodeValue());
-        assertEquals("Unsupported media type", actualMessage);
+        checkJsonPath(response.getBody(), "/message", "Unsupported media type");
     }
     
     @Test
     public void testInternalServerError() throws Exception {
         ResponseEntity<String> response = restTemplate.getForEntity(url + "/order-rest-controller", String.class);
-        String actualMessage = objectMapper.readTree(response.getBody()).at("/message").asText();
         assertEquals(500, response.getStatusCodeValue());
-        assertEquals("Internal server error", actualMessage);
+        checkJsonPath(response.getBody(), "/message", "Internal server error");
     }
         
 }

@@ -9,21 +9,21 @@ import svm.backend.web.core.exception.AbstractByStatusExceptionHandler;
 
 @Component
 @Order(Ordered.LOWEST_PRECEDENCE)
-public class InternalServerErrorHandler extends AbstractByStatusExceptionHandler {
+public class BadRequestErrorHandler extends AbstractByStatusExceptionHandler {
 
-    public InternalServerErrorHandler(MessageSource messageSource) {
+    public BadRequestErrorHandler(MessageSource messageSource) {
         super(messageSource);
     }
 
     @Override
     public Integer getStatusCode() {
-        return 500;
+        return 400;
     }
-
+    
     @Override
     public void handle(Map<String, Object> exceptionAttributes, Throwable exception) {
         super.handle(exceptionAttributes, exception);
-        putMessage(exceptionAttributes, "svm.backend.web.InternalServerError");
+        putMessage(exceptionAttributes, "svm.backend.web.BadRequest");
     }
     
 }
