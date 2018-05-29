@@ -15,7 +15,7 @@ import svm.backend.core.service.MessagesBasenameProvider;
 @EnableConfigurationProperties(SecurityProperties.class)
 @PropertySource("classpath:properties/security/application.properties")
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-@Import({ AuthorizationServerConfiguration.class, OAuth2Configuration.class })
+@Import(OAuth2Configuration.class)
 public class SecurityAutoConfiguration {
     
     @Bean

@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+svm.backend.web.config.ErrorAutoConfiguration,\
+svm.backend.web.config.WebAutoConfiguration

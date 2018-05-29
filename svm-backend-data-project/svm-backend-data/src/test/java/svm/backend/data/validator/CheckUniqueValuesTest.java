@@ -1,7 +1,7 @@
 package svm.backend.data.validator;
 
-import svm.backend.data.dao.SingleFieldEntity;
-import svm.backend.data.dao.MultipleFieldEntity;
+import svm.backend.data.dao.entity.SingleFieldEntity;
+import svm.backend.data.dao.entity.MultipleFieldEntity;
 import com.querydsl.core.types.Predicate;
 import java.util.Iterator;
 import javax.validation.ConstraintValidatorContext;

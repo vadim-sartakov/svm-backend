@@ -16,7 +16,6 @@ public class JpaMigrationRepository implements MigrationRepository {
         return entityManager.merge(
                 JpaMigration.builder()
                         .id(migration.getId())
-                        .executionOrder(migration.getExecutionOrder())
                         .build()
         );
     }

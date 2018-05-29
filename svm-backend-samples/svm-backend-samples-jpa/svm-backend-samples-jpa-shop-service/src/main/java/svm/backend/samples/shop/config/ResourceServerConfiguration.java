@@ -1,21 +1,11 @@
 package svm.backend.samples.shop.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
-@EnableResourceServer
-public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+public class ResourceServerConfiguration extends svm.backend.security.config.ResourceServerConfiguration {
 
-    @Autowired private AuthenticationEntryPoint authenticationEntryPoint;
-    @Autowired private AccessDeniedHandler accessDeniedHandler;
-    
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
@@ -26,12 +16,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .permitAll()
                 .antMatchers("/api/orders")
                 .hasAnyAuthority("ROLE_MANAGER");
-    }
-    
-    @Override
-    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        resources.accessDeniedHandler(accessDeniedHandler)
-                .authenticationEntryPoint(authenticationEntryPoint);
     }
     
 }

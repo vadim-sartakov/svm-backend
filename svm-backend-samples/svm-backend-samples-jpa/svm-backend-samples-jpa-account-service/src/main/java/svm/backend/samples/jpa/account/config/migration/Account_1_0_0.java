@@ -3,7 +3,9 @@ package svm.backend.samples.jpa.account.config.migration;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import svm.backend.data.jpa.security.dao.entity.JpaGrantedAuthority;
 import svm.backend.data.jpa.security.dao.entity.Oauth2Client;
@@ -14,6 +16,8 @@ import svm.backend.data.jpa.security.dao.repository.UserRepository;
 import svm.backend.data.migration.model.MigrationUpdate;
 import svm.backend.security.util.SecurityUtils;
 
+@Component
+@Order(0)
 public class Account_1_0_0 implements MigrationUpdate {
 
     @Autowired private PasswordEncoder passwordEncoder;
@@ -47,11 +51,6 @@ public class Account_1_0_0 implements MigrationUpdate {
     @Override
     public String getId() {
         return "shop-1.0.0";
-    }
-
-    @Override
-    public Integer getExecutionOrder() {
-        return 1;
     }
     
 }

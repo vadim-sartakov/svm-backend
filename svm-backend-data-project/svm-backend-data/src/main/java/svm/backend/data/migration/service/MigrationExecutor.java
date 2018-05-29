@@ -26,15 +26,9 @@ public class MigrationExecutor implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         updates.ifPresent(list -> list.stream()
-                .sorted(this::compareUpdates)
                 .filter(this::shouldUpdate).forEach(this::update));
         rollbacks.ifPresent(list -> list.stream()
-                .sorted(this::compareRollbacks)
                 .filter(this::shouldRollback).forEach(this::rollback));
-    }
-    
-    private int compareUpdates(MigrationUpdate objectOne, MigrationUpdate objectTwo) {
-        return objectOne.getExecutionOrder().compareTo(objectTwo.getExecutionOrder());
     }
     
     private boolean shouldUpdate(MigrationUpdate dataChange) {
@@ -47,10 +41,6 @@ public class MigrationExecutor implements InitializingBean {
         updateTask.update();
         migrationRepository.save(updateTask);
         logger.info("Successfully applied migration {}", updateTask.getId());
-    }
-    
-    private int compareRollbacks(MigrationRollback objectOne, MigrationRollback objectTwo) {
-        return objectTwo.getExecutionOrder().compareTo(objectOne.getExecutionOrder());
     }
     
     private boolean shouldRollback(MigrationRollback dataChange) {

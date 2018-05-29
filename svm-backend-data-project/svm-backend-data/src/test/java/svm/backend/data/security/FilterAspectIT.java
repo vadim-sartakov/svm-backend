@@ -11,10 +11,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import svm.backend.data.Application;
-import svm.backend.data.dao.MultipleFieldEntity;
-import svm.backend.data.dao.MultipleFieldEntityRepository;
-import svm.backend.data.dao.SingleFieldEntity;
-import svm.backend.data.dao.SingleFieldEntityRepository;
+import svm.backend.data.dao.entity.MultipleFieldEntity;
+import svm.backend.data.dao.repository.MultipleFieldEntityRepository;
+import svm.backend.data.dao.entity.SingleFieldEntity;
+import svm.backend.data.dao.repository.SingleFieldEntityRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)

@@ -7,9 +7,6 @@
             <column name="id" type="varchar(150)">
                 <constraints nullable="false"/>
             </column>
-            <column name="execution_order" type="int">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
         <addPrimaryKey columnNames="id" constraintName="PK_migrations" tableName="migrations"/>
         

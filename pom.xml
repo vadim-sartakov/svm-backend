@@ -26,12 +26,12 @@
 
     <modules>
         <module>svm-backend-core</module>
-        <module>svm-backend-parent</module>
+        <module>svm-backend-web</module>
         <module>svm-backend-data-project</module>
-        <module>svm-backend-web-project</module>
         <module>svm-backend-security</module>
         <module>svm-backend-sms-project</module>
         <module>svm-backend-samples</module>
+        <module>svm-backend-parent</module>
         <!--<module>svm-backend-sign-up</module>-->
     </modules>
     
@@ -41,6 +41,11 @@
             <dependency>
                 <groupId>svm.backend</groupId>
                 <artifactId>svm-backend-core</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>svm.backend</groupId>
+                <artifactId>svm-backend-web</artifactId>
                 <version>1.0.0</version>
             </dependency>
             
@@ -72,17 +77,7 @@
                 <groupId>svm.backend</groupId>
                 <artifactId>svm-backend-sms</artifactId>
                 <version>1.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>svm.backend</groupId>
-                <artifactId>svm-backend-web-core</artifactId>
-                <version>1.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>svm.backend</groupId>
-                <artifactId>svm-backend-web</artifactId>
-                <version>1.0.0</version>
-            </dependency>
+            </dependency>            
             <dependency>
                 <groupId>svm.backend</groupId>
                 <artifactId>svm-backend-security</artifactId>

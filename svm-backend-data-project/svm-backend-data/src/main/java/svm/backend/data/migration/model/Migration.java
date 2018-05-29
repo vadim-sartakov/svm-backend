@@ -6,5 +6,4 @@ package svm.backend.data.migration.model;
  */
 public interface Migration {
     String getId();
-    Integer getExecutionOrder();
 }

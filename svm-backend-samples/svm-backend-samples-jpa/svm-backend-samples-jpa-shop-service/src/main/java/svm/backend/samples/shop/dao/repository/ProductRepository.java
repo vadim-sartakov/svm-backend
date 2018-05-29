@@ -6,7 +6,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.security.access.annotation.Secured;
 import svm.backend.samples.shop.dao.entity.Product;
 import svm.backend.samples.shop.dao.entity.QProduct;
-import svm.backend.web.querydsl.QueryDslDefaultBinder;
+import svm.backend.data.querydsl.QueryDslDefaultBinder;
 
 @Secured("ROLE_MANAGER")
 public interface ProductRepository extends PagingAndSortingRepository<Product, UUID>,

@@ -23,7 +23,7 @@ import svm.backend.data.migration.service.MigrationRepository;
 
 @Configuration
 @ConditionalOnMissingBean(DataAutoConfiguration.class)
-@ComponentScan("svm.backend.data.security")
+@ComponentScan({ "svm.backend.data.security", "svm.backend.data.exception.handler" })
 @PropertySource("classpath:properties/data/application.properties")
 @EnableConfigurationProperties(DataProperties.class)
 @Import(MessagesConfiguration.class)

@@ -23,7 +23,4 @@ public class JpaMigration implements Migration, Serializable {
     @Id
     @NotEmpty
     private String id;
-    
-    @Column(nullable = false)
-    private Integer executionOrder;    
 }
