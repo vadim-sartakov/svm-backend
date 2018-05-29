@@ -6,6 +6,14 @@ import org.springframework.web.context.request.RequestAttributes;
 public interface ExceptionHandler<T extends Throwable> {
     
     /**
+     * Whether this handler should be applied or not.
+     * @param exception
+     * @param status
+     * @return 
+     */
+    boolean isApplicable(T exception, int status);
+    
+    /**
      * Callback method for performing initializing operations.
      * May be used to change status code of the response.
      * @param requestAttributes

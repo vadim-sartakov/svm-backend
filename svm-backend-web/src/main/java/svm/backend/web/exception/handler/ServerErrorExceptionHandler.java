@@ -8,21 +8,29 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Order(Ordered.LOWEST_PRECEDENCE)
-public class UnsupportedMediaTypeErrorHandler extends AbstractByStatusExceptionHandler {
+public class ServerErrorExceptionHandler extends AbstractExceptionHandler<Throwable> {
 
-    public UnsupportedMediaTypeErrorHandler(MessageSource messageSource) {
+    public ServerErrorExceptionHandler(MessageSource messageSource) {
         super(messageSource);
     }
 
+    /**
+     * Always applicable as it is default one.
+     * @param exception
+     * @param status
+     * @return 
+     */
     @Override
-    public Integer getStatusCode() {
-        return 415;
+    public boolean isApplicable(Throwable exception, int status) {
+        return true;
     }
-    
+ 
+
     @Override
     public void handle(Map<String, Object> exceptionAttributes, Throwable exception) {
+        logger.error("Server error occured", exception);
         super.handle(exceptionAttributes, exception);
-        putMessage(exceptionAttributes, "svm.backend.web.UnsupportedMediaType");
+        putMessage(exceptionAttributes, "svm.backend.web.InternalServerError");
     }
     
 }

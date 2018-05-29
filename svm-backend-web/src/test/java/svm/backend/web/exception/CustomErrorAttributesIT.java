@@ -41,7 +41,7 @@ public class CustomErrorAttributesIT {
     public void wrongRequest() throws Exception {        
         ResponseEntity<String> response = postJson("/test", null);
         assertEquals(400, response.getStatusCodeValue());
-        checkJsonPath(response.getBody(), "/message", "Bad request");
+        checkJsonPath(response.getBody(), "/message", "Wrong request");
     }
     
     private ResponseEntity<String> postJson(String path, String content) {
@@ -64,14 +64,7 @@ public class CustomErrorAttributesIT {
     public void testNotFoundError() throws Exception {
         ResponseEntity<String> response = restTemplate.getForEntity(url + "/api/non-existent", String.class);
         assertEquals(404, response.getStatusCodeValue());
-        checkJsonPath(response.getBody(), "/message", "Not found");
-    }
-        
-    @Test
-    public void unsupportedMediaType() throws Exception {
-        ResponseEntity<String> response = restTemplate.postForEntity(url + "/test", null, String.class);
-        assertEquals(415, response.getStatusCodeValue());
-        checkJsonPath(response.getBody(), "/message", "Unsupported media type");
+        checkJsonPath(response.getBody(), "/message", "Wrong request");
     }
     
     @Test

@@ -7,22 +7,18 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(Ordered.LOWEST_PRECEDENCE)
-public class InternalServerErrorHandler extends AbstractByStatusExceptionHandler {
+@Order(Ordered.LOWEST_PRECEDENCE - 1)
+public class ClientErrorExceptionHandler extends AbstractExceptionHandler<Throwable> {
 
-    public InternalServerErrorHandler(MessageSource messageSource) {
-        super(messageSource);
-    }
-
-    @Override
-    public Integer getStatusCode() {
-        return 500;
+    public ClientErrorExceptionHandler(MessageSource messageSource) {
+        super(messageSource, "4\\d\\d");
     }
 
     @Override
     public void handle(Map<String, Object> exceptionAttributes, Throwable exception) {
+        logger.warn("Client error occured", exception == null ? null : exception.getMessage());
         super.handle(exceptionAttributes, exception);
-        putMessage(exceptionAttributes, "svm.backend.web.InternalServerError");
+        putMessage(exceptionAttributes, "svm.backend.web.BadRequest");
     }
     
 }
