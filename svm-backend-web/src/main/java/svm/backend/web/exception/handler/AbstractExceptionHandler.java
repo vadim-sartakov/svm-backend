@@ -39,10 +39,10 @@ public abstract class AbstractExceptionHandler<T extends Throwable> implements E
     }
 
     @Override
-    public boolean isApplicable(T exception, int status) {        
-        boolean result = exception == null ?
-                statusPattern.matcher(Integer.toString(status)).matches() :
-                exception.getClass().equals(this.exceptionType);
+    public boolean isApplicable(T exception, int status) {
+        boolean result = exception != null && this.exceptionType != null ?
+                exception.getClass().equals(this.exceptionType) :
+                statusPattern.matcher(Integer.toString(status)).matches();
         logger.debug("Exception handler {} is {} for exception {} and status {}",
                 getClass().getCanonicalName(),
                 result ? "applicable" : "not applicable",

@@ -3,6 +3,7 @@ package svm.backend.security.config;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
@@ -14,6 +15,7 @@ import svm.backend.core.service.MessagesBasenameProvider;
 @Configuration
 @EnableConfigurationProperties(SecurityProperties.class)
 @PropertySource("classpath:properties/security/application.properties")
+@ComponentScan("svm.backend.security.exception.handler")
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Import(OAuth2Configuration.class)
 public class SecurityAutoConfiguration {

@@ -6,13 +6,13 @@ import org.springframework.context.MessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import svm.backend.web.exception.handler.AbstractByTypeExceptionHandler;
+import svm.backend.web.exception.handler.AbstractExceptionHandler;
 
 @Component
-@Order(Ordered.LOWEST_PRECEDENCE)
-public class AccessDeniedErrorHandler extends AbstractByTypeExceptionHandler<AccessDeniedException> {
+@Order(Ordered.LOWEST_PRECEDENCE - 1)
+public class AccessDeniedExceptionHandler extends AbstractExceptionHandler<AccessDeniedException> {
 
-    public AccessDeniedErrorHandler(MessageSource messageSource) {
+    public AccessDeniedExceptionHandler(MessageSource messageSource) {
         super(messageSource, AccessDeniedException.class);
     }
     

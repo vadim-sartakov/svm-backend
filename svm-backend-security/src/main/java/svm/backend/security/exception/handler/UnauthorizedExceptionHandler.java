@@ -5,19 +5,14 @@ import org.springframework.context.MessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import svm.backend.web.exception.handler.AbstractByStatusExceptionHandler;
+import svm.backend.web.exception.handler.AbstractExceptionHandler;
 
 @Component
-@Order(Ordered.LOWEST_PRECEDENCE)
-public class UnauthorizedErrorHandler extends AbstractByStatusExceptionHandler {
+@Order(Ordered.LOWEST_PRECEDENCE - 1)
+public class UnauthorizedExceptionHandler extends AbstractExceptionHandler<Throwable> {
 
-    public UnauthorizedErrorHandler(MessageSource messageSource) {
-        super(messageSource);
-    }
-
-    @Override
-    public Integer getStatusCode() {
-        return 401;
+    public UnauthorizedExceptionHandler(MessageSource messageSource) {
+        super(messageSource, "401");
     }
     
     @Override

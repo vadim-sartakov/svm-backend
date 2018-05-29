@@ -6,13 +6,13 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
-import svm.backend.web.exception.handler.AbstractByTypeExceptionHandler;
+import svm.backend.web.exception.handler.AbstractExceptionHandler;
 
 @Component
-@Order(Ordered.LOWEST_PRECEDENCE)
-public class BadCredentialsErrorHandler extends AbstractByTypeExceptionHandler<BadCredentialsException> {
+@Order(Ordered.LOWEST_PRECEDENCE - 1)
+public class BadCredentialsExceptionHandler extends AbstractExceptionHandler<BadCredentialsException> {
 
-    public BadCredentialsErrorHandler(MessageSource messageSource) {
+    public BadCredentialsExceptionHandler(MessageSource messageSource) {
         super(messageSource, BadCredentialsException.class);
     }
     
