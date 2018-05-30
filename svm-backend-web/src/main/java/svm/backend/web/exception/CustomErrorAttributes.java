@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
 import org.springframework.web.context.request.RequestAttributes;
 import svm.backend.web.exception.handler.ExceptionHandler;
-import svm.backend.web.exception.handler.ServerErrorExceptionHandler;
 
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class CustomErrorAttributes extends DefaultErrorAttributes {
@@ -27,20 +26,13 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
         if (statusValue != null && statusValue instanceof Integer)
             status = (Integer) statusValue;
             
-        boolean handled = false;
         for (ExceptionHandler exceptionHandler : exceptionHandlers) {
             
-            if (exceptionHandler instanceof ServerErrorExceptionHandler && handled)
-                continue;
-            
             if (exceptionHandler.isApplicable(exception, status)) {
-                
                 exceptionHandler.preHandle(requestAttributes);
                 attributes = super.getErrorAttributes(requestAttributes, includeStackTrace);
                 exceptionHandler.handle(attributes, exception);
-                
-                handled = true;
-                
+                break;
             }
                 
         }

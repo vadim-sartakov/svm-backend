@@ -1,11 +1,12 @@
 package svm.backend.security.exception.handler;
 
-import java.nio.file.AccessDeniedException;
 import java.util.Map;
 import org.springframework.context.MessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
 import svm.backend.web.exception.handler.AbstractExceptionHandler;
 
 @Component
@@ -14,6 +15,11 @@ public class AccessDeniedExceptionHandler extends AbstractExceptionHandler<Acces
 
     public AccessDeniedExceptionHandler(MessageSource messageSource) {
         super(messageSource, AccessDeniedException.class);
+    }
+
+    @Override
+    public void preHandle(RequestAttributes requestAttributes) {
+        super.setStatusCode(requestAttributes, 403);
     }
     
     @Override
