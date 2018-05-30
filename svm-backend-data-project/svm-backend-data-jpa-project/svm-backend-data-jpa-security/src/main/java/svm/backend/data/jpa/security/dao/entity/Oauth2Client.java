@@ -32,7 +32,7 @@ import svm.backend.security.model.BaseOauth2Client;
 @NamedEntityGraph(name = "Oauth2ClientOverview", attributeNodes = @NamedAttributeNode("authorities"))
 public class Oauth2Client extends BaseOauth2Client implements Serializable, Identifiable, ClientDetails {
 
-    public static final @Predefined Oauth2Client DEFAULT = predefined(Oauth2Client.class, "default", new JpaGrantedAuthority(Role.ADMIN));
+    public static final @Predefined Oauth2Client DEFAULT = predefined(Oauth2Client.class, "default", new Authority(Role.ADMIN));
     
     @Id
     @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.generator.UUIDGenerator")
@@ -66,7 +66,7 @@ public class Oauth2Client extends BaseOauth2Client implements Serializable, Iden
 
     @Valid
     @NotEmpty
-    @ElementCollection(targetClass = JpaGrantedAuthority.class)
+    @ElementCollection(targetClass = Authority.class)
     @CollectionTable(name = "OAUTH2_CLIENTS_AUTHORITIES")
     @Override
     public Collection<GrantedAuthority> getAuthorities() {

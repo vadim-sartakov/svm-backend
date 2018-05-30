@@ -7,7 +7,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import svm.backend.data.jpa.security.dao.entity.JpaGrantedAuthority;
+import svm.backend.data.jpa.security.dao.entity.Authority;
 import svm.backend.data.jpa.security.dao.entity.Oauth2Client;
 import svm.backend.data.jpa.security.dao.entity.Role;
 import svm.backend.data.jpa.security.dao.entity.User;
@@ -33,7 +33,7 @@ public class Account_1_0_0 implements MigrationUpdate {
         User user = new User();
         user.setUsername("manager");
         user.setPassword(passwordEncoder.encode("123456"));
-        user.setAuthorities(Arrays.asList(new JpaGrantedAuthority(Role.ADMIN)));
+        user.setAuthorities(Arrays.asList(new Authority(Role.ADMIN)));
         userRepository.save(user);
         
         Oauth2Client client = new Oauth2Client();
@@ -41,7 +41,7 @@ public class Account_1_0_0 implements MigrationUpdate {
         client.setClientSecret(passwordEncoder.encode("123456"));
         client.setAuthorizedGrantTypes(new LinkedHashSet<>(Arrays.asList("client_credentials", "password", "refresh_token")));
         client.setScope(new LinkedHashSet<>(Arrays.asList("read", "write")));
-        client.setAuthorities(Arrays.asList(new JpaGrantedAuthority(Role.ADMIN)));
+        client.setAuthorities(Arrays.asList(new Authority(Role.ADMIN)));
         clientRepository.save(client);
         
         SecurityUtils.restoreAuthentication();

@@ -30,8 +30,8 @@ import svm.backend.security.model.BaseUser;
 @NamedEntityGraph(name = "UserOverview", attributeNodes = @NamedAttributeNode("authorities"))
 public class User extends BaseUser implements UserDetails, Identifiable, Creatable, Updatable, Serializable {
 
-    public static final @Predefined User SYSTEM = predefined(User.class, "system", true, new JpaGrantedAuthority(Role.SYSTEM));
-    public static final @Predefined User ADMIN = predefined(User.class, "admin", false, new JpaGrantedAuthority(Role.ADMIN));
+    public static final @Predefined User SYSTEM = predefined(User.class, "system", true, new Authority(Role.SYSTEM));
+    public static final @Predefined User ADMIN = predefined(User.class, "admin", false, new Authority(Role.ADMIN));
     
     @Id
     @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.generator.UUIDGenerator")
@@ -72,7 +72,7 @@ public class User extends BaseUser implements UserDetails, Identifiable, Creatab
     }
 
     @Valid
-    @ElementCollection(targetClass = JpaGrantedAuthority.class)
+    @ElementCollection(targetClass = Authority.class)
     @CollectionTable(name = "USERS_AUTHORITIES")
     @Override
     public List<GrantedAuthority> getAuthorities() {

@@ -10,9 +10,9 @@ import svm.backend.security.model.BaseRole;
 
 @Embeddable
 @NoArgsConstructor
-public class JpaGrantedAuthority extends BaseGrantedAuthority {
+public class Authority extends BaseGrantedAuthority {
     
-    public JpaGrantedAuthority(Role role) {
+    public Authority(Role role) {
         super(role);
     }
     
