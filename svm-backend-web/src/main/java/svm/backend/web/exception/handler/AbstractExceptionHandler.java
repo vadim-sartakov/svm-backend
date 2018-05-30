@@ -11,8 +11,8 @@ import org.springframework.web.context.request.RequestAttributes;
 
 public abstract class AbstractExceptionHandler<T extends Throwable> implements ExceptionHandler<T> {
     
-    public static final String MESSAGE = "MESSAGE";
-    public static final String ERRORS = "ERRORS";
+    public static final String MESSAGE = "message";
+    public static final String ERRORS = "errors";
     
     protected final Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
     

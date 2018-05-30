@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @Component
-@Order(Ordered.LOWEST_PRECEDENCE)
+@Order(Ordered.LOWEST_PRECEDENCE - 1)
 public class MethodArgumentNotValidExceptionHandler extends ConstraintViolationExceptionHandler<MethodArgumentNotValidException> {
 
     public MethodArgumentNotValidExceptionHandler(MessageSource messageSource) {

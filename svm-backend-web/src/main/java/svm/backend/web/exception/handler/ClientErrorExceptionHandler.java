@@ -16,7 +16,7 @@ public class ClientErrorExceptionHandler extends AbstractExceptionHandler<Throwa
 
     @Override
     public void handle(Map<String, Object> exceptionAttributes, Throwable exception) {
-        logger.warn("Client error occured", exceptionAttributes);
+        logger.warn("Client error occured {}", exceptionAttributes);
         super.handle(exceptionAttributes, exception);
         putMessage(exceptionAttributes, "svm.backend.web.BadRequest");
     }

@@ -8,7 +8,7 @@ import org.springframework.data.rest.core.RepositoryConstraintViolationException
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(Ordered.LOWEST_PRECEDENCE)
+@Order(Ordered.LOWEST_PRECEDENCE - 1)
 public class RepositoryConstraintViolationExceptionHandler extends ConstraintViolationExceptionHandler<RepositoryConstraintViolationException> {
 
     public RepositoryConstraintViolationExceptionHandler(MessageSource messageSource) {

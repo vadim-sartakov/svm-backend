@@ -7,14 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.repository.support.Repositories;
 import svm.backend.data.annotation.PredefinedProcessor;
 import svm.backend.data.migration.model.MigrationRollback;
 import svm.backend.data.migration.model.MigrationUpdate;
@@ -28,12 +26,6 @@ import svm.backend.data.migration.service.MigrationRepository;
 @EnableConfigurationProperties(DataProperties.class)
 @Import(MessagesConfiguration.class)
 public class DataAutoConfiguration {
-    
-    @Bean
-    @ConditionalOnMissingBean(Repositories.class)
-    public Repositories repositories(ApplicationContext context) {
-        return new Repositories(context);
-    }
     
     @Bean
     @ConditionalOnProperty(name = "svm.backend.data.update", matchIfMissing = true)

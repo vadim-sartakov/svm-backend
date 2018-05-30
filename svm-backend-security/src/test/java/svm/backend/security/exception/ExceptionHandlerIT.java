@@ -73,7 +73,7 @@ public class ExceptionHandlerIT {
                 
     @Test
     public void shouldSucceedAccessPublic() throws Exception {  
-        ResponseEntity<String> response = restTemplate.getRestTemplate().getForEntity(url + "/api/controller/public", String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity(url + "/api/controller/public", String.class);
         assertEquals(200, response.getStatusCodeValue());
     }
     

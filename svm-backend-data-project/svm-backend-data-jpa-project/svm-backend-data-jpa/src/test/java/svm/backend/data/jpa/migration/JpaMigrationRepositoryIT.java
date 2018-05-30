@@ -42,11 +42,6 @@ public class JpaMigrationRepositoryIT {
         }
 
         @Override
-        public Integer getExecutionOrder() {
-            return 0;
-        }
-
-        @Override
         public void update() {
             System.out.println("Applying migration " + getId());
         }
@@ -61,11 +56,6 @@ public class JpaMigrationRepositoryIT {
         @Override
         public String getId() {
             return ID_TWO;
-        }
-
-        @Override
-        public Integer getExecutionOrder() {
-            return 0;
         }
 
         @Override

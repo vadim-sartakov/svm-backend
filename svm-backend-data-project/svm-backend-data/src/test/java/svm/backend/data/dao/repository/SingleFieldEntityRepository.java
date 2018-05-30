@@ -6,7 +6,7 @@ import javax.persistence.QueryHint;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import svm.backend.data.dao.QSingleFieldEntity;
+import svm.backend.data.dao.entity.QSingleFieldEntity;
 import svm.backend.data.dao.entity.SingleFieldEntity;
 import svm.backend.data.security.Filter;
 

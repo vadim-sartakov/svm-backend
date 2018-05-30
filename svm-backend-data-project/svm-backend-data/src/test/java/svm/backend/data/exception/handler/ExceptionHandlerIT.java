@@ -1,14 +1,27 @@
 package svm.backend.data.exception.handler;
 
-import static org.hamcrest.CoreMatchers.is;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
+import static org.hamcrest.CoreMatchers.*;
+import org.hamcrest.Matcher;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.ResultActions;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import svm.backend.data.Application;
+import svm.backend.data.controller.OrderRestController;
 import svm.backend.data.dao.entity.Order;
 import svm.backend.data.dao.entity.Order.OrderBuilder;
 import svm.backend.data.dao.entity.Order.Product;
@@ -16,51 +29,82 @@ import svm.backend.data.dao.entity.Order.Product.ProductBuilder;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(OrderRestController.class)
 public class ExceptionHandlerIT {
     
     @LocalServerPort
     private int port;
     
-    private final OrderBuilder orderBuilder = Order.builder();
-    private final ProductBuilder productBuilder = Product.builder();
+    @Autowired private ObjectMapper objectMapper;
+    @Autowired private TestRestTemplate restTemplate;
     
-    /*@Test
+    private String url;
+    private OrderBuilder orderBuilder;
+    private ProductBuilder productBuilder;
+    
+    @Before
+    public void setUp() {
+        url = "http://localhost:" + port;
+        orderBuilder = Order.builder();
+        productBuilder = Product.builder();
+    }
+    
+    @Test
     public void testRepositoryConstraintViolation() throws Exception {
-        sendOrdersSet("/api/orders");
-    }*/
+        sendOrdersSet(url + "/api/orders");
+    }
     
-    /*private void sendOrdersSet(String apiPath) throws Exception {
-        expectWrongObject(postOrder(apiPath))
-                .andExpect(jsonPath("$.errors.number", is("may not be empty")));        
+    private void sendOrdersSet(String apiPath) throws Exception {
+        
+        ResponseEntity<String> response;
+        
+        response = postOrder(apiPath);
+        expectWrongObject(response);
+        checkJsonPath(response.getBody(), "$.errors.number", is("may not be empty"));
+            
         orderBuilder.number("1");
-        expectWrongObject(postOrder(apiPath))
-                .andExpect(jsonPath("$.errors.products", containsString("size must be between 1 and")));
+        
+        response = postOrder(apiPath);
+        expectWrongObject(response);
+        checkJsonPath(response.getBody(), "$.errors.products", containsString("size must be between 1 and"));
+        
         productBuilder.name("One");
         orderBuilder.product(productBuilder.build());
-        expectWrongObject(postOrder(apiPath))
-                .andExpect(jsonPath("$.errors.['products[0].quantity']", containsString("may not be null")));
+        
+        response = postOrder(apiPath);
+        expectWrongObject(response);
+        checkJsonPath(response.getBody(), "$.errors.['products[0].quantity']", containsString("may not be null"));
+        
         productBuilder.quantity(5);
         orderBuilder.clearProducts();
         orderBuilder.product(productBuilder.build());
-        postOrder(apiPath).andExpect(status().isCreated());
-    }*/
-    
-    private ResultActions expectWrongObject(ResultActions resultActions) throws Exception {
-        return resultActions
-                .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.message", is("Wrong object")));
+        
+        response = postOrder(apiPath);
+        assertEquals(201, response.getStatusCodeValue());
+        
     }
     
-    /*private ResultActions postOrder(String apiPath) throws Exception {
-        return mockMvc.perform(post(apiPath)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(orderBuilder.build())))
-                .andDo(print());
-    }*/
+    private void expectWrongObject(ResponseEntity<String> response) throws Exception {
+        assertEquals(400, response.getStatusCodeValue());
+        checkJsonPath(response.getBody(), "$.message", is("Wrong object"));
+    }
     
-    /*@Test
+    private ResponseEntity<String> postOrder(String apiPath) throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<?> requestEntity = new HttpEntity<>(objectMapper.writeValueAsString(orderBuilder.build()), headers);
+        return restTemplate.exchange(apiPath, HttpMethod.POST, requestEntity, String.class);
+    }
+    
+    @Test
     public void testControllerConstraintViolation() throws Exception {
-        sendOrdersSet("/order-rest-controller");
-    }*/
+        sendOrdersSet(url + "/order-rest-controller");
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void checkJsonPath(String json, String path, Matcher matcher) throws Exception {
+        String actualValue = JsonPath.parse(json).read(path, String.class);
+        assertThat(actualValue, matcher);
+    }
     
 }

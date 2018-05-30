@@ -14,7 +14,6 @@ public class MongoMigrationRepository implements MigrationRepository {
         template.save(
                 MongoMigration.builder()
                         .id(migration.getId())
-                        .executionOrder(migration.getExecutionOrder())
                         .build()
         );
         return migration;

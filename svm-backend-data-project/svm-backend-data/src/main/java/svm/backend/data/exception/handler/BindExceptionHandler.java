@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 
 @Component
-@Order(Ordered.LOWEST_PRECEDENCE)
+@Order(Ordered.LOWEST_PRECEDENCE - 1)
 public class BindExceptionHandler extends ConstraintViolationExceptionHandler<BindException> {
 
     public BindExceptionHandler(MessageSource messageSource) {
