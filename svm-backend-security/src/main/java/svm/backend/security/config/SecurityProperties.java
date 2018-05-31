@@ -25,7 +25,10 @@ public class SecurityProperties {
     
     @Data
     public static class AuthorizationServerProperties {
-        private boolean enable = false;        
+        private boolean enable = false;
+        private String keyStore = "keystore/jwt.jks";
+        private String keyStorePassword = "123456";
+        private String keyAlias = "jwt";
     }
     
 }

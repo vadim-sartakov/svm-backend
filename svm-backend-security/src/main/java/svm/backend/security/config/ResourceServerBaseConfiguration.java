@@ -17,10 +17,10 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
-@ConditionalOnMissingBean(ResourceServerConfiguration.class)
+@ConditionalOnMissingBean(ResourceServerBaseConfiguration.class)
 @EnableResourceServer
-@Import({ ResourceServerConfiguration.JwtConfiguration.class })
-public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+@Import({ ResourceServerBaseConfiguration.JwtConfiguration.class })
+public class ResourceServerBaseConfiguration extends ResourceServerConfigurerAdapter {
     
     @Autowired private AuthenticationEntryPoint authenticationEntryPoint;
     @Autowired private AccessDeniedHandler accessDeniedHandler;

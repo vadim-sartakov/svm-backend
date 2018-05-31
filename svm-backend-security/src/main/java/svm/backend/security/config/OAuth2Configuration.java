@@ -11,7 +11,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import svm.backend.security.exception.ApiErrorWebResponseExceptionTranslator;
 
 @Configuration
-@Import({ AuthorizationServerConfiguration.class, ResourceServerConfiguration.class })
+@Import({ AuthorizationServerConfiguration.class, ResourceServerBaseConfiguration.class })
 public class OAuth2Configuration {
     
     @Bean

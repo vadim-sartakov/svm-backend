@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,13 +23,14 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 @Configuration
 @ConditionalOnProperty("svm.backend.security.authorization-server.enable")
 @Import(AuthorizationServerConfiguration.JwtConfiguration.class)
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
-    
+        
     @Autowired private AuthenticationManager authenticationManager;
     @Autowired @Qualifier("daoClientDetailsService") private ClientDetailsService clientDetailsService;
     @Autowired private PasswordEncoder passwordEncoder;
@@ -63,6 +65,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @ConditionalOnProperty(name = "svm.backend.security.oauth2.token-store", havingValue = "JWT", matchIfMissing = true)
     public static class JwtConfiguration {
 
+        @Autowired private SecurityProperties properties;
+        
         @Bean
         public TokenStore tokenStore() {
             return new JwtTokenStore(accessTokenConverter());
@@ -70,9 +74,17 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
         @Bean
         public JwtAccessTokenConverter accessTokenConverter() {
+            
+            SecurityProperties.AuthorizationServerProperties authServerProperties = properties.getAuthorizationServer();
+            
             JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-            converter.setSigningKey("123456");
+            KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(
+                    new ClassPathResource(authServerProperties.getKeyStore()),
+                    authServerProperties.getKeyStorePassword().toCharArray());
+            converter.setKeyPair(keyStoreKeyFactory.getKeyPair(authServerProperties.getKeyAlias()));
+            
             return converter;
+            
         }
 
     }
