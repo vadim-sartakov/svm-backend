@@ -1,4 +1,4 @@
-package svm.backend.samples.shop.dao.entity;
+package svm.backend.samples.jpa.shop.dao.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

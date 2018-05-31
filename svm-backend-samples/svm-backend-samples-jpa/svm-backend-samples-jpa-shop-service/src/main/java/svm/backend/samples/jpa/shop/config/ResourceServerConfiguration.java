@@ -1,4 +1,4 @@
-package svm.backend.samples.shop.config;
+package svm.backend.samples.jpa.shop.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

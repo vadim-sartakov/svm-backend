@@ -1,8 +1,9 @@
-package svm.backend.samples.shop;
+package svm.backend.samples.jpa.shop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EntityScan

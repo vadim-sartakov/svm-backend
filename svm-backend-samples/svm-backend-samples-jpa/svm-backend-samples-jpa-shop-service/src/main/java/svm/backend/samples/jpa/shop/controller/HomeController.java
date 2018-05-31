@@ -1,4 +1,4 @@
-package svm.backend.samples.shop.controller;
+package svm.backend.samples.jpa.shop.controller;
 
 import lombok.Builder;
 import lombok.Data;

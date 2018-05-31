@@ -1,5 +1,6 @@
 package svm.backend.security.config;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -16,6 +17,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 @Configuration
@@ -29,14 +31,16 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private UserDetailsService userDetailsService;
     @Autowired private TokenStore tokenStore;
-    @Autowired private TokenEnhancer tokenEnhancer;
+    @Autowired private List<TokenEnhancer> tokenEnhancers;
     @Autowired private WebResponseExceptionTranslator translator;
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        TokenEnhancerChain enhacerChain = new TokenEnhancerChain();
+        enhacerChain.setTokenEnhancers(tokenEnhancers);
         endpoints
                 .exceptionTranslator(translator)
-                .tokenEnhancer(tokenEnhancer)
+                .tokenEnhancer(enhacerChain)
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
                 .tokenStore(tokenStore);
