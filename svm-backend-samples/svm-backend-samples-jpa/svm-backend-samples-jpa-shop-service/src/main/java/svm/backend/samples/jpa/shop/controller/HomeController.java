@@ -2,6 +2,7 @@ package svm.backend.samples.jpa.shop.controller;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ public class HomeController {
     }
     
     @GetMapping("/protected")
-    public Response getProtected() {
+    public Response getProtected(Authentication authentication) {
         return Response.builder().content("Response from protected").build();
     }
     
