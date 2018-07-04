@@ -13,7 +13,7 @@ import svm.backend.data.jpa.security.dao.entity.Role;
 import svm.backend.data.jpa.security.dao.entity.User;
 import svm.backend.data.jpa.security.dao.repository.Oauth2ClientRepository;
 import svm.backend.data.jpa.security.dao.repository.UserRepository;
-import svm.backend.data.migration.model.MigrationUpdate;
+import svm.backend.data.core.migration.model.MigrationUpdate;
 import svm.backend.security.util.SecurityUtils;
 
 @Component

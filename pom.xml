@@ -27,9 +27,9 @@
     <modules>
         <module>svm-backend-core</module>
         <module>svm-backend-web</module>
-        <module>svm-backend-data-project</module>
+        <module>svm-backend-data</module>
         <module>svm-backend-security</module>
-        <module>svm-backend-sms-project</module>
+        <module>svm-backend-sms</module>
         <module>svm-backend-samples</module>
         <module>svm-backend-parent</module>
         <!--<module>svm-backend-sign-up</module>-->
@@ -52,7 +52,7 @@
             <!-- JPA -->
             <dependency>
                 <groupId>svm.backend</groupId>
-                <artifactId>svm-backend-data</artifactId>
+                <artifactId>svm-backend-data-core</artifactId>
                 <version>1.0.0</version>
             </dependency>
             <dependency>
@@ -69,15 +69,20 @@
             <!-- MongoDB -->
             <dependency>
                 <groupId>svm.backend</groupId>
-                <artifactId>svm-backend-data-mongodb</artifactId>
+                <artifactId>svm-backend-data-mongodb-core</artifactId>
                 <version>1.0.0</version>
             </dependency>
             
             <dependency>
                 <groupId>svm.backend</groupId>
-                <artifactId>svm-backend-sms</artifactId>
+                <artifactId>svm-backend-sms-core</artifactId>
                 <version>1.0.0</version>
-            </dependency>            
+            </dependency>
+            <dependency>
+                <groupId>svm.backend</groupId>
+                <artifactId>svm-backend-sms-mts</artifactId>
+                <version>1.0.0</version>
+            </dependency>
             <dependency>
                 <groupId>svm.backend</groupId>
                 <artifactId>svm-backend-security</artifactId>

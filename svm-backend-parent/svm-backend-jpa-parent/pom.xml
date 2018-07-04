@@ -25,7 +25,7 @@
         
         <dependency>
             <groupId>svm.backend</groupId>
-            <artifactId>svm-backend-data-jpa</artifactId>
+            <artifactId>svm-backend-data-jpa-core</artifactId>
         </dependency>
         
     </dependencies>
