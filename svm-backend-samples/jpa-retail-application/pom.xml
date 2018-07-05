@@ -3,25 +3,16 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>svm.backend</groupId>
-        <artifactId>svm-backend-build</artifactId>
+        <artifactId>svm-backend-jpa-parent</artifactId>
         <version>${revision}</version>
+        <relativePath>../../svm-backend-parent/svm-backend-jpa-parent/pom.xml</relativePath>
     </parent>
     <groupId>svm.backend.samples</groupId>
-    <artifactId>svm-backend-samples</artifactId>
+    <artifactId>jpa-retail-application</artifactId>
     <packaging>pom</packaging>
-    <name>Backend samples</name>
+    <name>JPA retail application</name>
     <modules>
-        <module>jpa-retail-application</module>
+        <module>account-service</module>
+        <module>inventory-service</module>
     </modules>
-    
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-                <inherited>false</inherited>
-            </plugin>
-        </plugins>
-    </build>
-    
 </project>

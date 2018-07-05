@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>svm.backend.samples</groupId>
+        <artifactId>jpa-retail-application</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <artifactId>jpa-retail-account-service</artifactId>
+    <packaging>jar</packaging>
+    <name>JPA retail account service</name>
+    
+    <properties>
+        
+        <jdbc.url>jdbc:sqlserver://localhost;databaseName=Account</jdbc.url>
+        <jdbc.username>sa</jdbc.username>
+        <jdbc.password>123456</jdbc.password>
+        <jdbc.dependency.groupId>com.microsoft.sqlserver</jdbc.dependency.groupId>
+        <jdbc.dependency.artifactId>mssql-jdbc</jdbc.dependency.artifactId>
+        <jdbc.dependency.version>${mssql-jdbc.version}</jdbc.dependency.version>
+        
+        <hibernate.dialect>org.hibernate.dialect.SQLServer2012Dialect</hibernate.dialect>
+        <hibernate.entityPackages>svm.backend.data.jpa.migration,svm.backend.data.jpa.security.dao.entity,svm.backend.samples.jpa.account.dao.entity</hibernate.entityPackages>
+        
+    </properties>
+    
+    <dependencies>
+        
+        <dependency>
+            <groupId>${jdbc.dependency.groupId}</groupId>
+            <artifactId>${jdbc.dependency.artifactId}</artifactId>
+            <version>${jdbc.dependency.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>svm.backend</groupId>
+            <artifactId>svm-backend-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>svm.backend</groupId>
+            <artifactId>svm-backend-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>svm.backend</groupId>
+            <artifactId>svm-backend-data-jpa-security</artifactId>
+        </dependency>
+        
+    </dependencies>
+    
+</project>
