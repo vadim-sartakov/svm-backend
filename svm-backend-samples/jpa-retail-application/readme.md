@@ -20,8 +20,10 @@ Application should be built in micro service manner.
 
 ### Purchase service
 
-1. Purchase;
-2. Vendor invoice;
+1. Purchase order;
+2. Purchase;
+3. Procurement;
+4. Vendor invoice;
 
 ### Inventory service
 
@@ -29,17 +31,18 @@ Application should be built in micro service manner.
 2. Warehouse management;
 3. Stock order;
 4. Stock inquiry;
-3. Transfer;
-5. Stock counts report;
+5. Transfer;
+6. Stock counts report;
 
-### Customer service
+### Selling service
 
 1. Selling;
-2. Vendor invoice;
-3. Shipping;
+2. Price list;
+3. Customer invoice;
+4. Shipping;
 
 ### Financial service
 
-1. Bank statement;
-1. Account payable / Receivables report;
+1. Payments;
+2. Accounts payable / Accounts receivable report;
 
