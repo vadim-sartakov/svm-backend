@@ -1,24 +1,22 @@
 package svm.backend.data.core.validator;
 
-import svm.backend.data.core.dao.entity.MultipleFieldEntity;
-import svm.backend.data.core.dao.entity.SingleFieldEntity;
-import svm.backend.data.dao.entity.SingleFieldEntity;
-import svm.backend.data.dao.entity.MultipleFieldEntity;
 import com.querydsl.core.types.Predicate;
-import java.util.Iterator;
-import javax.validation.ConstraintValidatorContext;
-import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
-import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.times;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.support.Repositories;
+import svm.backend.data.core.dao.entity.MultipleFieldEntity;
+import svm.backend.data.core.dao.entity.SingleFieldEntity;
+
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
+import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext;
+import java.util.Iterator;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.times;
 
 @SuppressWarnings("unchecked")
 public class CheckUniqueValuesTest {

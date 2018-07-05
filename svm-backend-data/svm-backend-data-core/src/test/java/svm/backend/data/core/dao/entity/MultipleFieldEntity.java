@@ -13,9 +13,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import svm.backend.data.validator.UniqueValues;
-import svm.backend.data.validator.UniqueValues.FieldSet;
-import svm.backend.data.validator.UniqueValues.Field;
+import svm.backend.data.core.validator.UniqueValues;
+import svm.backend.data.core.validator.UniqueValues.FieldSet;
+import svm.backend.data.core.validator.UniqueValues.Field;
 
 @Entity
 @Data

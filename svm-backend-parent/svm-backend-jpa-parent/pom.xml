@@ -11,6 +11,17 @@
     <name>JPA parent</name>
     
     <properties>
+
+        <jdbc.url></jdbc.url>
+        <jdbc.username></jdbc.username>
+        <jdbc.password></jdbc.password>
+        <jdbc.driverClass></jdbc.driverClass>
+        <hibernate.entityPackages></hibernate.entityPackages>
+        <hibernate.dialect></hibernate.dialect>
+
+        <querydsl.schemaPattern></querydsl.schemaPattern>
+        <querydsl.tableNamePattern></querydsl.tableNamePattern>
+
         <jdbc.dependency.groupId>com.h2database</jdbc.dependency.groupId>
         <jdbc.dependency.artifactId>h2</jdbc.dependency.artifactId>
         <jdbc.dependency.version>${h2.version}</jdbc.dependency.version>
@@ -81,6 +92,7 @@
                 <artifactId>querydsl-maven-plugin</artifactId>
                 <version>${querydsl.version}</version>
                 <configuration>
+                    <sourceFolder>src/</sourceFolder>
                     <jdbcDriver>${jdbc.driverClass}</jdbcDriver>
                     <jdbcUrl>${jdbc.url}</jdbcUrl>
                     <jdbcUser>${jdbc.username}</jdbcUser>

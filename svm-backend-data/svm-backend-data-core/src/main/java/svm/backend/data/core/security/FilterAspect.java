@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class FilterAspect {
  
-    @Around("within(svm.backend.data.security.Filter+) && "
+    @Around("within(svm.backend.data.core.security.Filter+) && "
             + "execution(org.springframework.data.domain.Page org.springframework.data.querydsl.QueryDslPredicateExecutor.findAll(..)) && "
             + "target(predicateProvider) && "
             + "args(predicate, pageable)")
@@ -22,7 +22,7 @@ public class FilterAspect {
     }
     
     @SuppressWarnings("unchecked")
-    @Around("within(svm.backend.data.security.Filter+) && "
+    @Around("within(svm.backend.data.core.security.Filter+) && "
             + "execution(* org.springframework.data.repository.CrudRepository.findOne(..)) && "
             + "target(predicateProvider) && "
             + "args(id)")

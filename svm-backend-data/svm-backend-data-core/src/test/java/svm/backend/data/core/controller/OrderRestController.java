@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import svm.backend.data.core.dao.entity.Order;
-import svm.backend.data.dao.entity.Order;
-import svm.backend.data.dao.repository.OrderRepository;
+import svm.backend.data.core.dao.repository.OrderRepository;
 
 @RestController
 @RequestMapping("/order-rest-controller")

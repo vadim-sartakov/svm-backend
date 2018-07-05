@@ -20,15 +20,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import svm.backend.data.Application;
-import svm.backend.data.controller.OrderRestController;
 import svm.backend.data.core.Application;
 import svm.backend.data.core.controller.OrderRestController;
 import svm.backend.data.core.dao.entity.Order;
-import svm.backend.data.dao.entity.Order;
-import svm.backend.data.dao.entity.Order.OrderBuilder;
-import svm.backend.data.dao.entity.Order.Product;
-import svm.backend.data.dao.entity.Order.Product.ProductBuilder;
+import svm.backend.data.core.dao.entity.Order.OrderBuilder;
+import svm.backend.data.core.dao.entity.Order.Product.ProductBuilder;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

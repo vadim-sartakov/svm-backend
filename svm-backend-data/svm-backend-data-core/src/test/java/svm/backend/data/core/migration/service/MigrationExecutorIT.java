@@ -7,7 +7,6 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import svm.backend.data.Application;
 import svm.backend.data.core.Application;
 import svm.backend.data.core.migration.model.MigrationUpdate;
 

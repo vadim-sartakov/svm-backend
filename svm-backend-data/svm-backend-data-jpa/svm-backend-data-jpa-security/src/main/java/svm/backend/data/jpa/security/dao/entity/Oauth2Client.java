@@ -21,10 +21,10 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
-import svm.backend.data.annotation.Predefined;
-import svm.backend.data.jpa.entity.Identifiable;
-import svm.backend.data.jpa.converter.MapJsonStringConverter;
-import svm.backend.data.jpa.converter.StringSetConverter;
+import svm.backend.data.core.annotation.Predefined;
+import svm.backend.data.jpa.core.entity.Identifiable;
+import svm.backend.data.jpa.core.converter.MapJsonStringConverter;
+import svm.backend.data.jpa.core.converter.StringSetConverter;
 import svm.backend.security.model.BaseOauth2Client;
 
 @Entity(name = "Oauth2Client")

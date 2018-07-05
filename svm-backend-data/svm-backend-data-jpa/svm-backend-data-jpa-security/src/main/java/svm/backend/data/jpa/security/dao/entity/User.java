@@ -19,10 +19,10 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import svm.backend.data.annotation.Predefined;
-import svm.backend.data.jpa.entity.Creatable;
-import svm.backend.data.jpa.entity.Identifiable;
-import svm.backend.data.jpa.entity.Updatable;
+import svm.backend.data.core.annotation.Predefined;
+import svm.backend.data.jpa.core.entity.Creatable;
+import svm.backend.data.jpa.core.entity.Identifiable;
+import svm.backend.data.jpa.core.entity.Updatable;
 import svm.backend.security.model.BaseUser;
 
 @Entity(name = "User")

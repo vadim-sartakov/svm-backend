@@ -18,7 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "TEST_ENTITIES")
 public class TestEntity implements Identifiable, Creatable, Updatable, Serializable {
     @Id
-    @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.generator.UUIDGenerator")
+    @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.core.generator.UUIDGenerator")
     @GeneratedValue(generator = "uuid")
     private UUID id;
     

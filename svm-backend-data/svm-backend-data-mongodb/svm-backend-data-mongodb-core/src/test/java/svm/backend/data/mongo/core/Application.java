@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import svm.backend.data.mongo.core.config.TestConfiguration;
-import svm.backend.data.mongo.config.TestConfiguration;
 
 @Configuration
 @EnableAutoConfiguration

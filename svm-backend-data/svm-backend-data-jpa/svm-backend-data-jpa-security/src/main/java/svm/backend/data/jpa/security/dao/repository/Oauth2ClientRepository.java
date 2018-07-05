@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.annotation.Secured;
-import svm.backend.data.core.jpa.security.dao.entity.Oauth2Client;
-import svm.backend.data.core.jpa.security.dao.entity.Role;
 import svm.backend.data.jpa.security.dao.entity.Oauth2Client;
 import svm.backend.data.jpa.security.dao.entity.Role;
 

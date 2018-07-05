@@ -4,8 +4,6 @@ import svm.backend.data.core.Application;
 import svm.backend.data.core.dao.entity.MultipleFieldEntity;
 import svm.backend.data.core.dao.entity.SingleFieldEntity;
 import svm.backend.data.core.dao.entity.TestGroup;
-import svm.backend.data.dao.entity.SingleFieldEntity;
-import svm.backend.data.dao.entity.MultipleFieldEntity;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,8 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import svm.backend.data.Application;
-import svm.backend.data.dao.entity.TestGroup;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(properties = "ignoreCaseParam=false", classes = Application.class)

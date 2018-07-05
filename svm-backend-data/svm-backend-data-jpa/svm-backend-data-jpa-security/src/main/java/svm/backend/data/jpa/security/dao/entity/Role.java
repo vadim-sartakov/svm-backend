@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.hibernate.validator.constraints.NotEmpty;
-import svm.backend.data.annotation.Predefined;
-import svm.backend.data.jpa.entity.Identifiable;
+import svm.backend.data.core.annotation.Predefined;
+import svm.backend.data.jpa.core.entity.Identifiable;
 import svm.backend.security.model.BaseRole;
 
 @Entity(name = "Role")

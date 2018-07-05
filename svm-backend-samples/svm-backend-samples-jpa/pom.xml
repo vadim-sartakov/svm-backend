@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
     <name>Backend samples jpa</name>
     <modules>
-        <module>svm-backend-samples-jpa-shop-service</module>
         <module>svm-backend-samples-jpa-account-service</module>
+        <module>svm-backend-samples-jpa-shop-service</module>
     </modules>
 </project>

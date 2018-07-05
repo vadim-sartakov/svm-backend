@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-svm.backend.data.mongo.config.MigrationAutoConfiguration
+svm.backend.data.mongo.core.config.MigrationAutoConfiguration

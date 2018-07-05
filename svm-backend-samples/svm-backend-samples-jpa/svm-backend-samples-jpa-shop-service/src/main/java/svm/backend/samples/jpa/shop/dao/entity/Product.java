@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
-import svm.backend.data.jpa.entity.Identifiable;
+import svm.backend.data.jpa.core.entity.Identifiable;
 
 @Data
 @Entity
@@ -17,7 +17,7 @@ import svm.backend.data.jpa.entity.Identifiable;
 public class Product implements Identifiable, Serializable {
    
     @Id
-    @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.generator.UUIDGenerator")
+    @GenericGenerator(name = "uuid", strategy = "svm.backend.data.jpa.core.generator.UUIDGenerator")
     @GeneratedValue(generator = "uuid")
     @Column(length = 16)
     private UUID id;

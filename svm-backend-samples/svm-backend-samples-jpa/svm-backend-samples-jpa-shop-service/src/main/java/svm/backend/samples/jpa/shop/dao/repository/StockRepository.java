@@ -6,7 +6,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import svm.backend.samples.jpa.shop.dao.entity.QStock;
 import svm.backend.samples.jpa.shop.dao.entity.Stock;
-import svm.backend.data.querydsl.QueryDslDefaultBinder;
+import svm.backend.data.core.querydsl.QueryDslDefaultBinder;
 
 @RepositoryRestResource(excerptProjection = Stock.Overview.class)
 public interface StockRepository extends PagingAndSortingRepository<Stock, UUID>,

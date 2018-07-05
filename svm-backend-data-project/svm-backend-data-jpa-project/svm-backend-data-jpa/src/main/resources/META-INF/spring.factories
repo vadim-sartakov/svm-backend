@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-svm.backend.data.jpa.config.HibernateAutoConfiguration,\
-svm.backend.data.jpa.config.DataJpaAutoConfiguration

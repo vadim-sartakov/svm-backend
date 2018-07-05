@@ -10,7 +10,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import svm.backend.samples.jpa.shop.dao.entity.Order;
 import svm.backend.samples.jpa.shop.dao.entity.QOrder;
-import svm.backend.data.querydsl.QueryDslDefaultBinder;
+import svm.backend.data.core.querydsl.QueryDslDefaultBinder;
 
 @RepositoryRestResource(excerptProjection = Order.Overview.class)
 public interface OrderRepository extends PagingAndSortingRepository<Order, UUID>,

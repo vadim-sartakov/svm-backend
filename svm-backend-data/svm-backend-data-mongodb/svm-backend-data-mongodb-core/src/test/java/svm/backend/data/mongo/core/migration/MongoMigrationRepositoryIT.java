@@ -19,9 +19,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import svm.backend.data.core.migration.model.MigrationRollback;
 import svm.backend.data.core.migration.model.MigrationUpdate;
 import svm.backend.data.core.migration.service.MigrationRepository;
-import svm.backend.data.mongo.Application;
-import svm.backend.data.mongo.migration.MongoMigrationRepositoryIT.RollbackMigration;
-import svm.backend.data.mongo.migration.MongoMigrationRepositoryIT.UpdateMigration;
+import svm.backend.data.mongo.core.Application;
+import svm.backend.data.mongo.core.migration.MongoMigrationRepositoryIT.RollbackMigration;
+import svm.backend.data.mongo.core.migration.MongoMigrationRepositoryIT.UpdateMigration;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, properties = "shouldRollback=true")
