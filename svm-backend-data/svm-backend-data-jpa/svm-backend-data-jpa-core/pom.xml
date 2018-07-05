@@ -9,7 +9,7 @@
     <artifactId>svm-backend-data-jpa-core</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>Backend data jpa</name>
+    <name>Backend data jpa core</name>
     
     <dependencies>
         <dependency>

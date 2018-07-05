@@ -9,7 +9,7 @@
     <artifactId>svm-backend-sms-core</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>Backend sms</name>
+    <name>Backend sms core</name>
     
     <dependencies>
         <dependency>

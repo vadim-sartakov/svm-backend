@@ -8,7 +8,7 @@
     </parent>
     <artifactId>svm-backend-data-mongodb</artifactId>
     <packaging>pom</packaging>
-    <name>Backend data mongodb project</name>
+    <name>Backend data mongodb</name>
     <modules>
         <module>svm-backend-data-mongodb-core</module>
     </modules>

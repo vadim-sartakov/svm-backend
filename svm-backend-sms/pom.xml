@@ -8,7 +8,7 @@
     </parent>
     <artifactId>svm-backend-sms</artifactId>
     <packaging>pom</packaging>
-    <name>Backend sms project</name>
+    <name>Backend sms</name>
 	
     <modules>
         <module>svm-backend-sms-core</module>

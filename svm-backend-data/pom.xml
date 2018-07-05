@@ -9,7 +9,7 @@
     </parent>
     <artifactId>svm-backend-data</artifactId>
     <packaging>pom</packaging>
-    <name>Backend data project</name>
+    <name>Backend data</name>
                         
     <modules>
         <module>svm-backend-data-core</module>

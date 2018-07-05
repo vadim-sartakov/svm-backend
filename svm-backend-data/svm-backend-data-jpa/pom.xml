@@ -8,7 +8,7 @@
     </parent>
     <artifactId>svm-backend-data-jpa</artifactId>
     <packaging>pom</packaging>
-    <name>Backend data jpa project</name>
+    <name>Backend data jpa</name>
     <modules>
         <module>svm-backend-data-jpa-core</module>
         <module>svm-backend-data-jpa-security</module>

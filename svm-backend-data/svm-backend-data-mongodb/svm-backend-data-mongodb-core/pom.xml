@@ -9,7 +9,7 @@
     <artifactId>svm-backend-data-mongodb-core</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>Backend data mongodb</name>
+    <name>Backend data mongodb core</name>
     
     <dependencies>
         

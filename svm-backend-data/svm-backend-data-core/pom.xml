@@ -10,7 +10,7 @@
     <artifactId>svm-backend-data-core</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>Backend data</name>
+    <name>Backend data core</name>
             
     <dependencies>
         
