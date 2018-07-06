@@ -4,16 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.Matchers.anyString;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -30,11 +31,12 @@ import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import svm.backend.security.Application;
 import svm.backend.security.config.TestResourceServerConfiguration;
+import svm.backend.security.config.TestSecurityConfiguration;
 import svm.backend.security.controller.TestController;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import({ TestController.class, TestResourceServerConfiguration.class })
+@Import({ TestController.class, TestResourceServerConfiguration.class, TestSecurityConfiguration.class})
 public class ExceptionHandlerIT {
     
     @Autowired private PasswordEncoder passwordEncoder;

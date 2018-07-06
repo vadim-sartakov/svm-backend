@@ -1,16 +1,7 @@
 package svm.backend.sms.mts;
 
-import java.io.InputStream;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
 import org.mockito.Mockito;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
@@ -20,17 +11,31 @@ import svm.backend.sms.mts.config.MtsProperties;
 import svm.backend.sms.mts.model.ArrayOfDeliveryInfo;
 import svm.backend.sms.mts.model.SendMessageResponse;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import java.io.InputStream;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+
 public class MtsSmsSenderTest {
         
     private final RestTemplateBuilder restTemplateBuilder = Mockito.mock(RestTemplateBuilder.class);
     private final RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
+    private final MtsProperties properties = Mockito.mock(MtsProperties.class);
     
-    private final MtsSmsSender smsSender = new MtsSmsSender(restTemplateBuilder, Mockito.mock(MtsProperties.class));
+    private MtsSmsSender smsSender;
         
     @Before
     public void setUp() {
         Mockito.when(restTemplateBuilder.build()).thenReturn(restTemplate);
-        smsSender.initialize();
+        this.smsSender = new MtsSmsSender(restTemplateBuilder, properties);
+        Mockito.when(properties.getSendUrl()).thenReturn("");
+        Mockito.when(properties.getGetStatusUrl()).thenReturn("");
     }
         
     @SuppressWarnings("unchecked")

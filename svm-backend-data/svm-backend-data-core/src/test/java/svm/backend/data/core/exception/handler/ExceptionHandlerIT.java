@@ -10,9 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -59,7 +59,7 @@ public class ExceptionHandlerIT {
         
         response = postOrder(apiPath);
         expectWrongObject(response);
-        checkJsonPath(response.getBody(), "$.errors.number", is("may not be empty"));
+        checkJsonPath(response.getBody(), "$.errors.number", is("must not be empty"));
             
         orderBuilder.number("1");
         
@@ -72,7 +72,7 @@ public class ExceptionHandlerIT {
         
         response = postOrder(apiPath);
         expectWrongObject(response);
-        checkJsonPath(response.getBody(), "$.errors.['products[0].quantity']", containsString("may not be null"));
+        checkJsonPath(response.getBody(), "$.errors.['products[0].quantity']", containsString("must not be null"));
         
         productBuilder.quantity(5);
         orderBuilder.clearProducts();

@@ -14,6 +14,8 @@ import svm.backend.data.core.dao.entity.SingleFieldEntity;
 import svm.backend.data.core.dao.repository.MultipleFieldEntityRepository;
 import svm.backend.data.core.dao.repository.SingleFieldEntityRepository;
 
+import java.util.Optional;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -39,14 +41,14 @@ public class FilterAspectIT {
     
     @Test
     public void testFindAll() {
-        assertThat(singleFieldRepository.findAll(null, new PageRequest(0, 20)).getTotalElements(), is(1l));
-        assertThat(multipleFieldRepository.findAll(null, new PageRequest(0, 20)).getTotalElements(), is(3l));    
+        assertThat(singleFieldRepository.findAll(null, PageRequest.of(0, 20)).getTotalElements(), is(1l));
+        assertThat(multipleFieldRepository.findAll(null, PageRequest.of(0, 20)).getTotalElements(), is(3l));
     }
     
     @Test
     public void testFindOne() {
-        assertThat(singleFieldRepository.findOne(firstEntity.getId()), is(nullValue()));
-        assertThat(singleFieldRepository.findOne(secondEntity.getId()), is(notNullValue()));
+        assertThat(singleFieldRepository.findById(firstEntity.getId()), is(Optional.empty()));
+        assertThat(singleFieldRepository.findById(secondEntity.getId()), is(notNullValue()));
     }
     
 }

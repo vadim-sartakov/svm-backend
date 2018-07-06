@@ -1,16 +1,17 @@
 package svm.backend.data.jpa.core.generator;
 
-import java.io.Serializable;
-import java.util.UUID;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 import svm.backend.data.jpa.core.entity.Identifiable;
+
+import java.io.Serializable;
+import java.util.UUID;
 
 public class UUIDGenerator implements IdentifierGenerator {
 
     @Override
-    public Serializable generate(SessionImplementor si, Object object) throws HibernateException {
+    public Serializable generate(SharedSessionContractImplementor si, Object object) throws HibernateException {
         if (object instanceof Identifiable) {
             Identifiable entity = (Identifiable) object;
             Serializable providedId = entity.getId();

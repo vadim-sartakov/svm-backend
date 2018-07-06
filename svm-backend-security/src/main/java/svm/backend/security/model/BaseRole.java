@@ -17,7 +17,7 @@ public abstract class BaseRole implements Serializable {
     protected String name;
     
     public static <T extends BaseRole> T predefined(Class<T> type, String roleName) {
-        T role = BeanUtils.instantiate(type);
+        T role = BeanUtils.instantiateClass(type);
         role.id = UUID.nameUUIDFromBytes(roleName.getBytes(StandardCharsets.UTF_8));
         role.name = roleName;
         return role;

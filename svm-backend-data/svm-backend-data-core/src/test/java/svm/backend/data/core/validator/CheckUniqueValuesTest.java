@@ -4,7 +4,7 @@ import com.querydsl.core.types.Predicate;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.support.Repositories;
 import svm.backend.data.core.dao.entity.MultipleFieldEntity;
 import svm.backend.data.core.dao.entity.SingleFieldEntity;
@@ -13,9 +13,10 @@ import javax.validation.ConstraintValidatorContext;
 import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
 import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext;
 import java.util.Iterator;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.times;
 
 @SuppressWarnings("unchecked")
@@ -29,7 +30,7 @@ public class CheckUniqueValuesTest {
     private final Iterator<Object> emptyIterator = Mockito.mock(Iterator.class);
     private final Iterator<Object> populatedIterator = Mockito.mock(Iterator.class);
     
-    private final QueryDslPredicateExecutor<Object> repository = Mockito.mock(QueryDslPredicateExecutor.class);
+    private final QuerydslPredicateExecutor<Object> repository = Mockito.mock(QuerydslPredicateExecutor.class);
     
     private final ConfigurableBeanFactory beanFactory = Mockito.mock(ConfigurableBeanFactory.class);
     private final CheckUniqueValues instance = new CheckUniqueValues(repositories, beanFactory);
@@ -48,7 +49,7 @@ public class CheckUniqueValuesTest {
         Mockito.when(contextBuilder.addPropertyNode(anyString()))
                 .thenReturn(Mockito.mock(NodeBuilderCustomizableContext.class));
         Mockito.when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(contextBuilder);
-        Mockito.when(repositories.getRepositoryFor(anyObject())).thenReturn(repository);
+        Mockito.when(repositories.getRepositoryFor(any())).thenReturn(Optional.of(repository));
         Mockito.when(repository.findAll(any(Predicate.class))).thenReturn(emptyIterable);
         
     }

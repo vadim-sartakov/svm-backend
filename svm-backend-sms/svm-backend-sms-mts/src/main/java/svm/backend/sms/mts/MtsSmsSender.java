@@ -1,10 +1,5 @@
 package svm.backend.sms.mts;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.List;
-import javax.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -22,21 +17,22 @@ import svm.backend.sms.mts.model.ArrayOfDeliveryInfo;
 import svm.backend.sms.mts.model.DeliveryInfo;
 import svm.backend.sms.mts.model.SendMessageResponse;
 
-@RequiredArgsConstructor
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.List;
+
 public class MtsSmsSender implements SmsSender {
     
     private final Logger logger = LoggerFactory.getLogger(MtsSmsSender.class);
-    
-    private final RestTemplateBuilder restTemplateBuilder;
+
     private final MtsProperties properties;
-    
-    private RestTemplate restTemplate;
-        
-    @PostConstruct
-    public void initialize() {
-        restTemplate = restTemplateBuilder.build();
+    private final RestTemplate restTemplate;
+
+    public MtsSmsSender(RestTemplateBuilder restTemplateBuilder, MtsProperties properties) {
+        this.properties = properties;
+        this.restTemplate = restTemplateBuilder.build();
     }
-    
+
     @Override
     public String send(SmsMessage message) {
         

@@ -24,7 +24,7 @@ public abstract class BaseUser implements UserDetails, Serializable {
     protected Boolean disabled = false;
 
     public static <T extends BaseUser> T predefined(Class<T> type, String username, Boolean disabled, BaseGrantedAuthority... authority) {
-        T user = BeanUtils.instantiate(type);
+        T user = BeanUtils.instantiateClass(type);
         user.id = UUID.nameUUIDFromBytes(username.getBytes(StandardCharsets.UTF_8));
         ZonedDateTime now = ZonedDateTime.now();
         user.createdAt = now;

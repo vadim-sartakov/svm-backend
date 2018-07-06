@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.SimpleEntityPathResolver;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.expression.Expression;
@@ -31,7 +31,7 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
     private Object object;
     private ConstraintValidatorContext context;
     private EntityPath<?> rootPath;
-    private QueryDslPredicateExecutor repository;
+    private QuerydslPredicateExecutor repository;
 
     @Override
     public void initialize(UniqueValues uniqueValues) {
@@ -49,7 +49,7 @@ public class CheckUniqueValues implements ConstraintValidator<UniqueValues, Obje
         Class<?> objectType = object.getClass();
         this.rootPath = SimpleEntityPathResolver.INSTANCE.createPath(objectType);
         try {
-            repository = (QueryDslPredicateExecutor) repositories.getRepositoryFor(objectType);
+            repository = (QuerydslPredicateExecutor) repositories.getRepositoryFor(objectType).orElse(null);
         } catch(Exception e) {
             throw new RuntimeException("Unable to retrieve Query dsl repository of type " + objectType.getSimpleName());
         }

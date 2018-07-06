@@ -1,7 +1,7 @@
 package svm.backend.samples.jpa.shop.dao.repository;
 
 import java.util.UUID;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import svm.backend.samples.jpa.shop.dao.entity.QStock;
@@ -10,6 +10,6 @@ import svm.backend.data.core.querydsl.QueryDslDefaultBinder;
 
 @RepositoryRestResource(excerptProjection = Stock.Overview.class)
 public interface StockRepository extends PagingAndSortingRepository<Stock, UUID>,
-        QueryDslPredicateExecutor<Stock>, QueryDslDefaultBinder<QStock> {
+        QuerydslPredicateExecutor<Stock>, QueryDslDefaultBinder<QStock> {
     
 }
