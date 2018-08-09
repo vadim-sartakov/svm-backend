@@ -6,7 +6,7 @@
         <artifactId>jpa-retail-application</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>jpa-retail-inventory-service</artifactId>
+    <artifactId>inventory-service</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>JPA retail inventory service</name>
