@@ -36,4 +36,4 @@ Core features and implementations to work with SMS gateways;
 - Custom exception handling;
 - Base configurations;
 
-See concretefproject for details.
+See concrete project for details.
