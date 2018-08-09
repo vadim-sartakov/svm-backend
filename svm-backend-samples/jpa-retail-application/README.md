@@ -2,7 +2,7 @@
   This project represents basic usage of modules and use cases in real life retail application.
   
 ## Requirements
-Application should be built in micro service manner.
+Application should be built utilizing micro service architecture.
 
 ### Account service
 

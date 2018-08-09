@@ -6,7 +6,7 @@
         <artifactId>jpa-retail-application</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>jpa-retail-account-service</artifactId>
+    <artifactId>account-service</artifactId>
     <packaging>jar</packaging>
     <name>JPA retail account service</name>
     
